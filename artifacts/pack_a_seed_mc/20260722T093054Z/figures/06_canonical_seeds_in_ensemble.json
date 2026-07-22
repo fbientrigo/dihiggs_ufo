@@ -1,0 +1,18 @@
+{
+  "12345": {
+    "sigma_pb": 0.02349,
+    "delta_pb": 0.0001364,
+    "rank": 6,
+    "percentile": 20.0,
+    "diff_from_weighted_mean_pb": -7.397608329941935e-05,
+    "diff_from_unweighted_mean_pb": -7.06666666666668e-05
+  },
+  "67890": {
+    "sigma_pb": 0.02356,
+    "delta_pb": 0.0001374,
+    "rank": 14,
+    "percentile": 46.666666666666664,
+    "diff_from_weighted_mean_pb": -3.976083299418731e-06,
+    "diff_from_unweighted_mean_pb": -6.666666666661769e-07
+  }
+}

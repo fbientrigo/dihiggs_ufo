@@ -1,0 +1,53 @@
+% Pack A seed-ensemble slide patch.
+% Source of truth for every number below: PACK_A_MC_PRESENTATION_VALUES.json
+% (run 20260722T093054Z). Apply against
+% /mnt/c/Users/Asus/Downloads/packA_packAA_PI_clean.tex per
+% PACK_A_MC_PRESENTATION_HANDOFF.md.
+
+% --- Frame "Cuánto da Pack A" ---
+\begin{frame}{Cuánto da Pack A}
+  \textbf{PACK\_A\_LO\_SMOKE\_XSEC} -- 30 semillas independientes:
+  \begin{itemize}
+    \item Media ponderada del ensemble: $0.023564$ pb
+    \item Incertidumbre de la media ponderada: $0.0000272$ pb
+    \item RMS semilla-a-semilla observado: $0.000141$ pb
+    \item Error de integraci\'on MG5 t\'ipico por corrida: $0.000141$--$0.000154$ pb
+    \item $N = 30$ semillas independientes (0 fallidas)
+  \end{itemize}
+  \textit{No es una predicci\'on final del modelo ni una normalizaci\'on publicable.}
+\end{frame}
+
+% --- Frame "Gráfico 1: reproducibilidad de la sección eficaz" ---
+\begin{frame}{Gr\'afico 1: reproducibilidad de la secci\'on eficaz}
+  \centering
+  \includegraphics[width=0.85\textwidth]{01_seed_ensemble_forest_plot.pdf}
+  \small Las semillas can\'onicas $12345$ y $67890$ se destacan en rojo dentro
+  del ensemble completo de 30 semillas.
+\end{frame}
+
+% --- Frame "Resumen final" ---
+\begin{frame}{Resumen final}
+  \textbf{PACK\_A\_LO\_SMOKE\_XSEC}: $0.023564 \pm 0.000027$ pb
+  (media ponderada por varianza inversa sobre 30 corridas MadGraph con
+  semilla independiente; RMS semilla-a-semilla $0.000141$ pb, compatible
+  con el error de integraci\'on MG5 t\'ipico por corrida; raz\'on de Birge
+  $0.99$).
+
+  \vspace{0.5em}
+  Semilla can\'onica $12345$ ($0.02349$ pb): percentil $20$ del ensemble.
+  Semilla can\'onica $67890$ ($0.02356$ pb): percentil $47$ del ensemble.
+  Ambas t\'ipicas, ninguna at\'ipica.
+\end{frame}
+
+% --- Appendix: methodology frame (ADD, do not remove existing warnings) ---
+\begin{frame}{Metodolog\'ia del ensemble de semillas (Pack A)}
+  \begin{itemize}
+    \item Mismo artefacto Pack A congelado (sha256 \texttt{58f1e976...537f6})
+    \item Mismo UFO, cards, toolchain (MadGraph5\_aMC@NLO 3.5.3), versi\'on de Python
+    \item Mismo n\'umero de eventos (100/corrida), \texttt{ZERO\_JET\_ONLY}, PDF y escala
+    \item \'Unicamente cambia la semilla aleatoria de MC
+    \item $N=30$ semillas independientes predeclaradas
+    \item 1 control de determinismo (semilla $12345$ repetida): \textbf{DETERMINISTIC}
+    \item Ninguna sistem\'atica de PDF, escala o modelo fue estimada por este ensemble
+  \end{itemize}
+\end{frame}

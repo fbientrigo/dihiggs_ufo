@@ -1,0 +1,96 @@
+version: 1
+purpose: >
+  Characterize the empirical seed-to-seed spread of the Pack A LO smoke
+  cross section (PACK_A_LO_SMOKE_XSEC) under repeated MadGraph integration,
+  varying only the random seed. This is not a theory-systematics study and
+  does not modify or supersede the frozen Pack A artifact.
+
+frozen_pack_a:
+  path: releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip
+  sha256: 58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6
+  status: [FROZEN, PACK_A_CLOSURE_CONFIRMED, PASS_WITH_WARNINGS]
+  cross_section_label: PACK_A_LO_SMOKE_XSEC
+  note: >
+    The authoritative ZIP is verified by hash before every use and is never
+    copied-over, patched, or rebuilt. Only ephemeral, per-worker extractions
+    under scratch/pack_a_seed_mc_<RUN_ID>/ are touched.
+
+seed_list:
+  file: config/seeds_v1.txt
+  count: 30
+  canonical_seeds: [12345, 67890]
+  generation_rule: >
+    seeds = [12345, 67890] followed by 28 additional values drawn from
+    random.Random(20260722).randint(10000, 99999), skipping duplicates and
+    the two canonical values, taken in draw order until 28 unique values are
+    collected. Fully reproducible from this rule alone; no seed was drawn,
+    inspected, or discarded after observing any cross section.
+  immutability: >
+    This file is committed before any non-canonical seed is executed and is
+    never reordered or replaced after runs begin.
+
+locked_run_conditions:
+  - frozen Pack A bytes (verified by sha256 before every worker extraction)
+  - UFO (LLscalar_v3 runtime, byte-identical across all workers)
+  - process: "g g > H > h2 h2" (mediator PDG 25, LLP PDG 9000006)
+  - cards: param_card.dat / run_card.dat template from the frozen point configs
+  - m_h2, couplings: fixed (GC_90 = 8*i*Mh2^2/vev, PI-provided)
+  - toolchain: MadGraph5_aMC@NLO 3.5.3 (~/.local/mg5amcnlo/3.5.3)
+  - MG5 version: 3.5.3
+  - Python environment: system python3 resolved by bin/pack-a's own resolver
+  - number of events: 100 (Pack A native smoke default, unchanged)
+  - integration settings: unchanged from the frozen run_card
+  - production mode: ZERO_JET_ONLY (no extra partons)
+  - PDF configuration: unchanged from the frozen run_card
+  - scale configuration: unchanged from the frozen run_card
+  - only_variable: random seed (run_card `iseed`)
+
+seed_whitelist_extension:
+  problem: >
+    The frozen operator interface bin/pack-a (lib/run.sh) hardcodes a
+    two-entry seed whitelist (PACK_A_SEED_CONFIGS: 12345, 67890) and
+    rejects any other --seed value with "is not a Sol-validated point
+    config". This blocks generation for the other 28 predeclared seeds
+    through the interface as shipped.
+  resolution: >
+    Per explicit user decision (2026-07-22, AskUserQuestion: "Extend seed
+    configs, same interface"), each isolated worker extraction gets its own
+    additional point-config YAML files, byte-identical to the two
+    Sol-validated configs (points/A_PI_NATIVE_200.yaml,
+    points/A_PI_NATIVE_200_seed67890.yaml) except for the run_card seed
+    field, and that worker's local copy of
+    bin/lib/run.sh:PACK_A_SEED_CONFIGS is extended to map each new seed to
+    its generated config. No physics, process, coupling, card template, or
+    integration setting is altered by this extension -- only the seed
+    integer differs across configs, exactly as the two original
+    Sol-validated configs already differ from each other. The frozen ZIP
+    itself and its sha256 are never modified; the extension exists only in
+    ephemeral per-seed worker extractions under scratch/.
+  scope: worker-local only; not applied to, or persisted into, the frozen
+    artifact, the ufos git history, or any other Pack A release directory.
+
+resource_isolation:
+  priority: [pack_aa, pack_b, this_ensemble]
+  policy: >
+    Before each heavy run, check `pgrep -af 'pack_aa|pack-aa|pack_aa_driver|pack_b|pack-b'`.
+    While Pack AA production is active: one Pack A run at a time, nice 10,
+    one thread where configurable. When inactive: at most two concurrent
+    runs, each with a separate frozen-ZIP extraction and separate runs/
+    directory and pointer state. Never two runs concurrently inside the
+    same extraction.
+
+determinism_control:
+  seed: 12345
+  trigger: after at least 12 independent seeds complete
+  method: rerun seed 12345 from a new pristine extraction, compare sigma,
+    reported error, event/LLP counts, and canonical result manifest.
+  note: does not count toward the 30 independent seeds.
+
+checkpoints:
+  checkpoint_1: 12
+  checkpoint_2: 20
+  target: 30
+classification:
+  ready_for_presentation: "N >= 20"
+  preliminary: "12 <= N < 20"
+  insufficient: "N < 12"

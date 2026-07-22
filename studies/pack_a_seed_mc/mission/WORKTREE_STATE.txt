@@ -1,0 +1,21 @@
+pwd: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z
+git branch --show-current: feat/pack-a-seed-ensemble-20260722T091630Z
+git rev-parse HEAD: (no commits yet on this branch)
+git status --short --branch: On branch feat/pack-a-seed-ensemble-20260722T091630Z; No commits yet; nothing to commit
+git worktree list:
+/home/fabi/atlas_dihiggs/ufos                                  0000000 [agent/pack-aa-implementation-20260722-0157]
+/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z  0000000 [feat/pack-a-seed-ensemble-20260722T091630Z]
+/home/fabi/atlas_dihiggs/worktrees/pack_b_20260722T090734Z     0000000 [agent/pack-b-20260722T090734Z]
+
+Notes:
+- This worktree is attached to the git repo at /home/fabi/atlas_dihiggs/ufos (gitdir: /home/fabi/atlas_dihiggs/ufos/.git/worktrees/pack_a_mc_20260722T091630Z).
+- The branch has no commits yet; this is a fresh isolated worktree as expected.
+- Frozen Pack A artifact resolved from $PACK_A_FROZEN_ZIP:
+  /home/fabi/atlas_dihiggs/ufos/releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip
+  SHA-256: 58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6
+  Matches expected hash exactly. VERIFIED.
+- MadGraph5_aMC@NLO availability check: no mg5_aMC/mg5 executable found in PATH.
+  /home/fabi/.local/mg5amcnlo exists but contains only a bare "3.5.3" version-string
+  file, not a real installation (no bin/, no executables). Consistent with the
+  frozen Pack A artifact's own validation/source_material/MADGRAPH_SMOKE_REPORT.md,
+  which records MadGraph as BLOCKED/unavailable in this environment at freeze time.

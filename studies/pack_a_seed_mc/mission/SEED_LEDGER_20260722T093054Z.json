@@ -1,0 +1,784 @@
+{
+  "seeds": {
+    "12345": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005806726266496381,
+        "reported_integration_error_pb": 0.0001364,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_12345/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181156Z_seed12345",
+        "run_timestamp": "20260722T181156Z",
+        "runtime_seconds": 26.436423261999153,
+        "seed": 12345,
+        "sigma_pb": 0.02349,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:11:56Z] RUN: 20260722T181156Z_seed12345 (config=points/A_PI_NATIVE_200.yaml, seed=12345)\n[2026-07-22T18:11:56Z] STAGE START: build_point (points/A_PI_NATIVE_200.yaml, seed=12345)\n[2026-07-22T18:11:57Z] STAGE OK: build_point\n[2026-07-22T18:11:57Z] STAGE START: mg5_smoke\n[2026-07-22T18:12:21Z] STAGE OK: mg5_smoke\n[2026-07-22T18:12:21Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_12345/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181156Z_seed12345/exit_status.txt\n[2026-07-22T18:12:21Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_12345/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181156Z_seed12345 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "15804": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005820770519262982,
+        "reported_integration_error_pb": 0.000139,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_15804/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182440Z_seed15804",
+        "run_timestamp": "20260722T182440Z",
+        "runtime_seconds": 26.34790495899506,
+        "seed": 15804,
+        "sigma_pb": 0.02388,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:24:40Z] RUN: 20260722T182440Z_seed15804 (config=points/A_PI_NATIVE_200_seed15804.yaml, seed=15804)\n[2026-07-22T18:24:41Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed15804.yaml, seed=15804)\n[2026-07-22T18:24:41Z] STAGE OK: build_point\n[2026-07-22T18:24:41Z] STAGE START: mg5_smoke\n[2026-07-22T18:25:05Z] STAGE OK: mg5_smoke\n[2026-07-22T18:25:05Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_15804/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182440Z_seed15804/exit_status.txt\n[2026-07-22T18:25:05Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_15804/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182440Z_seed15804 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "16926": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005873150105708245,
+        "reported_integration_error_pb": 0.0001389,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_16926/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181704Z_seed16926",
+        "run_timestamp": "20260722T181704Z",
+        "runtime_seconds": 25.41339780799899,
+        "seed": 16926,
+        "sigma_pb": 0.02365,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:17:04Z] RUN: 20260722T181704Z_seed16926 (config=points/A_PI_NATIVE_200_seed16926.yaml, seed=16926)\n[2026-07-22T18:17:04Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed16926.yaml, seed=16926)\n[2026-07-22T18:17:05Z] STAGE OK: build_point\n[2026-07-22T18:17:05Z] STAGE START: mg5_smoke\n[2026-07-22T18:17:29Z] STAGE OK: mg5_smoke\n[2026-07-22T18:17:29Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_16926/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181704Z_seed16926/exit_status.txt\n[2026-07-22T18:17:29Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_16926/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181704Z_seed16926 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "18859": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.0059458315700380866,
+        "reported_integration_error_pb": 0.0001405,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_18859/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181547Z_seed18859",
+        "run_timestamp": "20260722T181547Z",
+        "runtime_seconds": 26.428264213005605,
+        "seed": 18859,
+        "sigma_pb": 0.02363,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:15:47Z] RUN: 20260722T181547Z_seed18859 (config=points/A_PI_NATIVE_200_seed18859.yaml, seed=18859)\n[2026-07-22T18:15:47Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed18859.yaml, seed=18859)\n[2026-07-22T18:15:48Z] STAGE OK: build_point\n[2026-07-22T18:15:48Z] STAGE START: mg5_smoke\n[2026-07-22T18:16:12Z] STAGE OK: mg5_smoke\n[2026-07-22T18:16:12Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_18859/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181547Z_seed18859/exit_status.txt\n[2026-07-22T18:16:12Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_18859/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181547Z_seed18859 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "20430": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005893536121673004,
+        "reported_integration_error_pb": 0.0001395,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_20430/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181821Z_seed20430",
+        "run_timestamp": "20260722T181821Z",
+        "runtime_seconds": 25.6310337649993,
+        "seed": 20430,
+        "sigma_pb": 0.02367,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:18:21Z] RUN: 20260722T181821Z_seed20430 (config=points/A_PI_NATIVE_200_seed20430.yaml, seed=20430)\n[2026-07-22T18:18:21Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed20430.yaml, seed=20430)\n[2026-07-22T18:18:22Z] STAGE OK: build_point\n[2026-07-22T18:18:22Z] STAGE START: mg5_smoke\n[2026-07-22T18:18:45Z] STAGE OK: mg5_smoke\n[2026-07-22T18:18:45Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_20430/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181821Z_seed20430/exit_status.txt\n[2026-07-22T18:18:45Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_20430/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181821Z_seed20430 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "25099": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005920101997450064,
+        "reported_integration_error_pb": 0.0001393,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_25099/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181755Z_seed25099",
+        "run_timestamp": "20260722T181755Z",
+        "runtime_seconds": 26.80823291800334,
+        "seed": 25099,
+        "sigma_pb": 0.02353,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:17:55Z] RUN: 20260722T181755Z_seed25099 (config=points/A_PI_NATIVE_200_seed25099.yaml, seed=25099)\n[2026-07-22T18:17:55Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed25099.yaml, seed=25099)\n[2026-07-22T18:17:56Z] STAGE OK: build_point\n[2026-07-22T18:17:56Z] STAGE START: mg5_smoke\n[2026-07-22T18:18:20Z] STAGE OK: mg5_smoke\n[2026-07-22T18:18:21Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_25099/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181755Z_seed25099/exit_status.txt\n[2026-07-22T18:18:21Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_25099/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181755Z_seed25099 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "27695": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.0059375,
+        "reported_integration_error_pb": 0.0001406,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_27695/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182119Z_seed27695",
+        "run_timestamp": "20260722T182119Z",
+        "runtime_seconds": 26.108975885996188,
+        "seed": 27695,
+        "sigma_pb": 0.02368,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:21:19Z] RUN: 20260722T182119Z_seed27695 (config=points/A_PI_NATIVE_200_seed27695.yaml, seed=27695)\n[2026-07-22T18:21:20Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed27695.yaml, seed=27695)\n[2026-07-22T18:21:20Z] STAGE OK: build_point\n[2026-07-22T18:21:20Z] STAGE START: mg5_smoke\n[2026-07-22T18:21:44Z] STAGE OK: mg5_smoke\n[2026-07-22T18:21:44Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_27695/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182119Z_seed27695/exit_status.txt\n[2026-07-22T18:21:44Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_27695/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182119Z_seed27695 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "29075": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.009600849256900211,
+        "reported_integration_error_pb": 0.0002261,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_29075/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182530Z_seed29075",
+        "run_timestamp": "20260722T182530Z",
+        "runtime_seconds": 25.230294396998943,
+        "seed": 29075,
+        "sigma_pb": 0.02355,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:25:30Z] RUN: 20260722T182530Z_seed29075 (config=points/A_PI_NATIVE_200_seed29075.yaml, seed=29075)\n[2026-07-22T18:25:31Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed29075.yaml, seed=29075)\n[2026-07-22T18:25:31Z] STAGE OK: build_point\n[2026-07-22T18:25:31Z] STAGE START: mg5_smoke\n[2026-07-22T18:25:54Z] STAGE OK: mg5_smoke\n[2026-07-22T18:25:54Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_29075/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182530Z_seed29075/exit_status.txt\n[2026-07-22T18:25:54Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_29075/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182530Z_seed29075 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "33422": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.006017964071856287,
+        "reported_integration_error_pb": 0.0001407,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_33422/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182414Z_seed33422",
+        "run_timestamp": "20260722T182414Z",
+        "runtime_seconds": 25.79884725100419,
+        "seed": 33422,
+        "sigma_pb": 0.02338,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:24:14Z] RUN: 20260722T182414Z_seed33422 (config=points/A_PI_NATIVE_200_seed33422.yaml, seed=33422)\n[2026-07-22T18:24:15Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed33422.yaml, seed=33422)\n[2026-07-22T18:24:15Z] STAGE OK: build_point\n[2026-07-22T18:24:15Z] STAGE START: mg5_smoke\n[2026-07-22T18:24:40Z] STAGE OK: mg5_smoke\n[2026-07-22T18:24:40Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_33422/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182414Z_seed33422/exit_status.txt\n[2026-07-22T18:24:40Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_33422/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182414Z_seed33422 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "42025": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005865546218487395,
+        "reported_integration_error_pb": 0.0001396,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_42025/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181729Z_seed42025",
+        "run_timestamp": "20260722T181729Z",
+        "runtime_seconds": 26.8935225919995,
+        "seed": 42025,
+        "sigma_pb": 0.0238,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:17:29Z] RUN: 20260722T181729Z_seed42025 (config=points/A_PI_NATIVE_200_seed42025.yaml, seed=42025)\n[2026-07-22T18:17:30Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed42025.yaml, seed=42025)\n[2026-07-22T18:17:29Z] STAGE OK: build_point\n[2026-07-22T18:17:29Z] STAGE START: mg5_smoke\n[2026-07-22T18:17:55Z] STAGE OK: mg5_smoke\n[2026-07-22T18:17:55Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_42025/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181729Z_seed42025/exit_status.txt\n[2026-07-22T18:17:55Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_42025/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181729Z_seed42025 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "42073": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.007523404255319149,
+        "reported_integration_error_pb": 0.0001768,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_42073/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182003Z_seed42073",
+        "run_timestamp": "20260722T182003Z",
+        "runtime_seconds": 26.855469071000698,
+        "seed": 42073,
+        "sigma_pb": 0.0235,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:20:03Z] RUN: 20260722T182003Z_seed42073 (config=points/A_PI_NATIVE_200_seed42073.yaml, seed=42073)\n[2026-07-22T18:20:03Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed42073.yaml, seed=42073)\n[2026-07-22T18:20:04Z] STAGE OK: build_point\n[2026-07-22T18:20:04Z] STAGE START: mg5_smoke\n[2026-07-22T18:20:28Z] STAGE OK: mg5_smoke\n[2026-07-22T18:20:29Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_42073/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182003Z_seed42073/exit_status.txt\n[2026-07-22T18:20:29Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_42073/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182003Z_seed42073 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "46264": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.00588785046728972,
+        "reported_integration_error_pb": 0.0001386,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_46264/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182506Z_seed46264",
+        "run_timestamp": "20260722T182506Z",
+        "runtime_seconds": 25.57091622400185,
+        "seed": 46264,
+        "sigma_pb": 0.02354,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:25:06Z] RUN: 20260722T182506Z_seed46264 (config=points/A_PI_NATIVE_200_seed46264.yaml, seed=46264)\n[2026-07-22T18:25:06Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed46264.yaml, seed=46264)\n[2026-07-22T18:25:06Z] STAGE OK: build_point\n[2026-07-22T18:25:06Z] STAGE START: mg5_smoke\n[2026-07-22T18:25:30Z] STAGE OK: mg5_smoke\n[2026-07-22T18:25:30Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_46264/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182506Z_seed46264/exit_status.txt\n[2026-07-22T18:25:30Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_46264/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182506Z_seed46264 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "46293": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.0060297872340425536,
+        "reported_integration_error_pb": 0.0001417,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_46293/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182054Z_seed46293",
+        "run_timestamp": "20260722T182054Z",
+        "runtime_seconds": 26.436992132999876,
+        "seed": 46293,
+        "sigma_pb": 0.0235,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:20:54Z] RUN: 20260722T182054Z_seed46293 (config=points/A_PI_NATIVE_200_seed46293.yaml, seed=46293)\n[2026-07-22T18:20:54Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed46293.yaml, seed=46293)\n[2026-07-22T18:20:55Z] STAGE OK: build_point\n[2026-07-22T18:20:55Z] STAGE START: mg5_smoke\n[2026-07-22T18:21:19Z] STAGE OK: mg5_smoke\n[2026-07-22T18:21:19Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_46293/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182054Z_seed46293/exit_status.txt\n[2026-07-22T18:21:19Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_46293/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182054Z_seed46293 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "47153": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.006123329021129798,
+        "reported_integration_error_pb": 0.000142,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_47153/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182145Z_seed47153",
+        "run_timestamp": "20260722T182145Z",
+        "runtime_seconds": 26.515759561996674,
+        "seed": 47153,
+        "sigma_pb": 0.02319,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:21:45Z] RUN: 20260722T182145Z_seed47153 (config=points/A_PI_NATIVE_200_seed47153.yaml, seed=47153)\n[2026-07-22T18:21:45Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed47153.yaml, seed=47153)\n[2026-07-22T18:21:45Z] STAGE OK: build_point\n[2026-07-22T18:21:45Z] STAGE START: mg5_smoke\n[2026-07-22T18:22:09Z] STAGE OK: mg5_smoke\n[2026-07-22T18:22:10Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_47153/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182145Z_seed47153/exit_status.txt\n[2026-07-22T18:22:10Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_47153/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182145Z_seed47153 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "57351": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.00854537743850721,
+        "reported_integration_error_pb": 0.0002015,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_57351/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182555Z_seed57351",
+        "run_timestamp": "20260722T182555Z",
+        "runtime_seconds": 26.263620142002765,
+        "seed": 57351,
+        "sigma_pb": 0.02358,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:25:55Z] RUN: 20260722T182555Z_seed57351 (config=points/A_PI_NATIVE_200_seed57351.yaml, seed=57351)\n[2026-07-22T18:25:55Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed57351.yaml, seed=57351)\n[2026-07-22T18:25:55Z] STAGE OK: build_point\n[2026-07-22T18:25:55Z] STAGE START: mg5_smoke\n[2026-07-22T18:26:19Z] STAGE OK: mg5_smoke\n[2026-07-22T18:26:19Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_57351/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182555Z_seed57351/exit_status.txt\n[2026-07-22T18:26:19Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_57351/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182555Z_seed57351 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "58734": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005778809624314056,
+        "reported_integration_error_pb": 0.0001369,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_58734/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182324Z_seed58734",
+        "run_timestamp": "20260722T182324Z",
+        "runtime_seconds": 26.174709017999703,
+        "seed": 58734,
+        "sigma_pb": 0.02369,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:23:24Z] RUN: 20260722T182324Z_seed58734 (config=points/A_PI_NATIVE_200_seed58734.yaml, seed=58734)\n[2026-07-22T18:23:25Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed58734.yaml, seed=58734)\n[2026-07-22T18:23:25Z] STAGE OK: build_point\n[2026-07-22T18:23:25Z] STAGE START: mg5_smoke\n[2026-07-22T18:23:49Z] STAGE OK: mg5_smoke\n[2026-07-22T18:23:49Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_58734/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182324Z_seed58734/exit_status.txt\n[2026-07-22T18:23:49Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_58734/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182324Z_seed58734 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "58836": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005908513341804321,
+        "reported_integration_error_pb": 0.0001395,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_58836/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182259Z_seed58836",
+        "run_timestamp": "20260722T182259Z",
+        "runtime_seconds": 25.8675526779989,
+        "seed": 58836,
+        "sigma_pb": 0.02361,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:23:00Z] RUN: 20260722T182259Z_seed58836 (config=points/A_PI_NATIVE_200_seed58836.yaml, seed=58836)\n[2026-07-22T18:23:00Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed58836.yaml, seed=58836)\n[2026-07-22T18:23:00Z] STAGE OK: build_point\n[2026-07-22T18:23:00Z] STAGE START: mg5_smoke\n[2026-07-22T18:23:24Z] STAGE OK: mg5_smoke\n[2026-07-22T18:23:24Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_58836/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182259Z_seed58836/exit_status.txt\n[2026-07-22T18:23:24Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_58836/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182259Z_seed58836 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "59807": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.00881929750317393,
+        "reported_integration_error_pb": 0.0002084,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_59807/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182620Z_seed59807",
+        "run_timestamp": "20260722T182620Z",
+        "runtime_seconds": 25.671450671005005,
+        "seed": 59807,
+        "sigma_pb": 0.02363,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:26:20Z] RUN: 20260722T182620Z_seed59807 (config=points/A_PI_NATIVE_200_seed59807.yaml, seed=59807)\n[2026-07-22T18:26:20Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed59807.yaml, seed=59807)\n[2026-07-22T18:26:21Z] STAGE OK: build_point\n[2026-07-22T18:26:21Z] STAGE START: mg5_smoke\n[2026-07-22T18:26:45Z] STAGE OK: mg5_smoke\n[2026-07-22T18:26:45Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_59807/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182620Z_seed59807/exit_status.txt\n[2026-07-22T18:26:45Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_59807/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182620Z_seed59807 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "62457": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.00588359342049768,
+        "reported_integration_error_pb": 0.0001395,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_62457/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181613Z_seed62457",
+        "run_timestamp": "20260722T181613Z",
+        "runtime_seconds": 27.052854011002637,
+        "seed": 62457,
+        "sigma_pb": 0.02371,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:16:13Z] RUN: 20260722T181613Z_seed62457 (config=points/A_PI_NATIVE_200_seed62457.yaml, seed=62457)\n[2026-07-22T18:16:13Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed62457.yaml, seed=62457)\n[2026-07-22T18:16:14Z] STAGE OK: build_point\n[2026-07-22T18:16:14Z] STAGE START: mg5_smoke\n[2026-07-22T18:16:38Z] STAGE OK: mg5_smoke\n[2026-07-22T18:16:38Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_62457/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181613Z_seed62457/exit_status.txt\n[2026-07-22T18:16:38Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_62457/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181613Z_seed62457 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "62538": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.009535577332765232,
+        "reported_integration_error_pb": 0.0002238,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_62538/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181521Z_seed62538",
+        "run_timestamp": "20260722T181521Z",
+        "runtime_seconds": 26.766552073997445,
+        "seed": 62538,
+        "sigma_pb": 0.02347,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:15:22Z] RUN: 20260722T181521Z_seed62538 (config=points/A_PI_NATIVE_200_seed62538.yaml, seed=62538)\n[2026-07-22T18:15:22Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed62538.yaml, seed=62538)\n[2026-07-22T18:15:22Z] STAGE OK: build_point\n[2026-07-22T18:15:22Z] STAGE START: mg5_smoke\n[2026-07-22T18:15:47Z] STAGE OK: mg5_smoke\n[2026-07-22T18:15:47Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_62538/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181521Z_seed62538/exit_status.txt\n[2026-07-22T18:15:47Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_62538/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181521Z_seed62538 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "63829": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.006032217041119118,
+        "reported_integration_error_pb": 0.0001423,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_63829/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182029Z_seed63829",
+        "run_timestamp": "20260722T182029Z",
+        "runtime_seconds": 25.731461858995317,
+        "seed": 63829,
+        "sigma_pb": 0.02359,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:20:29Z] RUN: 20260722T182029Z_seed63829 (config=points/A_PI_NATIVE_200_seed63829.yaml, seed=63829)\n[2026-07-22T18:20:29Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed63829.yaml, seed=63829)\n[2026-07-22T18:20:30Z] STAGE OK: build_point\n[2026-07-22T18:20:30Z] STAGE START: mg5_smoke\n[2026-07-22T18:20:53Z] STAGE OK: mg5_smoke\n[2026-07-22T18:20:53Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_63829/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182029Z_seed63829/exit_status.txt\n[2026-07-22T18:20:53Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_63829/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182029Z_seed63829 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "64838": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.006087325137770242,
+        "reported_integration_error_pb": 0.0001436,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_64838/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181910Z_seed64838",
+        "run_timestamp": "20260722T181910Z",
+        "runtime_seconds": 26.179136099999596,
+        "seed": 64838,
+        "sigma_pb": 0.02359,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:19:10Z] RUN: 20260722T181910Z_seed64838 (config=points/A_PI_NATIVE_200_seed64838.yaml, seed=64838)\n[2026-07-22T18:19:10Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed64838.yaml, seed=64838)\n[2026-07-22T18:19:11Z] STAGE OK: build_point\n[2026-07-22T18:19:11Z] STAGE START: mg5_smoke\n[2026-07-22T18:19:35Z] STAGE OK: mg5_smoke\n[2026-07-22T18:19:35Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_64838/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181910Z_seed64838/exit_status.txt\n[2026-07-22T18:19:35Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_64838/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181910Z_seed64838 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "67890": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005831918505942275,
+        "reported_integration_error_pb": 0.0001374,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_67890/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181453Z_seed67890",
+        "run_timestamp": "20260722T181453Z",
+        "runtime_seconds": 29.27701622099994,
+        "seed": 67890,
+        "sigma_pb": 0.02356,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:14:53Z] RUN: 20260722T181453Z_seed67890 (config=points/A_PI_NATIVE_200_seed67890.yaml, seed=67890)\n[2026-07-22T18:14:53Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed67890.yaml, seed=67890)\n[2026-07-22T18:14:53Z] STAGE OK: build_point\n[2026-07-22T18:14:53Z] STAGE START: mg5_smoke\n[2026-07-22T18:15:21Z] STAGE OK: mg5_smoke\n[2026-07-22T18:15:21Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_67890/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181453Z_seed67890/exit_status.txt\n[2026-07-22T18:15:21Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_67890/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181453Z_seed67890 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "76379": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.006089743589743589,
+        "reported_integration_error_pb": 0.0001425,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_76379/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182210Z_seed76379",
+        "run_timestamp": "20260722T182210Z",
+        "runtime_seconds": 25.11219532499672,
+        "seed": 76379,
+        "sigma_pb": 0.0234,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:22:10Z] RUN: 20260722T182210Z_seed76379 (config=points/A_PI_NATIVE_200_seed76379.yaml, seed=76379)\n[2026-07-22T18:22:10Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed76379.yaml, seed=76379)\n[2026-07-22T18:22:11Z] STAGE OK: build_point\n[2026-07-22T18:22:11Z] STAGE START: mg5_smoke\n[2026-07-22T18:22:35Z] STAGE OK: mg5_smoke\n[2026-07-22T18:22:35Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_76379/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182210Z_seed76379/exit_status.txt\n[2026-07-22T18:22:35Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_76379/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182210Z_seed76379 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "81786": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.006020364870598218,
+        "reported_integration_error_pb": 0.0001419,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_81786/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181336Z_seed81786",
+        "run_timestamp": "20260722T181336Z",
+        "runtime_seconds": 26.28839518699533,
+        "seed": 81786,
+        "sigma_pb": 0.02357,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:13:36Z] RUN: 20260722T181336Z_seed81786 (config=points/A_PI_NATIVE_200_seed81786.yaml, seed=81786)\n[2026-07-22T18:13:37Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed81786.yaml, seed=81786)\n[2026-07-22T18:13:37Z] STAGE OK: build_point\n[2026-07-22T18:13:37Z] STAGE START: mg5_smoke\n[2026-07-22T18:14:01Z] STAGE OK: mg5_smoke\n[2026-07-22T18:14:01Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_81786/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181336Z_seed81786/exit_status.txt\n[2026-07-22T18:14:01Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_81786/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181336Z_seed81786 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "84503": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005833686890114553,
+        "reported_integration_error_pb": 0.0001375,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_84503/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181639Z_seed84503",
+        "run_timestamp": "20260722T181639Z",
+        "runtime_seconds": 26.0638794530023,
+        "seed": 84503,
+        "sigma_pb": 0.02357,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:16:39Z] RUN: 20260722T181639Z_seed84503 (config=points/A_PI_NATIVE_200_seed84503.yaml, seed=84503)\n[2026-07-22T18:16:39Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed84503.yaml, seed=84503)\n[2026-07-22T18:16:40Z] STAGE OK: build_point\n[2026-07-22T18:16:40Z] STAGE START: mg5_smoke\n[2026-07-22T18:17:03Z] STAGE OK: mg5_smoke\n[2026-07-22T18:17:03Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_84503/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181639Z_seed84503/exit_status.txt\n[2026-07-22T18:17:03Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_84503/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181639Z_seed84503 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "85818": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.007209698000850702,
+        "reported_integration_error_pb": 0.0001695,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_85818/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181936Z_seed85818",
+        "run_timestamp": "20260722T181936Z",
+        "runtime_seconds": 27.619371780005167,
+        "seed": 85818,
+        "sigma_pb": 0.02351,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:19:36Z] RUN: 20260722T181936Z_seed85818 (config=points/A_PI_NATIVE_200_seed85818.yaml, seed=85818)\n[2026-07-22T18:19:36Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed85818.yaml, seed=85818)\n[2026-07-22T18:19:37Z] STAGE OK: build_point\n[2026-07-22T18:19:37Z] STAGE START: mg5_smoke\n[2026-07-22T18:20:03Z] STAGE OK: mg5_smoke\n[2026-07-22T18:20:03Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_85818/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181936Z_seed85818/exit_status.txt\n[2026-07-22T18:20:03Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_85818/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181936Z_seed85818 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "91014": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.005970276008492569,
+        "reported_integration_error_pb": 0.0001406,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_91014/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182235Z_seed91014",
+        "run_timestamp": "20260722T182235Z",
+        "runtime_seconds": 25.174987210004474,
+        "seed": 91014,
+        "sigma_pb": 0.02355,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:22:35Z] RUN: 20260722T182235Z_seed91014 (config=points/A_PI_NATIVE_200_seed91014.yaml, seed=91014)\n[2026-07-22T18:22:35Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed91014.yaml, seed=91014)\n[2026-07-22T18:22:36Z] STAGE OK: build_point\n[2026-07-22T18:22:36Z] STAGE START: mg5_smoke\n[2026-07-22T18:22:59Z] STAGE OK: mg5_smoke\n[2026-07-22T18:22:59Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_91014/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182235Z_seed91014/exit_status.txt\n[2026-07-22T18:22:59Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_91014/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182235Z_seed91014 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "92700": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.006151528196297891,
+        "reported_integration_error_pb": 0.0001429,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_92700/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182350Z_seed92700",
+        "run_timestamp": "20260722T182350Z",
+        "runtime_seconds": 25.836092470002768,
+        "seed": 92700,
+        "sigma_pb": 0.02323,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:23:50Z] RUN: 20260722T182350Z_seed92700 (config=points/A_PI_NATIVE_200_seed92700.yaml, seed=92700)\n[2026-07-22T18:23:50Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed92700.yaml, seed=92700)\n[2026-07-22T18:23:50Z] STAGE OK: build_point\n[2026-07-22T18:23:50Z] STAGE START: mg5_smoke\n[2026-07-22T18:24:15Z] STAGE OK: mg5_smoke\n[2026-07-22T18:24:15Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_92700/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182350Z_seed92700/exit_status.txt\n[2026-07-22T18:24:15Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_92700/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T182350Z_seed92700 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    },
+    "96506": {
+      "record": {
+        "classification": "OK",
+        "events": 100,
+        "exit_status": 0,
+        "final_h2_count": 100,
+        "four_momentum_residual_gev": 0.0,
+        "nonfinal_h2_count": 0,
+        "pack_a_zip_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+        "relative_reported_error": 0.008154433602036487,
+        "reported_integration_error_pb": 0.0001922,
+        "run_path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_96506/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181846Z_seed96506",
+        "run_timestamp": "20260722T181846Z",
+        "runtime_seconds": 25.44343195900001,
+        "seed": 96506,
+        "sigma_pb": 0.02357,
+        "stderr_tail": "selected: active python3 on PATH (/home/fabi/anaconda3/bin/python3)\nWARN: selected Python is 3.12.x (/home/fabi/anaconda3/bin/python3); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12.\nselected: MG5_BIN override (/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC)\n",
+        "stdout_tail": "[2026-07-22T18:18:46Z] RUN: 20260722T181846Z_seed96506 (config=points/A_PI_NATIVE_200_seed96506.yaml, seed=96506)\n[2026-07-22T18:18:46Z] STAGE START: build_point (points/A_PI_NATIVE_200_seed96506.yaml, seed=96506)\n[2026-07-22T18:18:46Z] STAGE OK: build_point\n[2026-07-22T18:18:46Z] STAGE START: mg5_smoke\n[2026-07-22T18:19:10Z] STAGE OK: mg5_smoke\n[2026-07-22T18:19:10Z] run finished with exit status 0 -> /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_96506/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181846Z_seed96506/exit_status.txt\n[2026-07-22T18:19:10Z] run directory: /home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z/scratch/pack_a_seed_mc_20260722T093054Z/worker_seed_96506/pi_ufo_baseline_v1_release_candidate_hotfix1/runs/20260722T181846Z_seed96506 (.last_run updated)\n",
+        "toolchain": {
+          "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+          "mg5_expected": "MadGraph5_aMC@NLO 3.5.3",
+          "python_version": "3.12.7"
+        }
+      },
+      "status": "completed"
+    }
+  }
+}

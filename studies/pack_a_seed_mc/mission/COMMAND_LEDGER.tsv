@@ -1,0 +1,18 @@
+timestamp_utc	command	result
+2026-07-22T09:16Z	git branch --show-current / git worktree list	confirmed isolated worktree, no commits yet
+2026-07-22T09:16Z	sha256sum $PACK_A_FROZEN_ZIP	matched expected hash
+2026-07-22T09:31Z	bin/pack-a preflight (timing test)	PASS, 5.3s
+2026-07-22T09:31Z	bin/pack-a run (seed 12345, timing test)	OK, 24.8s, sigma=0.02349 pb
+2026-07-22T09:31Z	discovered bin/lib/run.sh seed whitelist (12345/67890 only)	blocker; escalated via AskUserQuestion
+2026-07-22T09:32Z	Explore agent: locate Pack A seed generation tooling	confirmed real MG5 install + bin/pack-a operator interface
+2026-07-22T09:33Z	generated config/seeds_v1.txt (30 seeds, deterministic rule)	committed before any non-canonical run
+2026-07-22T09:34Z	wrote config/ensemble_contract_v1.yaml	documents locked conditions + whitelist-extension resolution
+2026-07-22T09:36Z	built src/pack_a_seed_mc package (worker, parser, ledger, stats, plots, cli)
+2026-07-22T09:40Z	python3 -m pack_a_seed_mc validate / prepare	PASS
+2026-07-22T18:11Z	python3 -m pack_a_seed_mc run --seed 12345	OK, matches canonical value
+2026-07-22T18:13Z	python3 -m pack_a_seed_mc run --seed 81786 (non-canonical, whitelist extension test)	OK, sigma=0.02357 pb
+2026-07-22T09:31-14:29Z	python3 -m pack_a_seed_mc resume --nice (background)	30/30 completed, 0 failed
+2026-07-22T14:30Z	python3 -m pack_a_seed_mc analyse	N=30, weighted_mean=0.023564 pb, Birge=0.992
+2026-07-22T14:30Z	python3 -m pack_a_seed_mc render	6/6 required plots written
+2026-07-22T18:27Z	determinism control: seed 12345 rerun from pristine extraction	DETERMINISTIC (LHE kinematics byte-identical)
+2026-07-22T14:30Z	bundle checksums + zip build	0 mismatches

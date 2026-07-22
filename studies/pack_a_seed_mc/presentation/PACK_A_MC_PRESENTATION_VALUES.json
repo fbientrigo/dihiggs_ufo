@@ -1,0 +1,64 @@
+{
+  "run_id": "20260722T093054Z",
+  "frozen_pack_a": {
+    "path": "releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip",
+    "sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "label": "PACK_A_LO_SMOKE_XSEC"
+  },
+  "n_independent_seeds": 30,
+  "n_failed_seeds": 0,
+  "classification": "presentation-ready",
+  "weighted_mean_pb": 0.02356397608329942,
+  "weighted_mean_error_pb": 2.7174609713201237e-05,
+  "unweighted_mean_pb": 0.023560666666666667,
+  "median_pb": 0.02357,
+  "sample_stddev_pb": 0.00014102905871592146,
+  "mad_pb": 6.500000000000082e-05,
+  "minimum_pb": 0.02319,
+  "maximum_pb": 0.02388,
+  "mean_reported_integration_error_pb": 0.00015399,
+  "median_reported_integration_error_pb": 0.00014065,
+  "chi_square": 28.562943285380396,
+  "dof": 29,
+  "chi_square_per_dof": 0.9849290788062205,
+  "birge_ratio": 0.9924359318395423,
+  "tau_seed_squared_pb2": 0.0,
+  "max_abs_pull": 2.683226115014341,
+  "n_pull_gt_2": 3,
+  "n_pull_gt_3": 0,
+  "canonical_seeds": {
+    "12345": {
+      "sigma_pb": 0.02349,
+      "reported_integration_error_pb": 0.0001364,
+      "rank_of_30": 6,
+      "percentile": 20.0,
+      "diff_from_weighted_mean_pb": -7.397608329941935e-05
+    },
+    "67890": {
+      "sigma_pb": 0.02356,
+      "reported_integration_error_pb": 0.0001374,
+      "rank_of_30": 14,
+      "percentile": 46.666666666666664,
+      "diff_from_weighted_mean_pb": -3.976083299418731e-06
+    }
+  },
+  "two_seed_pull_historical": 0.3616,
+  "determinism_control": {
+    "seed": 12345,
+    "classification": "DETERMINISTIC",
+    "detail": "all 100 LHE event kinematic blocks byte-identical across a pristine re-extraction; only a header path-string comment differed"
+  },
+  "sources": {
+    "results_csv": "artifacts/pack_a_seed_mc/20260722T093054Z/PACK_A_SEED_ENSEMBLE_RESULTS.csv",
+    "results_json": "artifacts/pack_a_seed_mc/20260722T093054Z/PACK_A_SEED_ENSEMBLE_RESULTS.json",
+    "summary_json": "artifacts/pack_a_seed_mc/20260722T093054Z/PACK_A_SEED_ENSEMBLE_SUMMARY.json",
+    "figures_dir": "artifacts/pack_a_seed_mc/20260722T093054Z/figures",
+    "seed_list": "studies/pack_a_seed_mc/config/seeds_v1.txt",
+    "ensemble_contract": "studies/pack_a_seed_mc/config/ensemble_contract_v1.yaml"
+  },
+  "caveats": [
+    "PACK_A_LO_SMOKE_XSEC only; not a publishable production normalization",
+    "no PDF, scale, or model systematic estimated",
+    "does not capture theory systematics of any kind"
+  ]
+}
