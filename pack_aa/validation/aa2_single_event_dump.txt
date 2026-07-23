@@ -1,0 +1,233 @@
+{
+  "pure_channel_smokes": [
+    {
+      "config": "ctau_1_bb.yaml",
+      "driver": {
+        "command": [
+          "/home/fabi/atlas_dihiggs/ufos/pack_aa/bin/.pack_aa_driver",
+          "--lhe",
+          "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+          "--out",
+          "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_bb/events.truth.jsonl",
+          "--events",
+          "1",
+          "--seed",
+          "900006002",
+          "--mass",
+          "200.0",
+          "--ctau",
+          "1.0",
+          "--is-resonance",
+          "0",
+          "--production-events",
+          "1",
+          "--channels",
+          "1:5,-5"
+        ],
+        "exit_code": 0,
+        "log": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_bb/events.truth.driver.log",
+        "output": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_bb/events.truth.jsonl"
+      },
+      "verdict": "PASS",
+      "configured_daughters_before_hadronization": [
+        [
+          5,
+          -5
+        ],
+        [
+          5,
+          -5
+        ]
+      ],
+      "direct_daughters_after_hadronization": [
+        [
+          -513,
+          511
+        ],
+        [
+          -523,
+          523
+        ]
+      ],
+      "proper_time": [
+        1.7071129347954377,
+        0.71845974001415
+      ],
+      "event_integrity": true
+    },
+    {
+      "config": "ctau_1_gamma_gamma.yaml",
+      "driver": {
+        "command": [
+          "/home/fabi/atlas_dihiggs/ufos/pack_aa/bin/.pack_aa_driver",
+          "--lhe",
+          "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+          "--out",
+          "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_gamma_gamma/events.truth.jsonl",
+          "--events",
+          "1",
+          "--seed",
+          "900006001",
+          "--mass",
+          "200.0",
+          "--ctau",
+          "1.0",
+          "--is-resonance",
+          "0",
+          "--production-events",
+          "1",
+          "--channels",
+          "1:22,22"
+        ],
+        "exit_code": 0,
+        "log": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_gamma_gamma/events.truth.driver.log",
+        "output": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_gamma_gamma/events.truth.jsonl"
+      },
+      "verdict": "PASS",
+      "configured_daughters_before_hadronization": [
+        [
+          22,
+          22
+        ],
+        [
+          22,
+          22
+        ]
+      ],
+      "direct_daughters_after_hadronization": [
+        [
+          22,
+          22
+        ],
+        [
+          22,
+          22
+        ]
+      ],
+      "proper_time": [
+        1.7071129347954377,
+        0.71845974001415
+      ],
+      "event_integrity": true
+    }
+  ],
+  "is_resonance_ab": {
+    "default": false,
+    "comparison": [
+      {
+        "isResonance": false,
+        "verdict": "PASS",
+        "decay_occurrence": true,
+        "direct_daughters_after_hadronization": [
+          [
+            -513,
+            511
+          ],
+          [
+            -523,
+            523
+          ]
+        ],
+        "configured_daughters_before_hadronization": [
+          [
+            5,
+            -5
+          ],
+          [
+            5,
+            -5
+          ]
+        ],
+        "configured_daughters_match": true,
+        "finite_vertices": true,
+        "lifetime_treatment": [
+          85355.64673977188,
+          35922.9870007075
+        ],
+        "vertex_coordinates": [
+          [
+            0,
+            0,
+            0,
+            -6238.760266444583,
+            -20634.697296254697,
+            56496.235070475675
+          ],
+          [
+            0,
+            0,
+            0,
+            736.9018241411235,
+            12081.271516150393,
+            9488.70341287062
+          ]
+        ],
+        "proper_time": [
+          85355.64673977188,
+          35922.9870007075
+        ],
+        "event_integrity": true
+      },
+      {
+        "isResonance": true,
+        "verdict": "PASS",
+        "decay_occurrence": true,
+        "direct_daughters_after_hadronization": [
+          [
+            22,
+            22
+          ],
+          [
+            5,
+            -5
+          ]
+        ],
+        "configured_daughters_before_hadronization": [
+          [
+            22,
+            22
+          ],
+          [
+            5,
+            -5
+          ]
+        ],
+        "configured_daughters_match": true,
+        "finite_vertices": true,
+        "lifetime_treatment": [
+          85355.64673977188,
+          35922.9870007075
+        ],
+        "vertex_coordinates": [
+          [
+            0,
+            0,
+            0,
+            -4165.9981299387,
+            -16636.364446740285,
+            56008.67544418742
+          ],
+          [
+            0,
+            0,
+            0,
+            -1325.9724313725528,
+            13994.593794673518,
+            9579.85235924244
+          ]
+        ],
+        "proper_time": [
+          85355.64673977188,
+          35922.9870007075
+        ],
+        "event_integrity": true
+      }
+    ],
+    "retained_default": false,
+    "labels": [
+      "PIPELINE_DEMONSTRATION_ONLY",
+      "NOT_MODEL_DERIVED",
+      "NOT_PI_ENDORSED"
+    ]
+  }
+}

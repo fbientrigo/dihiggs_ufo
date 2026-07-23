@@ -1,0 +1,821 @@
+{
+  "configurations": [
+    {
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "ctau_mm": 1000.0,
+      "decay_configuration": "bb",
+      "decay_trials": 1000,
+      "decays": [
+        {
+          "branching_ratio": 1.0,
+          "daughters": [
+            5,
+            -5
+          ]
+        }
+      ],
+      "h2_observations": 2000,
+      "independent_validation": {
+        "aa4": {
+          "confidence_interval_95_percent_mm": [
+            945.888565467972,
+            1032.5514228191225
+          ],
+          "configured_ctau_mm": 1000.0,
+          "mean_proper_length_mm": 987.7894666374951,
+          "method": "exponential MLE with chi-square interval; lab radius not used as exponential observable",
+          "n_decayed_h2": 2000,
+          "verdict": "PASS"
+        },
+        "aa5": {
+          "channels": [
+            {
+              "channel": [
+                -5,
+                5
+              ],
+              "configured_fraction": 1.0,
+              "observed_count": 2000,
+              "observed_fraction": 1.0,
+              "three_sigma_interval": [
+                0.9967016262822914,
+                1.0
+              ],
+              "verdict": "PASS"
+            }
+          ],
+          "n": 2000,
+          "verdict": "PASS"
+        },
+        "aa6": {
+          "hard_process": "g g > H > h2 h2",
+          "input_h2_count_per_event": [
+            2
+          ],
+          "no_replica_rescaling": true,
+          "sigma_lo_pb": 0.023453,
+          "verdict": "PASS",
+          "weighted_input": true,
+          "weights_preserved": true
+        },
+        "decay_trials": 1000,
+        "events_failed": 0,
+        "events_filtered": 0,
+        "h2_observations": 2000,
+        "observed_channels": {
+          "-5 5": 2000
+        },
+        "replicas_per_production_event": 10,
+        "schema": "pack_aa.event_sample_validation.v1",
+        "unique_production_events": 100,
+        "verdict": "PASS"
+      },
+      "jsonl_sha256": "95eeef943e1ed33b02c8b1da5988b1e1b9737d1684fea31f9ad9b60cd49a8498",
+      "observed_br": {
+        "-5 5": 2000
+      },
+      "proper_length_mean_mm": 987.7894666374951,
+      "sample_id": "fcd9ff83da939385",
+      "seed": 900006005,
+      "unique_production_events": 100
+    },
+    {
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "ctau_mm": 1000.0,
+      "decay_configuration": "gamma_gamma",
+      "decay_trials": 1000,
+      "decays": [
+        {
+          "branching_ratio": 1.0,
+          "daughters": [
+            22,
+            22
+          ]
+        }
+      ],
+      "h2_observations": 2000,
+      "independent_validation": {
+        "aa4": {
+          "confidence_interval_95_percent_mm": [
+            972.884301021246,
+            1062.0205232747255
+          ],
+          "configured_ctau_mm": 1000.0,
+          "mean_proper_length_mm": 1015.9810572721303,
+          "method": "exponential MLE with chi-square interval; lab radius not used as exponential observable",
+          "n_decayed_h2": 2000,
+          "verdict": "PASS"
+        },
+        "aa5": {
+          "channels": [
+            {
+              "channel": [
+                22,
+                22
+              ],
+              "configured_fraction": 1.0,
+              "observed_count": 2000,
+              "observed_fraction": 1.0,
+              "three_sigma_interval": [
+                0.9967016262822914,
+                1.0
+              ],
+              "verdict": "PASS"
+            }
+          ],
+          "n": 2000,
+          "verdict": "PASS"
+        },
+        "aa6": {
+          "hard_process": "g g > H > h2 h2",
+          "input_h2_count_per_event": [
+            2
+          ],
+          "no_replica_rescaling": true,
+          "sigma_lo_pb": 0.023453,
+          "verdict": "PASS",
+          "weighted_input": true,
+          "weights_preserved": true
+        },
+        "decay_trials": 1000,
+        "events_failed": 0,
+        "events_filtered": 0,
+        "h2_observations": 2000,
+        "observed_channels": {
+          "22 22": 2000
+        },
+        "replicas_per_production_event": 10,
+        "schema": "pack_aa.event_sample_validation.v1",
+        "unique_production_events": 100,
+        "verdict": "PASS"
+      },
+      "jsonl_sha256": "20814f400f963e84075117ea40a37167e6aad2ac2907b97643dc40d8f1f00440",
+      "observed_br": {
+        "22 22": 2000
+      },
+      "proper_length_mean_mm": 1015.9810572721303,
+      "sample_id": "4ad3896b59cb0d92",
+      "seed": 900006004,
+      "unique_production_events": 100
+    },
+    {
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "ctau_mm": 1000.0,
+      "decay_configuration": "mixed",
+      "decay_trials": 1000,
+      "decays": [
+        {
+          "branching_ratio": 0.2,
+          "daughters": [
+            22,
+            22
+          ]
+        },
+        {
+          "branching_ratio": 0.8,
+          "daughters": [
+            5,
+            -5
+          ]
+        }
+      ],
+      "h2_observations": 2000,
+      "independent_validation": {
+        "aa4": {
+          "confidence_interval_95_percent_mm": [
+            965.319707393371,
+            1053.7628572042552
+          ],
+          "configured_ctau_mm": 1000.0,
+          "mean_proper_length_mm": 1008.0813678395689,
+          "method": "exponential MLE with chi-square interval; lab radius not used as exponential observable",
+          "n_decayed_h2": 2000,
+          "verdict": "PASS"
+        },
+        "aa5": {
+          "channels": [
+            {
+              "channel": [
+                22,
+                22
+              ],
+              "configured_fraction": 0.2,
+              "observed_count": 415,
+              "observed_fraction": 0.2075,
+              "three_sigma_interval": [
+                0.17316718427000252,
+                0.2268328157299975
+              ],
+              "verdict": "PASS"
+            },
+            {
+              "channel": [
+                -5,
+                5
+              ],
+              "configured_fraction": 0.8,
+              "observed_count": 1585,
+              "observed_fraction": 0.7925,
+              "three_sigma_interval": [
+                0.7731671842700025,
+                0.8268328157299976
+              ],
+              "verdict": "PASS"
+            }
+          ],
+          "n": 2000,
+          "verdict": "PASS"
+        },
+        "aa6": {
+          "hard_process": "g g > H > h2 h2",
+          "input_h2_count_per_event": [
+            2
+          ],
+          "no_replica_rescaling": true,
+          "sigma_lo_pb": 0.023453,
+          "verdict": "PASS",
+          "weighted_input": true,
+          "weights_preserved": true
+        },
+        "decay_trials": 1000,
+        "events_failed": 0,
+        "events_filtered": 0,
+        "h2_observations": 2000,
+        "observed_channels": {
+          "-5 5": 1585,
+          "22 22": 415
+        },
+        "replicas_per_production_event": 10,
+        "schema": "pack_aa.event_sample_validation.v1",
+        "unique_production_events": 100,
+        "verdict": "PASS"
+      },
+      "jsonl_sha256": "235c9336b449f8649353a77b654634de78178bd563d4f89a129b23044d375254",
+      "observed_br": {
+        "-5 5": 1585,
+        "22 22": 415
+      },
+      "proper_length_mean_mm": 1008.0813678395689,
+      "sample_id": "743390d495cb995c",
+      "seed": 900006006,
+      "unique_production_events": 100
+    },
+    {
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "ctau_mm": 1.0,
+      "decay_configuration": "bb",
+      "decay_trials": 1000,
+      "decays": [
+        {
+          "branching_ratio": 1.0,
+          "daughters": [
+            5,
+            -5
+          ]
+        }
+      ],
+      "h2_observations": 2000,
+      "independent_validation": {
+        "aa4": {
+          "confidence_interval_95_percent_mm": [
+            0.945888565467972,
+            1.0325514228191226
+          ],
+          "configured_ctau_mm": 1.0,
+          "mean_proper_length_mm": 0.987789466637495,
+          "method": "exponential MLE with chi-square interval; lab radius not used as exponential observable",
+          "n_decayed_h2": 2000,
+          "verdict": "PASS"
+        },
+        "aa5": {
+          "channels": [
+            {
+              "channel": [
+                -5,
+                5
+              ],
+              "configured_fraction": 1.0,
+              "observed_count": 2000,
+              "observed_fraction": 1.0,
+              "three_sigma_interval": [
+                0.9967016262822914,
+                1.0
+              ],
+              "verdict": "PASS"
+            }
+          ],
+          "n": 2000,
+          "verdict": "PASS"
+        },
+        "aa6": {
+          "hard_process": "g g > H > h2 h2",
+          "input_h2_count_per_event": [
+            2
+          ],
+          "no_replica_rescaling": true,
+          "sigma_lo_pb": 0.023453,
+          "verdict": "PASS",
+          "weighted_input": true,
+          "weights_preserved": true
+        },
+        "decay_trials": 1000,
+        "events_failed": 0,
+        "events_filtered": 0,
+        "h2_observations": 2000,
+        "observed_channels": {
+          "-5 5": 2000
+        },
+        "replicas_per_production_event": 10,
+        "schema": "pack_aa.event_sample_validation.v1",
+        "unique_production_events": 100,
+        "verdict": "PASS"
+      },
+      "jsonl_sha256": "b43da26433cb96916292c78501d7d802cc9c886c84a08a2815d414883d047b94",
+      "observed_br": {
+        "-5 5": 2000
+      },
+      "proper_length_mean_mm": 0.987789466637495,
+      "sample_id": "660021fb118f5f92",
+      "seed": 900006002,
+      "unique_production_events": 100
+    },
+    {
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "ctau_mm": 1.0,
+      "decay_configuration": "gamma_gamma",
+      "decay_trials": 1000,
+      "decays": [
+        {
+          "branching_ratio": 1.0,
+          "daughters": [
+            22,
+            22
+          ]
+        }
+      ],
+      "h2_observations": 2000,
+      "independent_validation": {
+        "aa4": {
+          "confidence_interval_95_percent_mm": [
+            0.9728843010212461,
+            1.0620205232747257
+          ],
+          "configured_ctau_mm": 1.0,
+          "mean_proper_length_mm": 1.0159810572721304,
+          "method": "exponential MLE with chi-square interval; lab radius not used as exponential observable",
+          "n_decayed_h2": 2000,
+          "verdict": "PASS"
+        },
+        "aa5": {
+          "channels": [
+            {
+              "channel": [
+                22,
+                22
+              ],
+              "configured_fraction": 1.0,
+              "observed_count": 2000,
+              "observed_fraction": 1.0,
+              "three_sigma_interval": [
+                0.9967016262822914,
+                1.0
+              ],
+              "verdict": "PASS"
+            }
+          ],
+          "n": 2000,
+          "verdict": "PASS"
+        },
+        "aa6": {
+          "hard_process": "g g > H > h2 h2",
+          "input_h2_count_per_event": [
+            2
+          ],
+          "no_replica_rescaling": true,
+          "sigma_lo_pb": 0.023453,
+          "verdict": "PASS",
+          "weighted_input": true,
+          "weights_preserved": true
+        },
+        "decay_trials": 1000,
+        "events_failed": 0,
+        "events_filtered": 0,
+        "h2_observations": 2000,
+        "observed_channels": {
+          "22 22": 2000
+        },
+        "replicas_per_production_event": 10,
+        "schema": "pack_aa.event_sample_validation.v1",
+        "unique_production_events": 100,
+        "verdict": "PASS"
+      },
+      "jsonl_sha256": "499fd37ede05a2497bc2849529187ee9180be8a44551cb6fc33cc0735490ee13",
+      "observed_br": {
+        "22 22": 2000
+      },
+      "proper_length_mean_mm": 1.0159810572721304,
+      "sample_id": "7d6ffaa5822da03f",
+      "seed": 900006001,
+      "unique_production_events": 100
+    },
+    {
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "ctau_mm": 1.0,
+      "decay_configuration": "mixed",
+      "decay_trials": 1000,
+      "decays": [
+        {
+          "branching_ratio": 0.2,
+          "daughters": [
+            22,
+            22
+          ]
+        },
+        {
+          "branching_ratio": 0.8,
+          "daughters": [
+            5,
+            -5
+          ]
+        }
+      ],
+      "h2_observations": 2000,
+      "independent_validation": {
+        "aa4": {
+          "confidence_interval_95_percent_mm": [
+            0.9653197073933709,
+            1.053762857204255
+          ],
+          "configured_ctau_mm": 1.0,
+          "mean_proper_length_mm": 1.0080813678395688,
+          "method": "exponential MLE with chi-square interval; lab radius not used as exponential observable",
+          "n_decayed_h2": 2000,
+          "verdict": "PASS"
+        },
+        "aa5": {
+          "channels": [
+            {
+              "channel": [
+                22,
+                22
+              ],
+              "configured_fraction": 0.2,
+              "observed_count": 415,
+              "observed_fraction": 0.2075,
+              "three_sigma_interval": [
+                0.17316718427000252,
+                0.2268328157299975
+              ],
+              "verdict": "PASS"
+            },
+            {
+              "channel": [
+                -5,
+                5
+              ],
+              "configured_fraction": 0.8,
+              "observed_count": 1585,
+              "observed_fraction": 0.7925,
+              "three_sigma_interval": [
+                0.7731671842700025,
+                0.8268328157299976
+              ],
+              "verdict": "PASS"
+            }
+          ],
+          "n": 2000,
+          "verdict": "PASS"
+        },
+        "aa6": {
+          "hard_process": "g g > H > h2 h2",
+          "input_h2_count_per_event": [
+            2
+          ],
+          "no_replica_rescaling": true,
+          "sigma_lo_pb": 0.023453,
+          "verdict": "PASS",
+          "weighted_input": true,
+          "weights_preserved": true
+        },
+        "decay_trials": 1000,
+        "events_failed": 0,
+        "events_filtered": 0,
+        "h2_observations": 2000,
+        "observed_channels": {
+          "-5 5": 1585,
+          "22 22": 415
+        },
+        "replicas_per_production_event": 10,
+        "schema": "pack_aa.event_sample_validation.v1",
+        "unique_production_events": 100,
+        "verdict": "PASS"
+      },
+      "jsonl_sha256": "fbf26681fa20c1c2358aa1186441ede9c544d0df5804996bf468d0ab84f7cbd7",
+      "observed_br": {
+        "-5 5": 1585,
+        "22 22": 415
+      },
+      "proper_length_mean_mm": 1.0080813678395688,
+      "sample_id": "c50900cc55623ce4",
+      "seed": 900006003,
+      "unique_production_events": 100
+    },
+    {
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "ctau_mm": 50000.0,
+      "decay_configuration": "bb",
+      "decay_trials": 1000,
+      "decays": [
+        {
+          "branching_ratio": 1.0,
+          "daughters": [
+            5,
+            -5
+          ]
+        }
+      ],
+      "h2_observations": 2000,
+      "independent_validation": {
+        "aa4": {
+          "confidence_interval_95_percent_mm": [
+            47294.4282733986,
+            51627.571140956126
+          ],
+          "configured_ctau_mm": 50000.0,
+          "mean_proper_length_mm": 49389.47333187475,
+          "method": "exponential MLE with chi-square interval; lab radius not used as exponential observable",
+          "n_decayed_h2": 2000,
+          "verdict": "PASS"
+        },
+        "aa5": {
+          "channels": [
+            {
+              "channel": [
+                -5,
+                5
+              ],
+              "configured_fraction": 1.0,
+              "observed_count": 2000,
+              "observed_fraction": 1.0,
+              "three_sigma_interval": [
+                0.9967016262822914,
+                1.0
+              ],
+              "verdict": "PASS"
+            }
+          ],
+          "n": 2000,
+          "verdict": "PASS"
+        },
+        "aa6": {
+          "hard_process": "g g > H > h2 h2",
+          "input_h2_count_per_event": [
+            2
+          ],
+          "no_replica_rescaling": true,
+          "sigma_lo_pb": 0.023453,
+          "verdict": "PASS",
+          "weighted_input": true,
+          "weights_preserved": true
+        },
+        "decay_trials": 1000,
+        "events_failed": 0,
+        "events_filtered": 0,
+        "h2_observations": 2000,
+        "observed_channels": {
+          "-5 5": 2000
+        },
+        "replicas_per_production_event": 10,
+        "schema": "pack_aa.event_sample_validation.v1",
+        "unique_production_events": 100,
+        "verdict": "PASS"
+      },
+      "jsonl_sha256": "0622b260547980f3720f21fd11c0cbd054824715e37ad7e552d17bac82b59af5",
+      "observed_br": {
+        "-5 5": 2000
+      },
+      "proper_length_mean_mm": 49389.47333187475,
+      "sample_id": "9db01cdd5f1bc783",
+      "seed": 900006008,
+      "unique_production_events": 100
+    },
+    {
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "ctau_mm": 50000.0,
+      "decay_configuration": "gamma_gamma",
+      "decay_trials": 1000,
+      "decays": [
+        {
+          "branching_ratio": 1.0,
+          "daughters": [
+            22,
+            22
+          ]
+        }
+      ],
+      "h2_observations": 2000,
+      "independent_validation": {
+        "aa4": {
+          "confidence_interval_95_percent_mm": [
+            48644.215051062296,
+            53101.02616373628
+          ],
+          "configured_ctau_mm": 50000.0,
+          "mean_proper_length_mm": 50799.052863606514,
+          "method": "exponential MLE with chi-square interval; lab radius not used as exponential observable",
+          "n_decayed_h2": 2000,
+          "verdict": "PASS"
+        },
+        "aa5": {
+          "channels": [
+            {
+              "channel": [
+                22,
+                22
+              ],
+              "configured_fraction": 1.0,
+              "observed_count": 2000,
+              "observed_fraction": 1.0,
+              "three_sigma_interval": [
+                0.9967016262822914,
+                1.0
+              ],
+              "verdict": "PASS"
+            }
+          ],
+          "n": 2000,
+          "verdict": "PASS"
+        },
+        "aa6": {
+          "hard_process": "g g > H > h2 h2",
+          "input_h2_count_per_event": [
+            2
+          ],
+          "no_replica_rescaling": true,
+          "sigma_lo_pb": 0.023453,
+          "verdict": "PASS",
+          "weighted_input": true,
+          "weights_preserved": true
+        },
+        "decay_trials": 1000,
+        "events_failed": 0,
+        "events_filtered": 0,
+        "h2_observations": 2000,
+        "observed_channels": {
+          "22 22": 2000
+        },
+        "replicas_per_production_event": 10,
+        "schema": "pack_aa.event_sample_validation.v1",
+        "unique_production_events": 100,
+        "verdict": "PASS"
+      },
+      "jsonl_sha256": "65b9f5a2ee134680e564992ae8e2a835173929bc63005f02491162d5452a84a8",
+      "observed_br": {
+        "22 22": 2000
+      },
+      "proper_length_mean_mm": 50799.052863606514,
+      "sample_id": "b3f66512c7b91693",
+      "seed": 900006007,
+      "unique_production_events": 100
+    },
+    {
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "ctau_mm": 50000.0,
+      "decay_configuration": "mixed",
+      "decay_trials": 1000,
+      "decays": [
+        {
+          "branching_ratio": 0.2,
+          "daughters": [
+            22,
+            22
+          ]
+        },
+        {
+          "branching_ratio": 0.8,
+          "daughters": [
+            5,
+            -5
+          ]
+        }
+      ],
+      "h2_observations": 2000,
+      "independent_validation": {
+        "aa4": {
+          "confidence_interval_95_percent_mm": [
+            48265.98536966855,
+            52688.142860212756
+          ],
+          "configured_ctau_mm": 50000.0,
+          "mean_proper_length_mm": 50404.06839197844,
+          "method": "exponential MLE with chi-square interval; lab radius not used as exponential observable",
+          "n_decayed_h2": 2000,
+          "verdict": "PASS"
+        },
+        "aa5": {
+          "channels": [
+            {
+              "channel": [
+                22,
+                22
+              ],
+              "configured_fraction": 0.2,
+              "observed_count": 415,
+              "observed_fraction": 0.2075,
+              "three_sigma_interval": [
+                0.17316718427000252,
+                0.2268328157299975
+              ],
+              "verdict": "PASS"
+            },
+            {
+              "channel": [
+                -5,
+                5
+              ],
+              "configured_fraction": 0.8,
+              "observed_count": 1585,
+              "observed_fraction": 0.7925,
+              "three_sigma_interval": [
+                0.7731671842700025,
+                0.8268328157299976
+              ],
+              "verdict": "PASS"
+            }
+          ],
+          "n": 2000,
+          "verdict": "PASS"
+        },
+        "aa6": {
+          "hard_process": "g g > H > h2 h2",
+          "input_h2_count_per_event": [
+            2
+          ],
+          "no_replica_rescaling": true,
+          "sigma_lo_pb": 0.023453,
+          "verdict": "PASS",
+          "weighted_input": true,
+          "weights_preserved": true
+        },
+        "decay_trials": 1000,
+        "events_failed": 0,
+        "events_filtered": 0,
+        "h2_observations": 2000,
+        "observed_channels": {
+          "-5 5": 1585,
+          "22 22": 415
+        },
+        "replicas_per_production_event": 10,
+        "schema": "pack_aa.event_sample_validation.v1",
+        "unique_production_events": 100,
+        "verdict": "PASS"
+      },
+      "jsonl_sha256": "a4b5fd3b75a05cfcde11ba23e10def4b8da573934e4be33105ebf83e18c7a3fe",
+      "observed_br": {
+        "-5 5": 1585,
+        "22 22": 415
+      },
+      "proper_length_mean_mm": 50404.06839197844,
+      "sample_id": "79ba74fb49c2f8c4",
+      "seed": 900006009,
+      "unique_production_events": 100
+    }
+  ],
+  "derived_lhe_sha256": "38b471d8f5c7aec4b983dce9229bd1564a264e87be687c0cbbf0d9d6f0e768cb",
+  "independent_parser": "pack_aa.truth.v1 JSONL parser in RUN_EVENT_BUNDLE.sh",
+  "pack_a_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+  "pack_aa_candidate_sha256": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+  "schema": "pack_aa.event_bundle_validation.v1",
+  "source_lhe_sha256": "c83fbf9d29b3f58bbe98579e6c7b9846d60f45ed4f0262528cb61875b3646838",
+  "summary": {
+    "aa4": "PASS",
+    "aa5": "PASS",
+    "aa6": "PASS",
+    "configurations": 9,
+    "decay_trials_per_configuration": 1000,
+    "events_failed": 0,
+    "events_filtered": 0,
+    "h2_observations_per_configuration": 2000,
+    "replicas_per_production_event": 10,
+    "unique_production_events_per_configuration": 100
+  },
+  "verdict": "PASS"
+}

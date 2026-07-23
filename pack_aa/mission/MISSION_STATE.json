@@ -1,0 +1,37 @@
+{
+  "stage": "event_bundle_cycle4_passed",
+  "status": "complete",
+  "completed_artifacts": [
+    "pack_aa/mission/DECISIONS_LOCKED.yaml",
+    "pack_aa/validation/aa0_provenance_check.json",
+    "pack_aa/bin/.pack_aa_driver",
+    "pack_aa/validation/aa2_single_event_dump.txt",
+    "pack_aa/validation/is_resonance_ab.json",
+    "pack_aa/validation/aa3_reproducibility_report.json",
+    "pack_aa/validation/aa7_reader_smoke_report.json",
+    "PACK_AA_DEMO_RESULTS.json",
+    "PACK_AA_PRESENTATION_EVIDENCE.zip",
+    "releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip",
+    "review/cycle_1/REVIEW.json",
+    "review/cycle_2/REVIEW.json",
+    "releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_20260722T092243Z_5.zip",
+    "releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_MANIFEST.json",
+    "releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_VALIDATION.md",
+    "releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_SAMPLE_CATALOG.csv",
+    "review/event_bundle_cycle_1/REVIEW.json",
+    "review/event_bundle_cycle_2/REVIEW.json",
+    "review/event_bundle_cycle_3/REVIEW.json",
+    "review/event_bundle_cycle_4/REVIEW.json"
+  ],
+  "tests_passed": ["Pack A sha256", "Pythia 8.308 preflight", "C++ link", "Pythia particle database probes", "isResonance=false/true lifetime A/B", "nine configurations AA0-AA6", "truth JSONL reader", "cmnd adapter smoke", "clean extraction preflight and all nine validations", "source-only diff forward/reverse checks", "event bundle independent JSONL parse", "event bundle 100x10 replica accounting", "event bundle sigmaGen_pb unit closure", "event bundle clean extraction and checksum closure", "event bundle cycle-4 independent reviewer PASS"],
+  "tests_failed": [],
+  "review_findings_fixed": ["event bundle cycle-1 sigmaGen_pb unit finding", "event bundle cycle-2 stale JSONL hash metadata", "event bundle cycle-3 stale cycle identity"],
+  "current_blocker": "HepMC2 library unavailable; standalone export remains provisional and is not core-blocking",
+  "next_action": "Freeze review only; Pack AA and the event bundle remain unfrozen",
+  "authoritative_paths": {
+    "pack_a": "releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip",
+    "input_lhe": "pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+    "driver_source": "pack_aa/src/pack_aa_driver.cc",
+    "operator": "pack_aa/bin/pack-aa"
+  }
+}

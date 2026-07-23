@@ -1,0 +1,12 @@
+{
+  "bundle_source_path": "/home/fabi/atlas_dihiggs/ufos/scratch/pack_aa_event_bundle_20260722T092243Z_1/regenerated/660021fb118f5f92/events.truth.jsonl",
+  "bundle_source_sha256": "315f8419bf774e82d934cb9d9a608eb11fec078f4e2258414bda2e19c5724822",
+  "ctau_mm": 1,
+  "filter_reasons": [],
+  "isResonance": false,
+  "n_events_failed_decay": 0,
+  "n_events_filtered": 0,
+  "n_events_in": 1000,
+  "n_events_out": 1000,
+  "seed": 900006002
+}

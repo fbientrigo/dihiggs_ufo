@@ -1,0 +1,12 @@
+{
+  "bundle_source_path": "samples/b3f66512c7b91693/events.truth.jsonl",
+  "bundle_source_sha256": "65b9f5a2ee134680e564992ae8e2a835173929bc63005f02491162d5452a84a8",
+  "ctau_mm": 50000,
+  "filter_reasons": [],
+  "isResonance": false,
+  "n_events_failed_decay": 0,
+  "n_events_filtered": 0,
+  "n_events_in": 1000,
+  "n_events_out": 1000,
+  "seed": 900006007
+}

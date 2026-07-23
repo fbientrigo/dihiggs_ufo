@@ -1,0 +1,5 @@
+{
+  "cycles": [{"cycle": 1, "verdict": "FIX_REQUIRED", "review": "review/cycle_1/REVIEW.md", "correction_prompt": "review/cycle_1/CORRECTION_PROMPT.md", "corrections_applied": ["explicit bundled immutable inputs", "truth_jsonl.v1 output contract and reader", "computed event/h2 accounting", "Pythia DB probes", "AA7 cmnd smoke", "source-only patch"]}, {"cycle": 2, "verdict": "PASS", "review": "review/cycle_2/REVIEW.md", "structured_review": "review/cycle_2/REVIEW.json", "findings": []}, {"cycle": 3, "verdict": "FIX_REQUIRED", "review": "review/cycle_3/REVIEW.md", "structured_review": "review/cycle_3/REVIEW.json", "corrections_applied": ["repackaged bundled manifest to use the exact candidate path and external checksums file"]}, {"cycle": 4, "verdict": "PASS", "review": "review/cycle_4/REVIEW.md", "structured_review": "review/cycle_4/REVIEW.json", "findings": []}],
+  "final_verdict": "PASS",
+  "rule": "A FIX_REQUIRED verdict requires a correction prompt, targeted rerun, release rebuild, and a fresh reviewer cycle."
+}

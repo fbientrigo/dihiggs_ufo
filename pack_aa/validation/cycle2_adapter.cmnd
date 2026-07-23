@@ -1,0 +1,8 @@
+Beams:frameType = 4
+Beams:LHEF = /home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz
+SLHA:readFrom = 0
+9000006:isResonance = false
+9000006:mayDecay = true
+9000006:tau0 = 1.0
+9000006:addChannel = 1 0.2 0 22 22
+9000006:addChannel = 1 0.8 0 5 -5

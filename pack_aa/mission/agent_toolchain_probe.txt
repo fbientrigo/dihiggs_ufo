@@ -1,0 +1,57 @@
+Pack AA toolchain probe — 2026-07-22 — read-only checks
+
+1. Registry / frozen Pack A
+   command: jq -r '.[] | select(.artifact_id == "pack_a_frozen_hotfix1") | [.current_path,.sha256,.authority,.status] | @tsv' ARTIFACT_REGISTRY.json
+   output: releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip  58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6  AUTHORITATIVE  FROZEN
+   command: unzip -Z1 releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip | rg -i '\.lhe(\.gz)?$|unweighted_events' || echo NONE
+   output: NONE
+   risk: ARTIFACT_REGISTRY.json locates the frozen Pack A ZIP, not an LHE artifact; the frozen ZIP contains no LHE.
+
+2. Pack A LHE actually consumed by Pack AA
+   command: sed -n '14,16p' pack_aa/python/prepare_input.py; sha256sum runs/A_PI_NATIVE/pi_ufo_baseline_v1/build/A_PI_NATIVE_200/MG5_PROC/Events/smoke2/unweighted_events.lhe.gz pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz
+   output: source=.../runs/A_PI_NATIVE/.../smoke2/unweighted_events.lhe.gz; source=c83fbf9d29b3f58bbe98579e6c7b9846d60f45ed4f0262528cb61875b3646838; derived=38b471d8f5c7aec4b983dce9229bd1564a264e87be687c0cbbf0d9d6f0e768cb
+   command: gzip -cd runs/A_PI_NATIVE/pi_ufo_baseline_v1/build/A_PI_NATIVE_200/MG5_PROC/Events/smoke2/unweighted_events.lhe.gz | rg -c '<event>'; gzip -cd pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz | rg -c '<event>'
+   output: 100; 1000. Header contains `generate g g > H > h2 h2`, `9000006 2.000000e+02 # mh2`.
+   risk: the Pack AA input is an unregistered, byte-derived repetition of the live `runs/.../smoke2` LHE; it is not the registry-located frozen ZIP itself.
+
+3. Exact LHE hashes from the read-only probe
+   command: sha256sum runs/A_PI_NATIVE/pi_ufo_baseline_v1/build/A_PI_NATIVE_200/MG5_PROC/Events/smoke2/unweighted_events.lhe.gz pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz
+   output: c83fbf9d29b3f58bbe98579e6c7b9846d60f45ed4f0262528cb61875b3646838  runs/A_PI_NATIVE/pi_ufo_baseline_v1/build/A_PI_NATIVE_200/MG5_PROC/Events/smoke2/unweighted_events.lhe.gz
+           38b471d8f5c7aec4b983dce9229bd1564a264e87be687c0cbbf0d9d6f0e768cb  pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz
+   risk: preserve the two hashes separately: the frozen ZIP is `58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6`; the derived LHE is `38b471d8f5c7aec4b983dce9229bd1564a264e87be687c0cbbf0d9d6f0e768cb`.
+
+4. Pythia installation / version
+   command: sed -n '1,16p' /home/fabi/.local/pythia8308/include/Pythia8/Pythia.h; ls -l /home/fabi/.local/pythia8308/{bin/pythia8-config,lib/libpythia8.so,lib/libpythia8.a}
+   output: `#define PYTHIA_VERSION 8.308`; all three paths present. llp_recast/configs/toolchain.env pins `PYTHIA8=$HOME/.local/pythia8308`, tag `pythia8308`, commit `38ebd86865e4f25e9cf461b610f5c82d475ab77a`.
+
+5. Compiler and Pythia link flags
+   command: g++ --version; /home/fabi/.local/pythia8308/bin/pythia8-config --cxxflags; /home/fabi/.local/pythia8308/bin/pythia8-config --ldflags
+   output: g++ 13.3.0; `-I/home/fabi/.local/pythia8308/include`; `-L/home/fabi/.local/pythia8308/lib -Wl,-rpath,/home/fabi/.local/pythia8308/lib -lpythia8 -lz -ldl`.
+   Pack AA command in `pack_aa/python/pack_aa.py:188`: `g++ -std=c++17 -O2 -I.../include pack_aa/src/pack_aa_driver.cc -L.../lib -lpythia8 -Wl,-rpath,.../lib -o pack_aa/bin/.pack_aa_driver`.
+
+6. Existing Pack AA binary linkage
+   command: file pack_aa/bin/.pack_aa_driver; ldd pack_aa/bin/.pack_aa_driver; readelf -d pack_aa/bin/.pack_aa_driver | rg 'NEEDED|RUNPATH'
+   output: ELF x86-64; resolves `/home/fabi/.local/pythia8308/lib/libpythia8.so`; RUNPATH is `/home/fabi/.local/pythia8308/lib`; NEEDED includes `libpythia8.so`, libc/libm/libstdc++/libgcc_s/libz.
+   risk: runtime depends on the absolute Pythia RUNPATH; no HepMC library is linked.
+
+7. HepMC support
+   command: ls -l /home/fabi/.local/pythia8308/include/Pythia8Plugins/HepMC*.h; /home/fabi/.local/pythia8308/bin/pythia8-config --with-hepmc2; /home/fabi/.local/pythia8308/bin/pythia8-config --with-hepmc3; rg -n 'HEPMC[23]_(USE|INCLUDE|LIB)' /home/fabi/.local/pythia8308/share/Pythia8/examples/Makefile.inc
+   output: `HepMC2.h` and `HepMC3.h` present; both config probes `false`; `HEPMC2_USE=false`, `HEPMC3_USE=false`, empty include/lib fields.
+   command: g++ -std=c++17 -fsyntax-only -I/home/fabi/.local/pythia8308/include pack_aa/tests/hepmc2_compile_probe.cc
+   output: FAIL: `fatal error: HepMC/IO_BaseClass.h: No such file or directory` (rc=1). No `libHepMC*` found under `/home/fabi/.local`, `/usr/local`, `/usr/lib`.
+   risk: Pythia wrapper headers are present but standalone HepMC2/3 output cannot currently compile/link.
+
+8. Existing Pack AA implementation
+   paths: `pack_aa/bin/pack-aa`, `pack_aa/python/pack_aa.py`, `pack_aa/src/pack_aa_driver.cc`, `pack_aa/tests/hepmc2_compile_probe.cc`, `pack_aa/configs/*.yaml`.
+   evidence: driver syntax check passes; implementation runs Pythia LHE-in-process and writes JSONL truth summaries; configs declare Pythia `8.308` and `format: hepmc2`; manifest says `AA7=PROVISIONAL_ADAPTER_REQUIRED` and `hepmc2=not built`.
+   risk: workspace metadata is contradictory: `CURRENT_STATE.md` says Pack AA `DESIGN_ONLY`, while `PACK_AA_IMPLEMENTATION_MANIFEST.json` says `RELEASE_CANDIDATE`; configs say `format: hepmc2` but the current driver writes JSONL.
+
+9. Downstream recast build boundary
+   paths: `/home/fabi/atlas_dihiggs/llp_recast/configs/toolchain.env`, `/home/fabi/atlas_dihiggs/llp_recast/external/recastingCodes/DisplacedVertices/ATLAS-SUSY-2018-13_GCottin/recast_code/1_analysis/Makefile`.
+   output: configured prefixes are Pythia 8.308, FastJet 3.4.0, MG5 3.5.3; upstream link flags are `-L$(PYTHIALIB) -lpythia8 -L$(FJLIB) -lfastjet -lz -Wl,-rpath $(PYTHIALIB) -Wl,-rpath $(FJLIB)`; source/Makefile exist but `recast_2301_13866` binary is absent.
+   risk: a future adapter needs FastJet plus the exact Pythia prefix; the frozen recast does not provide a ready executable in this workspace.
+
+10. Pack A immutability check
+    command: sha256sum releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip
+    output: `58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6` (matches registry).
+    action: no Pack A file or implementation file was edited; only this evidence file was added.

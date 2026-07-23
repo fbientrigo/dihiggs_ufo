@@ -1,0 +1,141 @@
+{
+  "design_status": "DESIGN_ONLY",
+  "provenance_fields": [
+    "pack_aa_schema_version",
+    "pack_aa_implementation_version_or_hash",
+    "pack_a_frozen_zip_sha256",
+    "input_lhe_sha256",
+    "pack_a_run_sample_id",
+    "pythia_version",
+    "compiler_runtime_version",
+    "config_sha256",
+    "pythia_seed",
+    "channel_selection_seed",
+    "lifetime_ctau_mm",
+    "decay_table",
+    "n_events_in",
+    "n_events_out",
+    "n_events_failed_decay",
+    "n_events_filtered",
+    "per_channel_generated_count",
+    "output_file_hashes",
+    "log_paths",
+    "exit_status",
+    "pack_aa_sample_id"
+  ],
+  "gates": [
+    {
+      "gate": "AA0",
+      "purpose": "Guarantee the input to Pack AA is exactly the frozen, unmodified Pack A product before any Pythia step runs.",
+      "inputs": ["frozen_artifact path + declared sha256", "input_lhe path + declared sha256", "input LHE particle records"],
+      "checks": [
+        "sha256sum(frozen_artifact) == config.pack_a.frozen_artifact_sha256",
+        "sha256sum(input_lhe) == config.pack_a.input_lhe_sha256",
+        "LHE contains only PDG 9000006 as the LLP with status marking it stable (no decay vertex)",
+        "LHE hard-process identity matches ZERO_JET_ONLY g g > H > h2 h2"
+      ],
+      "acceptance_criteria": "All four checks pass exactly; no tolerance on hash checks.",
+      "failure_status": "exit 2, run aborted before any Pythia invocation",
+      "evidence_artifact": "aa0_provenance_check.json in the run directory"
+    },
+    {
+      "gate": "AA1",
+      "purpose": "Guarantee the declared config is internally consistent and physically well-formed before any generation is attempted.",
+      "inputs": ["pack_aa.config.v1 YAML"],
+      "checks": [
+        "exactly one canonical lifetime representation, or multiple mutually consistent within 0.1% relative tolerance",
+        "sum(branching_ratio) == 1.0 +/- 1e-6, unless allow_partial_width is explicitly true with a named placeholder policy",
+        "every daughters PDG exists in Pythia's particle database",
+        "every channel's daughter pole-mass sum <= llp.mass_GeV",
+        "no pythia.settings entries touch matching/merging or hard-process ISR/FSR",
+        "no duplicate decay ownership (Pack A LHE marks h2 stable; config does not attempt to pre-decay h2 outside Pythia)",
+        "output.directory does not already exist"
+      ],
+      "acceptance_criteria": "All checks pass; any single failure blocks the run.",
+      "failure_status": "exit 1, no Pythia process started",
+      "evidence_artifact": "aa1_config_validation_report.json"
+    },
+    {
+      "gate": "AA2",
+      "purpose": "Confirm, on a single event, that Pythia and only Pythia performs the h2 decay and that the event remains structurally sound.",
+      "inputs": ["1 event from input LHE", "validated config"],
+      "checks": [
+        "h2 enters Pythia's event record with mayDecay=true and status matching a resonance/particle about to decay",
+        "h2 decays exactly once, only inside Pythia (no decay vertex present pre-Pythia)",
+        "declared daughters (per config) appear as direct children of the h2 decay vertex",
+        "a decay vertex with finite spacetime coordinates exists on the h2 line",
+        "proper-time / proper-length info is populated and non-degenerate",
+        "output event parses cleanly under the chosen HepMC2 reader"
+      ],
+      "acceptance_criteria": "All six checks pass for the single test event.",
+      "failure_status": "exit 3, run marked FAILED",
+      "evidence_artifact": "aa2_single_event_dump.txt + aa2_result.json"
+    },
+    {
+      "gate": "AA3",
+      "purpose": "Confirm determinism: identical input+config+seed reproduces identical event-level observables, and any event loss is explicit.",
+      "inputs": ["small fixed-seed sample (e.g. N=100, exact N is an implementation choice, not fixed here)"],
+      "checks": [
+        "two independent runs with identical (input_lhe_sha256, config_sha256, pythia.seed, channel_selection_seed) produce identical output_file_hashes, OR an explicitly documented non-determinism source is recorded",
+        "n_events_in == n_events_out + n_events_failed_decay + n_events_filtered (accounting identity holds exactly)",
+        "no filter removes events without a logged reason"
+      ],
+      "acceptance_criteria": "Accounting identity holds exactly; hash reproducibility holds or documented deviation is recorded.",
+      "failure_status": "exit 3, run marked FAILED or PROVISIONAL depending on which sub-check failed",
+      "evidence_artifact": "aa3_reproducibility_report.json"
+    },
+    {
+      "gate": "AA4",
+      "purpose": "Confirm the configured lifetime is honored statistically, correctly accounting for lab-frame boost (not a naive lab-frame exponential check).",
+      "inputs": ["a statistically adequate sample (size set by the implementation to satisfy the acceptance tolerance below, not fixed here)"],
+      "checks": [
+        "reconstruct each decayed h2's proper decay length: L_proper = L_lab / (beta*gamma), using each event's own h2 momentum/energy",
+        "compare the reconstructed proper-length distribution's mean (or a likelihood/KS test against the configured exponential law with rate 1/ctau_mm) using the boost-corrected quantity, never the raw lab-frame decay distance",
+        "minimum sample size chosen so the statistical test has adequate power (implementation must justify the chosen N against the tolerance below)"
+      ],
+      "acceptance_criteria": "Reconstructed proper decay length statistically compatible with configured ctau_mm at a pre-declared confidence level (implementation-chosen, e.g. via KS test p-value threshold, documented in the run's evidence artifact); KS test used as a diagnostic, not a pass/fail oracle in isolation.",
+      "failure_status": "exit 3, run marked FAILED; PROVISIONAL if sample size was below the documented minimum",
+      "evidence_artifact": "aa4_lifetime_closure_plot + aa4_statistical_test_result.json"
+    },
+    {
+      "gate": "AA5",
+      "purpose": "Confirm generated per-channel decay fractions match configured branching ratios within statistical uncertainty.",
+      "inputs": ["same sample as AA4, or a dedicated sufficiently large sample"],
+      "checks": [
+        "per-channel generated event counts recorded (per_channel_generated_count)",
+        "observed fraction per channel compared to configured branching_ratio using binomial/multinomial standard error, not a fixed arbitrary percentage tolerance",
+        "tolerance = configured_BR +/- k * sqrt(BR*(1-BR)/N) for a pre-declared k (e.g. k=3), documented per run"
+      ],
+      "acceptance_criteria": "All channels within the statistical tolerance band for the declared k and sample size N.",
+      "failure_status": "exit 3, run marked FAILED",
+      "evidence_artifact": "aa5_branching_fraction_table.json"
+    },
+    {
+      "gate": "AA6",
+      "purpose": "Confirm Pack AA does not alter Pack A's production content or normalization.",
+      "inputs": ["input LHE", "Pack AA output event record"],
+      "checks": [
+        "per-event LHE weights unchanged between input and the corresponding output event's carried weight",
+        "sigma_LO_fb (Pack A production cross section) field unmodified anywhere in Pack AA's manifest",
+        "initial hard-process identity (g g > H > h2 h2) unchanged",
+        "number and identity of input h2 particles before decay matches the LHE exactly (no added/removed/duplicated h2 pre-decay)"
+      ],
+      "acceptance_criteria": "All four checks pass with exact equality (no tolerance).",
+      "failure_status": "exit 3, run marked FAILED",
+      "evidence_artifact": "aa6_production_preservation_report.json"
+    },
+    {
+      "gate": "AA7",
+      "purpose": "Confirm the chosen output format is actually openable by the intended downstream reader or a minimal adapter, without performing recast validation.",
+      "inputs": ["Pack AA HepMC2 output", "a minimal reader (e.g. HepMC2 I/O test, or the llp_recast adapter's declared input path once bootstrapped)"],
+      "checks": [
+        "output file parses without error under a HepMC2 reader",
+        "particle/vertex counts in the parsed file match Pack AA's own internal event count",
+        "if llp_recast's frozen upstream reader is available, a smoke-open (not a cutflow run) succeeds"
+      ],
+      "acceptance_criteria": "File opens cleanly and reports the expected event count; no recast-level cutflow or acceptance result is produced or claimed.",
+      "failure_status": "exit 3 if the file does not parse; PROVISIONAL if llp_recast's own reader was unavailable to test against",
+      "evidence_artifact": "aa7_reader_smoke_report.json"
+    }
+  ]
+}

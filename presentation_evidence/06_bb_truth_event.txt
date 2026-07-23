@@ -1,0 +1,8 @@
+Pack A is a frozen production baseline.
+Pack AA adds externally declared lifetime and BRs.
+Pythia alone executes decays, showering and hadronization.
+Configured lifetime and BRs close statistically.
+Production weights and sigma are preserved.
+
+These are PIPELINE_DEMONSTRATION_ONLY / NOT_MODEL_DERIVED / NOT_PI_ENDORSED.
+Not model-derived lifetime; not model-derived BR; not detector efficiency; not ATLAS acceptance; not a recast; not an exclusion; not publishable normalization.

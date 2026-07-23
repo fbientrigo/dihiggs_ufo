@@ -1,0 +1,26 @@
+{
+  "pack": "pack_aa",
+  "status": "RELEASE_CANDIDATE",
+  "labels": [
+    "PIPELINE_DEMONSTRATION_ONLY",
+    "NOT_MODEL_DERIVED",
+    "NOT_PI_ENDORSED"
+  ],
+  "pack_a_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+  "input_lhe_sha256": "38b471d8f5c7aec4b983dce9229bd1564a264e87be687c0cbbf0d9d6f0e768cb",
+  "source_lhe_sha256": "c83fbf9d29b3f58bbe98579e6c7b9846d60f45ed4f0262528cb61875b3646838",
+  "output_format": "truth_jsonl",
+  "release_candidate_zip": "releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip",
+  "release_candidate_sha256": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+  "aa0_aa6": "PASS",
+  "aa7": "PROVISIONAL_ADAPTER_REQUIRED",
+  "hepmc2": "not built: no linkable HepMC2 library installed",
+  "cmnd_adapter_smoke": "PASS",
+  "scope": [
+    "no Pack A modification",
+    "no Pack B modification",
+    "no recast cutflow",
+    "no detector acceptance or limits"
+  ],
+  "clean_extraction_required": true
+}

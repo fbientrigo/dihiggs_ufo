@@ -1,0 +1,36 @@
+schema: pack_aa.mission.decisions.v1
+labels: [PIPELINE_DEMONSTRATION_ONLY, NOT_MODEL_DERIVED, NOT_PI_ENDORSED]
+pack_a:
+  path: releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip
+  sha256: 58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6
+  immutable: true
+llp:
+  pdg: 9000006
+  name: h2
+  self_conjugate: true
+  spin: 0
+  charge: 0
+  colour: singlet
+  canonical_lifetime_field: ctau_mm
+ownership:
+  pack_a: [production_process, production_cross_section, lhe_event_weights]
+  pythia: [h2_decay, showering, hadronization]
+  future_recast: [jets, selections, acceptance, efficiency, limits]
+pythia:
+  version: '8.308'
+  source_commit: 38ebd86865e4f25e9cf461b610f5c82d475ab77a
+  is_resonance_default: false
+  ab_test_required: true
+output:
+  authoritative_core: Pythia8::Event_truth_summary_jsonl
+  standalone_hepmc2: optional
+  recast_adapter: deferred
+statistics:
+  target_decay_trials_per_configuration: 1000
+  unique_production_events: 100
+  replicas_are_not_production_events: true
+demo:
+  mass_GeV: 200.0
+  ctau_mm: [1.0, 1000.0, 50000.0]
+  channels: [[22, 22], [5, -5], [[22, 22], [5, -5]]]
+  mixed_branching_ratios: [0.2, 0.8]

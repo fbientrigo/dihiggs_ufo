@@ -1,0 +1,136 @@
+{
+  "pack_aa_sample_id": "743390d495cb995c",
+  "config_sha256": "e4761809587d9ced5286578385580a7a391566a3349fe44fc99756d88ee18e66",
+  "output_sha256": "f8ae903e71e783df4a550fa6d0fe73fc77ad53b7e489205654c289d59c0a7378",
+  "driver": {
+    "command": [
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/bin/.pack_aa_driver",
+      "--lhe",
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+      "--out",
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/20260722T071828Z_743390d495cb995c_ctau1000_mixed/events.truth.jsonl",
+      "--events",
+      "1000",
+      "--seed",
+      "900006006",
+      "--mass",
+      "200.0",
+      "--ctau",
+      "1000.0",
+      "--is-resonance",
+      "0",
+      "--production-events",
+      "100",
+      "--channels",
+      "0.20000000000000001:22,22;0.80000000000000004:5,-5"
+    ],
+    "exit_code": 0,
+    "log": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/20260722T071828Z_743390d495cb995c_ctau1000_mixed/events.truth.driver.log",
+    "output": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/20260722T071828Z_743390d495cb995c_ctau1000_mixed/events.truth.jsonl"
+  },
+  "labels": [
+    "PIPELINE_DEMONSTRATION_ONLY",
+    "NOT_MODEL_DERIVED",
+    "NOT_PI_ENDORSED"
+  ],
+  "unique_input_events": 100,
+  "decay_trials": 1000,
+  "replicas_per_input_event": 10,
+  "events_in": 1000,
+  "materialized_input_event_blocks": 1000,
+  "events_out": 1000,
+  "events_processed": 1000,
+  "events_failed": 0,
+  "events_failed_decay": 0,
+  "events_filtered": 0,
+  "filter_reasons": [],
+  "event_accounting_identity": true,
+  "replica_accounting_identity": true,
+  "h2_observation_count": 2000,
+  "h2_accounting_identity": true,
+  "accounting_identity": true,
+  "canonical_observable_hash": "b02cf20f645652c7d22506999141d8e3a8a1b9cb77a927f237020371ce02215f",
+  "input_weights_preserved": true,
+  "h2_structural_integrity": true,
+  "per_channel_generated_count": {
+    "22 22": 415,
+    "5 -5": 1585
+  },
+  "aa4": {
+    "verdict": "PASS",
+    "n_decayed_h2": 2000,
+    "configured_ctau_mm": 1000.0,
+    "mean_proper_length_mm": 1008.0813678395689,
+    "mean_lab_radius_mm": 729.0706780101757,
+    "chi2_95_interval_mm": [
+      965.319707393371,
+      1053.7628572042552
+    ],
+    "ks_diagnostic": "not used as an oracle"
+  },
+  "aa5": {
+    "verdict": "PASS",
+    "k": 3,
+    "n": 2000,
+    "channels": [
+      {
+        "channel": [
+          22,
+          22
+        ],
+        "configured_fraction": 0.2,
+        "observed_count": 415,
+        "observed_fraction": 0.2075,
+        "expected_standard_error": 0.00894427190999916,
+        "acceptance_interval": [
+          0.17316718427000252,
+          0.2268328157299975
+        ],
+        "interval_method": "three_sigma_binomial_band",
+        "verdict": "PASS"
+      },
+      {
+        "channel": [
+          5,
+          -5
+        ],
+        "configured_fraction": 0.8,
+        "observed_count": 1585,
+        "observed_fraction": 0.7925,
+        "expected_standard_error": 0.008944271909999158,
+        "acceptance_interval": [
+          0.7731671842700025,
+          0.8268328157299976
+        ],
+        "interval_method": "three_sigma_binomial_band",
+        "verdict": "PASS"
+      }
+    ]
+  },
+  "aa6": {
+    "verdict": "PASS",
+    "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+    "sigma_lo_pb": 0.023453,
+    "hard_process": "g g > H > h2 h2",
+    "weighted_input": true,
+    "h2_input_count_per_event": [
+      2
+    ]
+  },
+  "aa2": {
+    "verdict": "PASS"
+  },
+  "aa3": {
+    "verdict": "PASS",
+    "event_accounting_identity": true,
+    "h2_accounting_identity": true,
+    "canonical_observable_hash": "b02cf20f645652c7d22506999141d8e3a8a1b9cb77a927f237020371ce02215f",
+    "driver_exit_status": 0
+  },
+  "aa7": {
+    "verdict": "PROVISIONAL_ADAPTER_REQUIRED",
+    "authoritative_format": "truth_jsonl",
+    "reader": "read_truth_jsonl",
+    "reason": "HepMC2 library unavailable; frozen recast consumes raw LHE in-process and requires a future cmnd adapter."
+  }
+}

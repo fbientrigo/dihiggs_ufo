@@ -1,0 +1,39 @@
+{
+  "verdict": "PASS",
+  "k": 3,
+  "n": 2000,
+  "channels": [
+    {
+      "channel": [
+        22,
+        22
+      ],
+      "configured_fraction": 0.2,
+      "observed_count": 415,
+      "observed_fraction": 0.2075,
+      "expected_standard_error": 0.00894427190999916,
+      "acceptance_interval": [
+        0.17316718427000252,
+        0.2268328157299975
+      ],
+      "interval_method": "three_sigma_binomial_band",
+      "verdict": "PASS"
+    },
+    {
+      "channel": [
+        5,
+        -5
+      ],
+      "configured_fraction": 0.8,
+      "observed_count": 1585,
+      "observed_fraction": 0.7925,
+      "expected_standard_error": 0.008944271909999158,
+      "acceptance_interval": [
+        0.7731671842700025,
+        0.8268328157299976
+      ],
+      "interval_method": "three_sigma_binomial_band",
+      "verdict": "PASS"
+    }
+  ]
+}

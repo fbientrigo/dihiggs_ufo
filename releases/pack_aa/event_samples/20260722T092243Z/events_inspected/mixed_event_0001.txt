@@ -1,0 +1,31 @@
+Pack AA representative truth event
+sample_id: 743390d495cb995c
+label: mixed
+schema: pack_aa.truth.v1
+event: 1
+production_event_id: 1
+replica_id: 0
+pythia_seed: 900006006
+event_weight: 0.023453000000000005
+sigmaGen_pb: 2.3453000000000004e-11
+
+h2[1] id/status: 9000006 / -62
+h2 four-momentum (px,py,pz,e,m): (-14.618271912261434, -48.34992899571074, 132.37843594043318, 245.10295757013319, 200)
+beta*gamma: 0.7084394788834549
+production vertex (x,y,z,t) mm: (0, 0, 0, 0)
+decay vertex (x,y,z,t) mm: (-124.77520532889166, -412.69394592509394, 1129.9247014095135, 2092.0921461229586)
+proper time mm: 1707.1129347954377
+proper decay length mm: 1707.112934795438
+configured direct daughters before hadronization: [5, -5]
+post-shower direct daughters/status: [-513, 511] / -62
+
+h2[2] id/status: 9000006 / -62
+h2 four-momentum (px,py,pz,e,m): (4.102675671856632, 67.26206546194197, 52.8280313253669, 217.55876974185384, 200)
+beta*gamma: 0.4281301873142373
+production vertex (x,y,z,t) mm: (0, 0, 0, 0)
+decay vertex (x,y,z,t) mm: (14.738036482822473, 241.62543032300786, 189.7740682574124, 781.5360857326532)
+proper time mm: 718.45974001415
+proper decay length mm: 718.4597400141502
+configured direct daughters before hadronization: [5, -5]
+post-shower direct daughters/status: [-523, 523] / -62
+

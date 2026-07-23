@@ -1,0 +1,124 @@
+=== PACK A EVIDENCE ===
+2026-07-18T02:36:22Z
+
+632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd  pi_ufo_baseline_v1.zip
+
+=== MASS BLOCK: POINT CARD ===
+9-  2            1.0000000000000001e-01 # ctauh2
+10-
+11:BLOCK MASS
+12-  1            5.0400000000000002e-03 # MD
+13-  2            2.5500000000000002e-03 # MU
+14-  3            1.0100000000000001e-01 # MS
+15-  4            1.2700000000000000e+00 # MC
+16-  5            4.7000000000000002e+00 # MB
+17-  6            1.7200000000000000e+02 # MT
+18-  11           5.1099999999999995e-04 # Me
+19-  13           1.0566000000000000e-01 # MMU
+20-  15           1.7769999999999999e+00 # MTA
+21-  23           9.1187600000000003e+01 # MZ
+22-  25           1.2500000000000000e+02 # MH
+23-  9000005      1.2000000000000000e+02 # MP
+24-  9000006      2.0000000000000000e+02 # Mh2
+25-
+26-BLOCK SMINPUTS
+27-  1            1.2790000000000001e+02 # aEWM1
+28-  2            1.1663700000000000e-05 # Gf
+29-  3            1.1840000000000001e-01 # aS
+30-
+31-BLOCK YUKAWA
+32-  1            5.0400000000000002e-03 # ymdo
+33-  2            2.5500000000000002e-03 # ymup
+34-  3            1.0100000000000001e-01 # yms
+35-  4            1.2700000000000000e+00 # ymc
+36-  5            4.7000000000000002e+00 # ymb
+37-  6            1.7200000000000000e+02 # ymt
+38-  11           5.1099999999999995e-04 # yme
+39-  13           1.0566000000000000e-01 # ymm
+40-  15           1.7769999999999999e+00 # ymtau
+41-
+
+=== MASS BLOCK: PROCESS CARD ===
+9-  2            1.0000000000000001e-01 # ctauh2
+10-
+11:BLOCK MASS
+12-  1            5.0400000000000002e-03 # MD
+13-  2            2.5500000000000002e-03 # MU
+14-  3            1.0100000000000001e-01 # MS
+15-  4            1.2700000000000000e+00 # MC
+16-  5            4.7000000000000002e+00 # MB
+17-  6            1.7200000000000000e+02 # MT
+18-  11           5.1099999999999995e-04 # Me
+19-  13           1.0566000000000000e-01 # MMU
+20-  15           1.7769999999999999e+00 # MTA
+21-  23           9.1187600000000003e+01 # MZ
+22-  25           1.2500000000000000e+02 # MH
+23-  9000005      1.2000000000000000e+02 # MP
+24-  9000006      2.0000000000000000e+02 # Mh2
+25-
+26-BLOCK SMINPUTS
+27-  1            1.2790000000000001e+02 # aEWM1
+28-  2            1.1663700000000000e-05 # Gf
+29-  3            1.1840000000000001e-01 # aS
+30-
+31-BLOCK YUKAWA
+32-  1            5.0400000000000002e-03 # ymdo
+33-  2            2.5500000000000002e-03 # ymup
+34-  3            1.0100000000000001e-01 # yms
+35-  4            1.2700000000000000e+00 # ymc
+36-  5            4.7000000000000002e+00 # ymb
+37-  6            1.7200000000000000e+02 # ymt
+38-  11           5.1099999999999995e-04 # yme
+39-  13           1.0566000000000000e-01 # ymm
+40-  15           1.7769999999999999e+00 # ymtau
+41-
+
+=== MW UFO PARAMETER ===
+345-                nature = 'internal',
+346-                type = 'real',
+347-                value = '1.9732698e-16/ctauh2',
+348-                texname = '\\text{Wh2}')
+349-
+350:MW = Parameter(name = 'MW',
+351-               nature = 'internal',
+352-               type = 'real',
+353-               value = 'cmath.sqrt(MZ**2/2. + cmath.sqrt(MZ**4/4. - (aEW*cmath.pi*MZ**2)/(Gf*cmath.sqrt(2))))',
+354-               texname = 'M_W')
+355-
+356-ee = Parameter(name = 'ee',
+357-               nature = 'internal',
+358-               type = 'real',
+359-               value = '2*cmath.sqrt(aEW)*cmath.sqrt(cmath.pi)',
+360-               texname = 'e')                    
+
+=== W PARTICLE ===
+36-             GhostNumber = 0,
+37-             LeptonNumber = 0,
+38-             Y = 0)
+39-
+40:W__plus__ = Particle(pdg_code = 24,
+41-                     name = 'W+',
+42-                     antiname = 'W-',
+43-                     spin = 3,
+44-                     color = 1,
+45-                     mass = Param.MW,
+46-                     width = Param.WW,
+47-                     texname = 'W+',
+48-                     antitexname = 'W-',
+49-                     charge = 1,
+50-                     GhostNumber = 0,
+51-                     LeptonNumber = 0,
+52-                     Y = 0)
+53-
+54-W__minus__ = W__plus__.anti()
+55-
+56-g = Particle(pdg_code = 21,
+
+=== FAILURE ===
+408:generate_events -f smoke
+409:[1;34mWARNING: Missing mass in the lhef file (24) . Please fix this (use the "update missing" command if needed) [0m
+410:[1;34mWARNING: Missing mass in the lhef file (24) . Please fix this (use the "update missing" command if needed) [0m
+415:[1;34mWARNING: Missing mass in the lhef file (24) . Please fix this (use the "update missing" command if needed) [0m
+416:[1;31mCommand "generate_events -f smoke" interrupted with error:
+417:KeyError : 'id (24,) is not in mass'
+424:FAIL: no LHE produced

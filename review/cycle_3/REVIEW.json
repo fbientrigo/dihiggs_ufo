@@ -1,0 +1,57 @@
+{
+  "review": "Pack AA release-candidate cycle 3",
+  "verdict": "FIX_REQUIRED",
+  "candidate": {
+    "path": "releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip",
+    "sha256_actual": "93deaf79a1ca2068b77d15acf5cc954b3ff3abc3af00d9d02bb36695d0c2ea04",
+    "unzip_test": "PASS"
+  },
+  "checks": {
+    "bundled_pack_a": {
+      "declared_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+      "actual_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+      "result": "PASS"
+    },
+    "mission_state": {
+      "status": "complete",
+      "review_ledger_final_verdict": "PASS",
+      "result": "PASS"
+    },
+    "top_level_demo_gate_artifacts": {
+      "configuration_count": 9,
+      "aa0": "PASS",
+      "aa1": "PASS",
+      "aa2": "PASS",
+      "aa3": "PASS",
+      "aa4": "PASS",
+      "aa5": "PASS",
+      "aa6": "PASS",
+      "aa7": "PROVISIONAL_ADAPTER_REQUIRED",
+      "result": "PASS"
+    },
+    "bundled_manifest_sha_matches_reviewed_zip": {
+      "declared_path": "/home/fabi/atlas_dihiggs/ufos/releases/pack_aa/candidates/pack_aa_release_candidate_v1.zip",
+      "declared_sha256": "cac275d8b4ceca641805e802a22b02bcb466245800fc356c37fcca620eb8492f",
+      "reviewed_zip_sha256": "93deaf79a1ca2068b77d15acf5cc954b3ff3abc3af00d9d02bb36695d0c2ea04",
+      "result": "FAIL"
+    }
+  },
+  "findings": [
+    {
+      "id": "AA-RC-301",
+      "severity": "release_blocking",
+      "area": "metadata/provenance",
+      "location": "PACK_AA_IMPLEMENTATION_MANIFEST.json:11-12",
+      "finding": "The bundled manifest identifies a different candidate path and SHA-256 than the reviewed pi_pack_aa_release_candidate_v1.zip.",
+      "impact": "The exact release artifact cannot be authenticated from its bundled manifest.",
+      "required_fix": "Rebuild or repack the candidate with metadata for the reviewed ZIP, then rerun unzip -t and the manifest SHA comparison.",
+      "sol_level_reasoning_required": {
+        "scientific": false,
+        "architectural": false,
+        "concurrency": false,
+        "protocol": false,
+        "security": false
+      }
+    }
+  ]
+}

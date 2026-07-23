@@ -1,0 +1,25 @@
+{
+  "pack_a": "/home/fabi/atlas_dihiggs/ufos/releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip",
+  "pack_a_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+  "pack_a_hash_expected": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+  "pack_a_hash_pass": true,
+  "pythia": "/home/fabi/.local/pythia8308",
+  "pythia_8_308": true,
+  "hepmc2_header": true,
+  "hepmc2_linkable_library": false,
+  "derived_input": {
+    "source": "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_source.lhe.gz",
+    "source_sha256": "c83fbf9d29b3f58bbe98579e6c7b9846d60f45ed4f0262528cb61875b3646838",
+    "target": "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+    "target_sha256": "38b471d8f5c7aec4b983dce9229bd1564a264e87be687c0cbbf0d9d6f0e768cb",
+    "source_events": 100,
+    "target_events": 1000,
+    "repetition_factor": 10,
+    "method": "byte-preserving event-block repetition; no physics regeneration"
+  },
+  "labels": [
+    "PIPELINE_DEMONSTRATION_ONLY",
+    "NOT_MODEL_DERIVED",
+    "NOT_PI_ENDORSED"
+  ]
+}

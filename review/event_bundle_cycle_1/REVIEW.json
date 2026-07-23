@@ -1,0 +1,71 @@
+{
+  "schema": "pack_aa.event_bundle_review.v1",
+  "verdict": "FIX_REQUIRED",
+  "review_scope": "read_only_independent_event_bundle_review",
+  "bundle_zip": "releases/pack_aa/event_samples/20260722T090049Z_4/PACK_AA_EVENT_BUNDLE_20260722T090049Z_4.zip",
+  "clean_extraction": "scratch/pack_aa_event_bundle_20260722T090049Z_4_clean",
+  "hashes": {
+    "candidate_expected": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+    "candidate_observed": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+    "pack_a_expected": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "pack_a_observed": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "bundle_zip_sha256": "85841bfc680bb0bd1bc3915c7a0d8edd42b0c5ded593b73cdacf03ac2de38c47"
+  },
+  "finding_count": 1,
+  "findings": [
+    {
+      "id": "AA-EVT-001",
+      "severity": "scientific_numerical",
+      "location": "pack_aa/src/pack_aa_driver.cc:236",
+      "evidence": {
+        "source_lhe_sigma_pb": 0.023453,
+        "truth_field": "sigmaGen_pb",
+        "truth_field_observed_range": [2.3452999999999477e-11, 2.3453000000000078e-11],
+        "observed_to_source_ratio": 9.999999999999974e-10,
+        "weight_observed": 0.023453000000000005
+      },
+      "impact": "The truth-record cross section is wrong by 1e9 in its declared pb unit; downstream consumers using sigmaGen_pb can normalize rates incorrectly.",
+      "root_cause": "pythia.info.sigmaGen() is serialized without the required mb-to-pb conversion.",
+      "requires_sol_level_reasoning": {
+        "scientific": true,
+        "architectural": false,
+        "concurrency": false,
+        "protocol": false,
+        "security": false
+      },
+      "references": [
+        "pack_aa/src/pack_aa_driver.cc:236",
+        "/home/fabi/.local/pythia8308/include/Pythia8Plugins/HepMC2.h:367-371",
+        "scratch/pack_aa_event_bundle_20260722T090049Z_4_clean/samples/660021fb118f5f92/events.truth.jsonl:1",
+        "scratch/pack_aa_event_bundle_20260722T090049Z_4_clean/samples/660021fb118f5f92/aa6_production_preservation_report.json:4"
+      ]
+    }
+  ],
+  "verification": {
+    "zip_integrity": "verified",
+    "bundle_checksums": "verified",
+    "jsonl_files": 9,
+    "records_per_jsonl": 1000,
+    "unique_production_ids_per_jsonl": 100,
+    "replicas_per_production_id": 10,
+    "h2_records_per_trial": 2,
+    "h2_observations_per_jsonl": 2000,
+    "vertices_and_proper_times": "verified",
+    "weights": "verified against source LHE",
+    "aa4_statistics": "independently recomputed and consistent",
+    "aa5_statistics": "independently recomputed and consistent",
+    "catalog": "independently recomputed and consistent",
+    "scientific_labels": "verified",
+    "pack_a_immutability": "authoritative ZIP hash matches expected",
+    "cleanup_safety": "dry-run verified; no deletion performed"
+  },
+  "reproduction_commands": [
+    "unzip -t releases/pack_aa/event_samples/20260722T090049Z_4/PACK_AA_EVENT_BUNDLE_20260722T090049Z_4.zip",
+    "(cd scratch/pack_aa_event_bundle_20260722T090049Z_4_clean && sha256sum -c PACK_AA_EVENT_BUNDLE_CHECKSUMS.sha256)",
+    "sha256sum releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip",
+    "gzip -cd pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz | rg -n 'Integrated weight|<init>|2.345300e-02'",
+    "python3 -c 'import json; p=\"scratch/pack_aa_event_bundle_20260722T090049Z_4_clean/samples/660021fb118f5f92/events.truth.jsonl\"; r=json.loads(open(p).readline()); print(r[\"weight\"], r[\"sigmaGen_pb\"])'",
+    "bash CLEANUP_PACK_AA_EVENT_BUNDLE_20260722T090049Z_4.sh"
+  ],
+  "correction_prompt": "review/event_bundle_cycle_1/CORRECTION_PROMPT.md"
+}

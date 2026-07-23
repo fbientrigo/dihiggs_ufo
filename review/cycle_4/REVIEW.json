@@ -1,0 +1,66 @@
+{
+  "review": "Pack AA release-candidate cycle 4",
+  "verdict": "PASS",
+  "candidate": {
+    "path": "releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip",
+    "sha256": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+    "unzip_test": "PASS"
+  },
+  "checks": {
+    "manifest_candidate_name": {
+      "declared": "releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip",
+      "expected": "releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip",
+      "match": true
+    },
+    "manifest_checksum_file": {
+      "declared": "checksums.sha256",
+      "match": true
+    },
+    "candidate_checksum": {
+      "declared": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+      "actual": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+      "match": true
+    },
+    "bundled_pack_a": {
+      "required": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+      "manifest": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+      "actual": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+      "match": true
+    },
+    "presentation_evidence_checksum": {
+      "declared": "e9efae259ea61c1170bd3ef18bc140e62f62c69d3f684733182626a2832e7836",
+      "actual": "e9efae259ea61c1170bd3ef18bc140e62f62c69d3f684733182626a2832e7836",
+      "match": true
+    },
+    "top_level_demo_gate": {
+      "configuration_count": 9,
+      "AA0": "PASS",
+      "AA1": "PASS",
+      "AA2": "PASS",
+      "AA3": "PASS",
+      "AA4": "PASS",
+      "AA5": "PASS",
+      "AA6": "PASS",
+      "AA7": "PROVISIONAL_ADAPTER_REQUIRED"
+    },
+    "mission_state": {
+      "status": "in_progress",
+      "review_ledger_final_verdict": null,
+      "allowed_pending_update": true
+    }
+  },
+  "scope": {
+    "code_or_input_edits": false,
+    "review_artifacts_written": [
+      "review/cycle_4/REVIEW.md",
+      "review/cycle_4/REVIEW.json"
+    ]
+  },
+  "sol_level_reasoning_required": {
+    "scientific": false,
+    "architectural": false,
+    "concurrency": false,
+    "protocol": false,
+    "security": false
+  }
+}

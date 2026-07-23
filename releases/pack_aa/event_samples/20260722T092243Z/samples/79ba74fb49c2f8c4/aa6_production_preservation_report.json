@@ -1,0 +1,10 @@
+{
+  "verdict": "PASS",
+  "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+  "sigma_lo_pb": 0.023453,
+  "hard_process": "g g > H > h2 h2",
+  "weighted_input": true,
+  "h2_input_count_per_event": [
+    2
+  ]
+}

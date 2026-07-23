@@ -1,0 +1,136 @@
+{
+  "aa2": {
+    "verdict": "PASS"
+  },
+  "aa3": {
+    "canonical_observable_hash": "165295e9ab1c6bb22057af753f46f36ae1a0c26e201c1b18e4d4d80ebd09427a",
+    "driver_exit_status": 0,
+    "event_accounting_identity": true,
+    "h2_accounting_identity": true,
+    "verdict": "PASS"
+  },
+  "aa4": {
+    "chi2_95_interval_mm": [
+      48265.98536966855,
+      52688.142860212756
+    ],
+    "configured_ctau_mm": 50000.0,
+    "ks_diagnostic": "not used as an oracle",
+    "mean_lab_radius_mm": 36453.53390050878,
+    "mean_proper_length_mm": 50404.06839197844,
+    "n_decayed_h2": 2000,
+    "verdict": "PASS"
+  },
+  "aa5": {
+    "channels": [
+      {
+        "acceptance_interval": [
+          0.17316718427000252,
+          0.2268328157299975
+        ],
+        "channel": [
+          22,
+          22
+        ],
+        "configured_fraction": 0.2,
+        "expected_standard_error": 0.00894427190999916,
+        "interval_method": "three_sigma_binomial_band",
+        "observed_count": 415,
+        "observed_fraction": 0.2075,
+        "verdict": "PASS"
+      },
+      {
+        "acceptance_interval": [
+          0.7731671842700025,
+          0.8268328157299976
+        ],
+        "channel": [
+          5,
+          -5
+        ],
+        "configured_fraction": 0.8,
+        "expected_standard_error": 0.008944271909999158,
+        "interval_method": "three_sigma_binomial_band",
+        "observed_count": 1585,
+        "observed_fraction": 0.7925,
+        "verdict": "PASS"
+      }
+    ],
+    "k": 3,
+    "n": 2000,
+    "verdict": "PASS"
+  },
+  "aa6": {
+    "h2_input_count_per_event": [
+      2
+    ],
+    "hard_process": "g g > H > h2 h2",
+    "sigma_lo_pb": 0.023453,
+    "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+    "verdict": "PASS",
+    "weighted_input": true
+  },
+  "aa7": {
+    "authoritative_format": "truth_jsonl",
+    "reader": "read_truth_jsonl",
+    "reason": "HepMC2 library unavailable; frozen recast consumes raw LHE in-process and requires a future cmnd adapter.",
+    "verdict": "PROVISIONAL_ADAPTER_REQUIRED"
+  },
+  "accounting_identity": true,
+  "canonical_observable_hash": "165295e9ab1c6bb22057af753f46f36ae1a0c26e201c1b18e4d4d80ebd09427a",
+  "config_sha256": "31cd4aa9f8c9597b423fe6a08af15afdc2702fad2fb350223670bbf5c5397986",
+  "decay_trials": 1000,
+  "driver": {
+    "command": [
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/bin/.pack_aa_driver",
+      "--lhe",
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+      "--out",
+      "/home/fabi/atlas_dihiggs/ufos/scratch/pack_aa_event_bundle_20260722T092243Z/regenerated/79ba74fb49c2f8c4/events.truth.jsonl",
+      "--events",
+      "1000",
+      "--seed",
+      "900006009",
+      "--mass",
+      "200.0",
+      "--ctau",
+      "50000.0",
+      "--is-resonance",
+      "0",
+      "--production-events",
+      "100",
+      "--channels",
+      "0.20000000000000001:22,22;0.80000000000000004:5,-5"
+    ],
+    "exit_code": 0,
+    "log": "/home/fabi/atlas_dihiggs/ufos/scratch/pack_aa_event_bundle_20260722T092243Z/regenerated/79ba74fb49c2f8c4/driver.log",
+    "output": "/home/fabi/atlas_dihiggs/ufos/scratch/pack_aa_event_bundle_20260722T092243Z/regenerated/79ba74fb49c2f8c4/events.truth.jsonl"
+  },
+  "event_accounting_identity": true,
+  "events_failed": 0,
+  "events_failed_decay": 0,
+  "events_filtered": 0,
+  "events_in": 1000,
+  "events_out": 1000,
+  "events_processed": 1000,
+  "filter_reasons": [],
+  "h2_accounting_identity": true,
+  "h2_observation_count": 2000,
+  "h2_structural_integrity": true,
+  "input_weights_preserved": true,
+  "labels": [
+    "PIPELINE_DEMONSTRATION_ONLY",
+    "NOT_MODEL_DERIVED",
+    "NOT_PI_ENDORSED"
+  ],
+  "materialized_input_event_blocks": 1000,
+  "output_sha256": "2e7f967a65a13a754d51066809894badb3601c99963d691703c8a29879c53984",
+  "pack_aa_sample_id": "79ba74fb49c2f8c4",
+  "per_channel_generated_count": {
+    "22 22": 415,
+    "5 -5": 1585
+  },
+  "replica_accounting_identity": true,
+  "replicas_per_input_event": 10,
+  "unique_input_events": 100
+}

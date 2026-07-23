@@ -1,0 +1,104 @@
+{
+  "schema": "pack_aa.event_bundle_review.v1",
+  "verdict": "FIX_REQUIRED",
+  "review_scope": "read_only_independent_event_bundle_review",
+  "bundle_zip": "releases/pack_aa/event_samples/20260722T092243Z_2/PACK_AA_EVENT_BUNDLE_20260722T092243Z_2.zip",
+  "clean_extraction": "scratch/pack_aa_event_bundle_20260722T092243Z_2_clean",
+  "hashes": {
+    "bundle_zip_sha256": "de54e94e5bdcd096534f1556fcf150ac93c096fa2217fcba6de636fba7cddf23",
+    "candidate_expected": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+    "candidate_observed": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+    "pack_a_expected": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "pack_a_observed": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6"
+  },
+  "finding_count": 1,
+  "findings": [
+    {
+      "id": "AA-EVT-002",
+      "severity": "integrity_provenance",
+      "location": [
+        "releases/pack_aa/event_samples/20260722T092243Z_2/PACK_AA_EVENT_BUNDLE_MANIFEST.json:29",
+        "releases/pack_aa/event_samples/20260722T092243Z_2/PACK_AA_EVENT_SAMPLE_CATALOG.csv:2",
+        "releases/pack_aa/event_samples/20260722T092243Z_2/PACK_AA_EVENT_BUNDLE_VALIDATION.json:75"
+      ],
+      "summary": "All nine per-configuration JSONL hash declarations are stale relative to the packaged JSONL bytes.",
+      "evidence": {
+        "sample_id": "fcd9ff83da939385",
+        "declared_jsonl_sha256": "193921de22d253b859a0c179a4f35330de1fbf68e6a93d2e18b55eca89792f10",
+        "actual_jsonl_sha256": "95eeef943e1ed33b02c8b1da5988b1e1b9737d1684fea31f9ad9b60cd49a8498",
+        "checksum_file_jsonl_sha256": "95eeef943e1ed33b02c8b1da5988b1e1b9737d1684fea31f9ad9b60cd49a8498",
+        "driver_meta_jsonl_sha256": "95eeef943e1ed33b02c8b1da5988b1e1b9737d1684fea31f9ad9b60cd49a8498",
+        "mismatched_configuration_count": 9,
+        "root_cause": "Dependent manifest, validation, and catalog summaries were not regenerated after the corrected JSONL outputs changed.",
+        "impact": "Consumers using the manifest, validation JSON, or catalog hash fields cannot verify the corresponding event files."
+      },
+      "requires_sol_level_reasoning": {
+        "scientific": false,
+        "architectural": false,
+        "concurrency": false,
+        "protocol": false,
+        "security": false
+      },
+      "references": [
+        "scratch/pack_aa_event_bundle_20260722T092243Z_2_clean/PACK_AA_EVENT_BUNDLE_CHECKSUMS.sha256:116",
+        "scratch/pack_aa_event_bundle_20260722T092243Z_2_clean/samples/fcd9ff83da939385/events.truth.driver.meta.json:3",
+        "scratch/pack_aa_event_bundle_20260722T092243Z_2_clean/samples/fcd9ff83da939385/events.truth.jsonl"
+      ]
+    }
+  ],
+  "verification": {
+    "zip_integrity": "verified",
+    "zip_members": 119,
+    "clean_extraction_byte_match": "verified; disposable marker is the only extra file",
+    "bundle_checksums": "verified",
+    "json_files": "all parsed",
+    "jsonl_files": 9,
+    "records_per_jsonl": 1000,
+    "unique_production_ids_per_jsonl": 100,
+    "replicas_per_production_id": 10,
+    "h2_records_per_trial": 2,
+    "h2_observations_per_jsonl": 2000,
+    "vertices_and_proper_times": "verified finite and positive",
+    "weights": "verified against source LHE 0.023453 pb",
+    "sigmaGen_pb": "verified against source LHE 0.023453 pb within 1e-12",
+    "aa4_statistics": "independently recomputed and consistent for all nine configurations",
+    "aa5_statistics": "independently recomputed and consistent for all nine configurations",
+    "catalog_numeric_accuracy": "verified",
+    "catalog_hash_accuracy": "failed; all nine JSONL_SHA256 values stale",
+    "scientific_labels": "verified",
+    "driver_source_hash": {
+      "declared": "c2dff2510d45ff3662907e71f3941b50b0f1a90d08ad6039f4d2a49ebbdfcd52",
+      "observed": "c2dff2510d45ff3662907e71f3941b50b0f1a90d08ad6039f4d2a49ebbdfcd52",
+      "match": true
+    },
+    "driver_binary_hash": {
+      "declared": "fbb9b8bae925ba86a6653978efbe8f63cf63a87832f8ff737031691bb4566f7e",
+      "observed": "fbb9b8bae925ba86a6653978efbe8f63cf63a87832f8ff737031691bb4566f7e",
+      "match": true
+    },
+    "pack_a_immutability": "expected SHA-256 matches observed",
+    "pack_aa_candidate_immutability": "expected SHA-256 matches observed",
+    "cleanup_safety": "dry-run verified; only marked disposable cycle-2 scratch target"
+  },
+  "scientific_validation": {
+    "source_sigma_pb": 0.023453,
+    "corrected_driver_location": "pack_aa/src/pack_aa_driver.cc:236",
+    "corrected_driver_expression": "pythia.info.sigmaGen() * 1e9",
+    "sol_level_reasoning_required": {
+      "scientific": false,
+      "architectural": false,
+      "concurrency": false,
+      "protocol": false,
+      "security": false
+    }
+  },
+  "scope": {
+    "implementation_or_protected_artifact_edits": false,
+    "review_artifacts_written": [
+      "review/event_bundle_cycle_2/REVIEW.md",
+      "review/event_bundle_cycle_2/REVIEW.json",
+      "review/event_bundle_cycle_2/CORRECTION_PROMPT.md"
+    ]
+  },
+  "correction_prompt": "review/event_bundle_cycle_2/CORRECTION_PROMPT.md"
+}

@@ -1,0 +1,37 @@
+{
+  "gate": "AA7",
+  "verdict": "PROVISIONAL_ADAPTER_REQUIRED",
+  "truth_jsonl_reader": "PASS",
+  "cmnd_adapter_syntax_and_in_process_smoke": "PASS",
+  "adapter": "pack_aa/validation/pack_aa_recast_adapter.cmnd",
+  "adapter_driver": {
+    "command": [
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/bin/.pack_aa_driver",
+      "--lhe",
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+      "--out",
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa7_adapter_smoke/events.truth.jsonl",
+      "--events",
+      "1",
+      "--seed",
+      "900006009",
+      "--mass",
+      "200.0",
+      "--ctau",
+      "50000.0",
+      "--is-resonance",
+      "0",
+      "--production-events",
+      "1",
+      "--channels",
+      "0.20000000000000001:22,22;0.80000000000000004:5,-5",
+      "--cmnd",
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/validation/pack_aa_recast_adapter.cmnd"
+    ],
+    "exit_code": 0,
+    "log": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa7_adapter_smoke/events.truth.driver.log",
+    "output": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa7_adapter_smoke/events.truth.jsonl"
+  },
+  "hepmc2": "PROVISIONAL_ADAPTER_REQUIRED: no HepMC2 library",
+  "recast_cutflow": "NOT_RUN"
+}

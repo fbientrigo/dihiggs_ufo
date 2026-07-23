@@ -1,0 +1,13 @@
+{
+  "verdict": "PASS",
+  "canonical_observable_hash_1": "224e0df6aa63ef918f7844209bc44e82dd2782f3ecdae03923940c43c7fabc02",
+  "canonical_observable_hash_2": "224e0df6aa63ef918f7844209bc44e82dd2782f3ecdae03923940c43c7fabc02",
+  "event_accounting_identity": true,
+  "h2_observation_count_1": 200,
+  "h2_observation_count_2": 200,
+  "driver_exit_statuses": [
+    0,
+    0
+  ],
+  "raw_file_hash_not_used": true
+}

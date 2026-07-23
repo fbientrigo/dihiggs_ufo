@@ -1,0 +1,15 @@
+# Pack AA — Open Decisions
+
+Only decisions that genuinely require human or downstream input. Not a
+general future-work list.
+
+| # | decision | classification | why it can't be resolved by this design pass |
+|---|---|---|---|
+| 1 | Authoritative source of h2 lifetime and branching-ratio values (vs. the illustrative placeholders used in the demo plan) | scientific decision, PI confirmation required | No physics model or paper reference for these values was supplied in the mission brief; Pack A's frozen scope explicitly stops at stable-h2 production |
+| 2 | Which h2 decay channels are needed first for real physics use (beyond the illustrative γγ / b b̄ / mixed demo) | scientific decision | Depends on which experimental signature (diphoton, displaced-jets, etc.) the PI wants prioritized; `hep_cross`'s contract hints at diphoton and displaced/prompt tags but does not mandate a channel list for Pack AA |
+| 3 | Whether h2 (PDG 9000006) is self-conjugate in Pythia's particle-database sense | PI/UFO confirmation required | The frozen UFO's `particles.py` defines the particle, but this design pass did not exhaustively parse its antiparticle-name/PDG-sign convention against Pythia8's own self-conjugate flag semantics — an implementation agent must confirm this before registering the particle, since it changes how `[5,-5]`-style channels are interpreted |
+| 4 | Whether h2 should be flagged `isResonance` in Pythia | technical decision | Affects phase-space/decay-time treatment; not determinable from the frozen UFO metadata alone, and low material risk either way but must be fixed once, not left implicit |
+| 5 | Target output format actually required by the recast (HepMC2 vs. HepMC3 vs. ROOT) | downstream compatibility decision | `llp_recast` is still Phase 0 (not yet bootstrapped); its frozen upstream code (`external/recastingCodes`) has not been inspected for its actual reader. Design defaults to HepMC2 based on Pack A's own `RECAST_ADAPTER.md` wording and `llp_recast`'s pinned Pythia8.308 (no HepMC3 build flag on record), but this is a default, not a confirmed requirement |
+| 6 | Pythia version to freeze for Pack AA | technical decision, should mirror `llp_recast` | `llp_recast/configs/toolchain.env.example` pins `pythia8308`; Pack AA should freeze the same version for consistency, but this has not been explicitly confirmed as a hard requirement by a researcher |
+| 7 | Whether the researcher demonstration should use illustrative lifetimes (as designed) or first-pass model-derived ones | scientific decision | No model-derived lifetime calculation was in scope for this mission; using illustrative values is the design's explicit choice pending PI input |
+| 8 | Minimum sample size / confidence-level thresholds for gates AA4 and AA5 | technical decision, implementation-owned but should be reviewed | The design specifies the statistical *form* of the test (boost-corrected proper-length closure, binomial/multinomial BR tolerance) but leaves the exact N and k constants to the implementation, to be justified against real statistical power once Pythia is actually run |

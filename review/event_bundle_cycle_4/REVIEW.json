@@ -1,0 +1,75 @@
+{
+  "schema": "pack_aa.event_bundle_review.v1",
+  "verdict": "PASS",
+  "review_scope": "read_only_independent_event_bundle_review",
+  "bundle_zip": "releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_20260722T092243Z_5.zip",
+  "clean_extraction": "scratch/pack_aa_event_bundle_20260722T092243Z_5_clean",
+  "finding_count": 0,
+  "findings": [],
+  "hashes": {
+    "bundle_zip_sha256": "d71ce0face8248e4a13db21efa10be48ccd2b1b7c61ccbe1b16dc102b3d41fe2",
+    "candidate_expected": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+    "candidate_observed": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+    "pack_a_expected": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "pack_a_observed": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6"
+  },
+  "identity": {
+    "bundle_id": "PACK_AA_EVENT_BUNDLE_20260722T092243Z_5",
+    "bundle_path": "releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_20260722T092243Z_5.zip",
+    "stale_cycle_2_or_4_scratch_provenance": false
+  },
+  "verification": {
+    "zip_integrity": "verified",
+    "zip_members": 119,
+    "clean_extraction_byte_match": "verified; disposable marker is the only extra file",
+    "bundle_checksums": "verified; 118 entries",
+    "manifest_file_hashes": "verified; 117 entries",
+    "json_files": "all parsed",
+    "jsonl_files": 9,
+    "jsonl_schema": "all pack_aa.truth.v1",
+    "jsonl_byte_hash_propagation": "verified against manifest, catalog, driver metadata, and run summaries",
+    "records_per_jsonl": 1000,
+    "unique_production_ids_per_jsonl": 100,
+    "production_id_range": "1-100",
+    "replicas_per_production_id": 10,
+    "h2_records_per_trial": 2,
+    "h2_observations_per_jsonl": 2000,
+    "vertices_and_proper_times": "verified finite; proper times and lengths positive",
+    "weights": "verified finite and equal to 0.023453 pb within 1e-12",
+    "sigmaGen_pb": "verified finite and equal to 0.023453 pb within 1e-12",
+    "aa4_statistics": "independently recomputed and consistent for all nine configurations",
+    "aa5_statistics": "independently recomputed and consistent for all nine configurations",
+    "catalog": "verified",
+    "claims_and_labels": "verified demonstration-only labels and no detector/recast/exclusion/limit claims",
+    "driver_source_hash": {
+      "declared": "c2dff2510d45ff3662907e71f3941b50b0f1a90d08ad6039f4d2a49ebbdfcd52",
+      "observed": "c2dff2510d45ff3662907e71f3941b50b0f1a90d08ad6039f4d2a49ebbdfcd52",
+      "match": true
+    },
+    "driver_binary_hash": {
+      "declared": "fbb9b8bae925ba86a6653978efbe8f63cf63a87832f8ff737031691bb4566f7e",
+      "observed": "fbb9b8bae925ba86a6653978efbe8f63cf63a87832f8ff737031691bb4566f7e",
+      "match": true
+    },
+    "pack_a_immutability": "expected SHA-256 matches observed",
+    "pack_aa_candidate_immutability": "expected SHA-256 matches observed",
+    "cleanup_safety": "dry-run verified; only marked disposable final `_5` scratch target; no deletion"
+  },
+  "scientific_validation": {
+    "source_sigma_pb": 0.023453,
+    "sol_level_reasoning_required": {
+      "scientific": false,
+      "architectural": false,
+      "concurrency": false,
+      "protocol": false,
+      "security": false
+    }
+  },
+  "scope": {
+    "implementation_or_protected_artifact_edits": false,
+    "review_artifacts_written": [
+      "review/event_bundle_cycle_4/REVIEW.md",
+      "review/event_bundle_cycle_4/REVIEW.json"
+    ]
+  }
+}

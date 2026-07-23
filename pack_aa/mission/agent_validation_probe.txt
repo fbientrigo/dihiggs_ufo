@@ -1,0 +1,167 @@
+Pack AA read-only validation probe
+Generated: 2026-07-22
+Scope: approved design overlay at CURRENT_PACK_AA_DESIGN -> design/pack_aa; existing
+Pack AA implementation outputs; no Pack A or implementation edits.
+
+Authoritative inputs
+--------------------
+- design/pack_aa/PACK_AA_VALIDATION_MATRIX.json (AA0-AA7 and provenance_fields)
+- design/pack_aa/PACK_AA_DESIGN_ADDENDUM_V1.md (supersedes AA2/AA3/AA7 HepMC
+  clauses at lines 95-119)
+- design/pack_aa/PACK_AA_TECHNICAL_DECISIONS.md (T5/T6 statistical rules)
+- design/pack_aa/PACK_AA_DESIGN_CONTRACT.md (normalization/provenance contract)
+
+Commands and raw observations
+-----------------------------
+$ git status --short --branch
+* No commits yet on agent/pack-aa-implementation-20260722-0157
+?? pack_aa/ ... (workspace artifacts are untracked; preserved)
+
+$ rtk find pack_aa -type f -name '*.schema.json'
+(no output)
+$ rtk find pack_aa -type f -name '*summary*schema*'
+(no output)
+Conclusion: no executable event-summary/run-summary schema exists. The output
+shape is assembled ad hoc by pack_aa/python/pack_aa.py:254-270, 290-292.
+
+$ ./pack_aa/bin/pack-aa status
+latest run: .../pack_aa/runs/20260722T031215Z_248d339eedaede90_ctau50000_mixed
+summary verdicts: AA2 PASS; AA3 PENDING_DEMO_REPRODUCIBILITY; AA4 PASS;
+AA5 PASS; AA6 PASS; AA7 PROVISIONAL_ADAPTER_REQUIRED
+events_in=1000 events_out=1000 events_failed_decay=0 events_filtered=0
+accounting_identity=true input_weights_preserved=true
+
+$ ./pack_aa/bin/pack-aa results
+run: /home/fabi/atlas_dihiggs/ufos/pack_aa/runs/20260722T031215Z_248d339eedaede90_ctau50000_mixed
+summary: .../run_summary.json
+truth: .../events.truth.jsonl
+
+$ jq -s '{records:length,h2_before:([.[].h2BeforeCount]|unique),h2_all:([.[].h2AllCount]|unique),h2_after:([.[].h2AfterCount]|unique),sum_h2:([.[].h2|length]|add)}' \
+  pack_aa/runs/20260722T031215Z_248d339eedaede90_ctau50000_mixed/events.truth.jsonl
+{"records":1000,"h2_before":[2],"h2_all":[8,10,12,14,16,18,20,22,24,26,30],"h2_after":[2],"sum_h2":2000}
+
+$ jq '{raw_file_hash_not_used,canonical_observable_hash_1,canonical_observable_hash_2,accounting_identity}' \
+  pack_aa/validation/aa3_reproducibility_report.json
+{"raw_file_hash_not_used":true,"canonical_observable_hash_1":"0739f47e...","canonical_observable_hash_2":"0739f47e...","accounting_identity":true}
+
+Executable assertion translation
+---------------------------------
+The following is the minimum assertion set for a real probe. Assertions must
+fail closed and report the named gate; `run` must not be considered validated
+just because a summary field says PASS.
+
+    def assert_gate(gate, condition, detail):
+        assert condition, f"{gate}: {detail}"
+
+    # AA0: immutable input, before Pythia.
+    assert_gate("AA0", sha256(frozen_zip) == cfg["pack_a"]["frozen_artifact_sha256"], "frozen ZIP hash")
+    assert_gate("AA0", sha256(input_lhe) == cfg["pack_a"]["input_lhe_sha256"], "input LHE hash")
+    assert_gate("AA0", every_event_has_exactly_two_stable_h2_with_cfg_mass, "stable h2 identity/mass")
+    assert_gate("AA0", parsed_hard_process == "g g > H > h2 h2" and zero_jet_only, "hard process")
+    assert_gate("AA0", input_weight_mode_matches_declared_weighted_input, "<init> weighting")
+
+    # AA1: complete config contract, no process-ownership collision.
+    assert_gate("AA1", required_config_keys_present, "schema required fields")
+    assert_gate("AA1", lifetime_fields_are_one_or_mutually_consistent, "lifetime")
+    assert_gate("AA1", abs(sum(brs) - 1) <= 1e-6 or named_partial_policy, "BR sum/policy")
+    assert_gate("AA1", all(daughter_pdg in_pythia_particle_database), "daughter database")
+    assert_gate("AA1", all(daughter_pole_mass_sum <= mass_GeV), "threshold")
+    assert_gate("AA1", no_matching_merging_or_hard_ISR_FSR_override, "forbidden setting")
+    assert_gate("AA1", input_h2_is_stable_and_config_does_not_pre_decay, "single decay owner")
+    assert_gate("AA1", not output_directory.exists(), "no evidence overwrite")
+
+    # AA2: one event, Pythia-only decay and structural integrity.
+    assert_gate("AA2", pre_pythia_h2_count == 2 and all(status == 1), "pre-decay h2")
+    assert_gate("AA2", each_h2_has_one_decay_vertex_and_no_duplicate_decay, "one decay")
+    assert_gate("AA2", direct_configured_daughters_match_channel_table, "daughter ownership")
+    assert_gate("AA2", all_finite_vertex_coordinates_and_proper_length, "finite vertex")
+    assert_gate("AA2", all(proper_time > 0 for proper_time in proper_times), "proper time")
+    assert_gate("AA2", chosen_output_reader_parses, "output reader")
+
+    # AA3: fixed seed and explicit accounting.
+    assert_gate("AA3", canonical_observable_hash_1 == canonical_observable_hash_2 or documented_nondeterminism, "reproducibility")
+    assert_gate("AA3", n_events_in == n_events_out + n_events_failed_decay + n_events_filtered, "accounting identity")
+    assert_gate("AA3", all_filtered_events_have_logged_reason, "filter reasons")
+
+    # AA4: boost-corrected exponential mean; KS is diagnostic only.
+    assert_gate("AA4", all(abs(L_lab_i / beta_gamma_i - L_proper_i) <= tol for L_lab_i, beta_gamma_i, L_proper_i in h2_measurements), "per-event boost correction")
+    assert_gate("AA4", n_decayed_h2 >= declared_minimum_N, "statistical power")
+    assert_gate("AA4", configured_ctau_mm in chi2_95_interval_mm, "95% exponential-mean closure")
+    assert_gate("AA4", ks_result_is_not_the_sole_oracle, "KS role")
+
+    # AA5: channel counts are h2-decay observations, with a declared N.
+    assert_gate("AA5", sum(per_channel_generated_count.values()) == n_decayed_h2, "channel accounting")
+    assert_gate("AA5", observed_fraction_uses_same_N_as_count_and_BR, "denominator")
+    assert_gate("AA5", exact_clopper_pearson_for_expected_count_below_5, "small-count interval")
+    assert_gate("AA5", every_channel_passes_declared_k_band, "BR closure")
+
+    # AA6: production content and normalization are unchanged.
+    assert_gate("AA6", output_weight_by_event_id == input_lhe_weight_by_event_id, "weights")
+    assert_gate("AA6", output_sigma_and_manifest_sigma == input_pack_a_sigma, "sigma_LO_fb")
+    assert_gate("AA6", output_hard_process == input_hard_process, "hard process")
+    assert_gate("AA6", output_pre_decay_h2_ids_and_count == input_h2_ids_and_count, "h2 accounting")
+
+    # AA7: current addendum definition, not the unsatisfiable old file-open claim.
+    assert_gate("AA7", own_output_reader_parses_and_event_count_matches, "self-reader")
+    assert_gate("AA7", recast_adapter_cmnd_is_separately_syntax_smoke_tested, "actual recast boundary")
+
+Findings from current implementation/output
+--------------------------------------------
+1. AA0 provenance is not exact: config/input is a 1,000-event materialized
+   derivative while prepare_input.py:1-2,26-48 says it repeats a 100-event
+   source ten times. The run AA0 record has different source_lhe_sha256 and
+   input_lhe_sha256, yet pack_aa.py:285 labels AA0 PASS. This needs an explicit
+   derived-input provenance rule or must fail the "exact frozen product" gate.
+2. AA0/AA1 omit the declared weighted_input/<init> check from the contract
+   (PACK_AA_DESIGN_CONTRACT.md:162-166); validate() at pack_aa.py:94-166 only
+   extracts event weights and never parses the LHE weight mode.
+3. AA1 is weaker than its schema: validate() hard-codes daughter masses/PDGs
+   in pack_aa.py:32,136-138 instead of checking the pinned Pythia database, and
+   does not enforce required fields such as executable_or_library,
+   production_sample_id, self_conjugate, is_resonance, or a named partial-width
+   placeholder (config schema:10-22,47-62,64-79).
+4. AA2 does not implement the approved output-reader check. analyse_events()
+   at pack_aa.py:227-236 checks counts, positive proper time, and finite proper
+   length only; pack_aa.py:305-318 also does not prove a single decay, finite
+   four-vertex, or configured/direct-daughter equality. The observed event has
+   h2AllCount=8..30 and h2AfterCount=2; `hasVertex=false` is emitted by
+   pack_aa/src/pack_aa_driver.cc:81, but no gate assertion interprets it.
+5. AA3 is not a per-run gate: run_one() hard-codes
+   aa3=PENDING_DEMO_REPRODUCIBILITY at pack_aa.py:291. The demo report hashes
+   canonicalized JSON at pack_aa.py:341-348 and hard-codes accounting_identity
+   true; no run summary contains output_file_hashes, event-loss reasons, or a
+   computed full accounting identity.
+6. Accounting is semantically under-specified: events_in/out are 1,000 events,
+   while n_decayed_h2 and per_channel_generated_count are 2,000 h2 decays
+   (run_summary.json:33-43,44-53). This is usable only if the schema declares
+   N as h2 observations; the approved T5/T6 text calls N "decayed events"
+   (TECHNICAL_DECISIONS.md:322,358). The probe must assert the denominator
+   explicitly and never compare channel counts to events_out.
+7. AA4/AA5 statistical implementation diverges from approved T6: AA4 uses the
+   Wilson-Hilferty approximation (pack_aa.py:207-211), which is acceptable only
+   at its stated N ceiling, but AA5 uses the normal band/fallback `count > 0`
+   (pack_aa.py:246-253) and never implements the required Clopper-Pearson branch
+   (TECHNICAL_DECISIONS.md:353-383). Also `events_failed_decay` becomes
+   `expected-len(records)` only when global h2_ok is false (pack_aa.py:258),
+   so structural failures can leave accounting_identity=true.
+8. AA6 PASS is a claim, not four assertions: analyse_events() returns AA6 from
+   only weight_ok and h2_ok (pack_aa.py:260-266). It never compares sigma,
+   hard-process identity, event IDs/order, or input/output pre-decay h2 identity
+   as required by VALIDATION_MATRIX.json:114-125.
+9. Provenance is incomplete: the current run_summary lacks
+   pack_aa_schema_version, implementation hash, frozen ZIP/input hashes,
+   production sample ID, Pythia/compiler versions, channel seed, output hashes,
+   and exit status. This contradicts VALIDATION_MATRIX.json:3-24 and the
+   implementation mission at PACK_AA_IMPLEMENTATION_MISSION.md:41-42. No
+   event-summary schema exists to catch the omission.
+10. AA7 remains correctly non-final but is not tested under the addendum:
+    PACK_AA_DESIGN_ADDENDUM_V1.md:109-119 requires a separate `.cmnd` syntax/
+    in-process smoke, while run_one() only writes a fixed provisional reason at
+    pack_aa.py:291. The old HepMC2 file-open requirement in
+    VALIDATION_MATRIX.json:128-138 is superseded and should not be reported as
+    a completed reader validation.
+
+Read-only conclusion: existing artifacts support AA0/AA1/AA4/AA5 claims only
+for the demonstrated sample and labels; AA2/AA3/AA6 are under-asserted, the
+summary has no schema, and AA7 is appropriately provisional but lacks the
+required adapter smoke evidence.

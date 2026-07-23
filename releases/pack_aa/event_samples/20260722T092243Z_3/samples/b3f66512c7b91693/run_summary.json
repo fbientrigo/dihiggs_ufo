@@ -1,0 +1,119 @@
+{
+  "aa2": {
+    "verdict": "PASS"
+  },
+  "aa3": {
+    "canonical_observable_hash": "059bdf3a91b3e30ca9aab6d3f419b2cd0a2df515e1beeb471e3c345be546b568",
+    "driver_exit_status": 0,
+    "event_accounting_identity": true,
+    "h2_accounting_identity": true,
+    "verdict": "PASS"
+  },
+  "aa4": {
+    "chi2_95_interval_mm": [
+      48644.215051062296,
+      53101.02616373628
+    ],
+    "configured_ctau_mm": 50000.0,
+    "ks_diagnostic": "not used as an oracle",
+    "mean_lab_radius_mm": 36699.100002605854,
+    "mean_proper_length_mm": 50799.052863606514,
+    "n_decayed_h2": 2000,
+    "verdict": "PASS"
+  },
+  "aa5": {
+    "channels": [
+      {
+        "acceptance_interval": [
+          0.9967016262822914,
+          1.0
+        ],
+        "channel": [
+          22,
+          22
+        ],
+        "configured_fraction": 1.0,
+        "expected_standard_error": 0.0,
+        "interval_method": "clopper_pearson_exact_99_73_percent",
+        "observed_count": 2000,
+        "observed_fraction": 1.0,
+        "verdict": "PASS"
+      }
+    ],
+    "k": 3,
+    "n": 2000,
+    "verdict": "PASS"
+  },
+  "aa6": {
+    "h2_input_count_per_event": [
+      2
+    ],
+    "hard_process": "g g > H > h2 h2",
+    "sigma_lo_pb": 0.023453,
+    "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+    "verdict": "PASS",
+    "weighted_input": true
+  },
+  "aa7": {
+    "authoritative_format": "truth_jsonl",
+    "reader": "read_truth_jsonl",
+    "reason": "HepMC2 library unavailable; frozen recast consumes raw LHE in-process and requires a future cmnd adapter.",
+    "verdict": "PROVISIONAL_ADAPTER_REQUIRED"
+  },
+  "accounting_identity": true,
+  "canonical_observable_hash": "059bdf3a91b3e30ca9aab6d3f419b2cd0a2df515e1beeb471e3c345be546b568",
+  "config_sha256": "9fbf7a5b96f411c9a0142ad8ca5a3760e5e9d65ba3a040729d26dfb18fec93b2",
+  "decay_trials": 1000,
+  "driver": {
+    "command": [
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/bin/.pack_aa_driver",
+      "--lhe",
+      "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+      "--out",
+      "/home/fabi/atlas_dihiggs/ufos/scratch/pack_aa_event_bundle_20260722T092243Z_2/regenerated/b3f66512c7b91693/events.truth.jsonl",
+      "--events",
+      "1000",
+      "--seed",
+      "900006007",
+      "--mass",
+      "200.0",
+      "--ctau",
+      "50000.0",
+      "--is-resonance",
+      "0",
+      "--production-events",
+      "100",
+      "--channels",
+      "1:22,22"
+    ],
+    "exit_code": 0,
+    "log": "/home/fabi/atlas_dihiggs/ufos/scratch/pack_aa_event_bundle_20260722T092243Z_2/regenerated/b3f66512c7b91693/driver.log",
+    "output": "/home/fabi/atlas_dihiggs/ufos/scratch/pack_aa_event_bundle_20260722T092243Z_2/regenerated/b3f66512c7b91693/events.truth.jsonl"
+  },
+  "event_accounting_identity": true,
+  "events_failed": 0,
+  "events_failed_decay": 0,
+  "events_filtered": 0,
+  "events_in": 1000,
+  "events_out": 1000,
+  "events_processed": 1000,
+  "filter_reasons": [],
+  "h2_accounting_identity": true,
+  "h2_observation_count": 2000,
+  "h2_structural_integrity": true,
+  "input_weights_preserved": true,
+  "labels": [
+    "PIPELINE_DEMONSTRATION_ONLY",
+    "NOT_MODEL_DERIVED",
+    "NOT_PI_ENDORSED"
+  ],
+  "materialized_input_event_blocks": 1000,
+  "output_sha256": "65b9f5a2ee134680e564992ae8e2a835173929bc63005f02491162d5452a84a8",
+  "pack_aa_sample_id": "b3f66512c7b91693",
+  "per_channel_generated_count": {
+    "22 22": 2000
+  },
+  "replica_accounting_identity": true,
+  "replicas_per_input_event": 10,
+  "unique_input_events": 100
+}

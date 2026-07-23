@@ -1,0 +1,862 @@
+{
+  "labels": [
+    "PIPELINE_DEMONSTRATION_ONLY",
+    "NOT_MODEL_DERIVED",
+    "NOT_PI_ENDORSED"
+  ],
+  "verdict": "PACK_AA_CORE_VALIDATED_AA7_PROVISIONAL",
+  "pack_a": {
+    "path": "releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip",
+    "sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "immutable": true
+  },
+  "events_per_configuration": 1000,
+  "configurations": [
+    {
+      "run_dir": "pack_aa/runs/20260722T071750Z_fcd9ff83da939385_ctau1000_bb",
+      "sample_id": "fcd9ff83da939385",
+      "ctau_mm": 1000.0,
+      "channels": {
+        "5 -5": 2000
+      },
+      "aa4": "PASS",
+      "aa4_evidence": {
+        "verdict": "PASS",
+        "n_decayed_h2": 2000,
+        "configured_ctau_mm": 1000.0,
+        "mean_proper_length_mm": 987.7894666374951,
+        "mean_lab_radius_mm": 696.8772072366917,
+        "chi2_95_interval_mm": [
+          945.888565467972,
+          1032.5514228191225
+        ],
+        "ks_diagnostic": "not used as an oracle"
+      },
+      "aa5": "PASS",
+      "aa5_evidence": {
+        "verdict": "PASS",
+        "k": 3,
+        "n": 2000,
+        "channels": [
+          {
+            "channel": [
+              5,
+              -5
+            ],
+            "configured_fraction": 1.0,
+            "observed_count": 2000,
+            "observed_fraction": 1.0,
+            "expected_standard_error": 0.0,
+            "acceptance_interval": [
+              0.9967016262822914,
+              1.0
+            ],
+            "interval_method": "clopper_pearson_exact_99_73_percent",
+            "verdict": "PASS"
+          }
+        ]
+      },
+      "aa6": "PASS",
+      "aa6_evidence": {
+        "verdict": "PASS",
+        "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+        "sigma_lo_pb": 0.023453,
+        "hard_process": "g g > H > h2 h2",
+        "weighted_input": true,
+        "h2_input_count_per_event": [
+          2
+        ]
+      },
+      "config_sha256": "8307b3d1b49b9188d4b82d77916c864b4a33c00893a52e4a11150d895ca2a661",
+      "unique_input_events": 100,
+      "decay_trials": 1000,
+      "replicas_per_input_event": 10
+    },
+    {
+      "run_dir": "pack_aa/runs/20260722T071808Z_4ad3896b59cb0d92_ctau1000_gamma_gamma",
+      "sample_id": "4ad3896b59cb0d92",
+      "ctau_mm": 1000.0,
+      "channels": {
+        "22 22": 2000
+      },
+      "aa4": "PASS",
+      "aa4_evidence": {
+        "verdict": "PASS",
+        "n_decayed_h2": 2000,
+        "configured_ctau_mm": 1000.0,
+        "mean_proper_length_mm": 1015.9810572721303,
+        "mean_lab_radius_mm": 733.9820000521172,
+        "chi2_95_interval_mm": [
+          972.884301021246,
+          1062.0205232747255
+        ],
+        "ks_diagnostic": "not used as an oracle"
+      },
+      "aa5": "PASS",
+      "aa5_evidence": {
+        "verdict": "PASS",
+        "k": 3,
+        "n": 2000,
+        "channels": [
+          {
+            "channel": [
+              22,
+              22
+            ],
+            "configured_fraction": 1.0,
+            "observed_count": 2000,
+            "observed_fraction": 1.0,
+            "expected_standard_error": 0.0,
+            "acceptance_interval": [
+              0.9967016262822914,
+              1.0
+            ],
+            "interval_method": "clopper_pearson_exact_99_73_percent",
+            "verdict": "PASS"
+          }
+        ]
+      },
+      "aa6": "PASS",
+      "aa6_evidence": {
+        "verdict": "PASS",
+        "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+        "sigma_lo_pb": 0.023453,
+        "hard_process": "g g > H > h2 h2",
+        "weighted_input": true,
+        "h2_input_count_per_event": [
+          2
+        ]
+      },
+      "config_sha256": "a192f99290c987989e96ada9e0d7d1aff6b28e495167ea48b8f6ea7207714d2d",
+      "unique_input_events": 100,
+      "decay_trials": 1000,
+      "replicas_per_input_event": 10
+    },
+    {
+      "run_dir": "pack_aa/runs/20260722T071828Z_743390d495cb995c_ctau1000_mixed",
+      "sample_id": "743390d495cb995c",
+      "ctau_mm": 1000.0,
+      "channels": {
+        "22 22": 415,
+        "5 -5": 1585
+      },
+      "aa4": "PASS",
+      "aa4_evidence": {
+        "verdict": "PASS",
+        "n_decayed_h2": 2000,
+        "configured_ctau_mm": 1000.0,
+        "mean_proper_length_mm": 1008.0813678395689,
+        "mean_lab_radius_mm": 729.0706780101757,
+        "chi2_95_interval_mm": [
+          965.319707393371,
+          1053.7628572042552
+        ],
+        "ks_diagnostic": "not used as an oracle"
+      },
+      "aa5": "PASS",
+      "aa5_evidence": {
+        "verdict": "PASS",
+        "k": 3,
+        "n": 2000,
+        "channels": [
+          {
+            "channel": [
+              22,
+              22
+            ],
+            "configured_fraction": 0.2,
+            "observed_count": 415,
+            "observed_fraction": 0.2075,
+            "expected_standard_error": 0.00894427190999916,
+            "acceptance_interval": [
+              0.17316718427000252,
+              0.2268328157299975
+            ],
+            "interval_method": "three_sigma_binomial_band",
+            "verdict": "PASS"
+          },
+          {
+            "channel": [
+              5,
+              -5
+            ],
+            "configured_fraction": 0.8,
+            "observed_count": 1585,
+            "observed_fraction": 0.7925,
+            "expected_standard_error": 0.008944271909999158,
+            "acceptance_interval": [
+              0.7731671842700025,
+              0.8268328157299976
+            ],
+            "interval_method": "three_sigma_binomial_band",
+            "verdict": "PASS"
+          }
+        ]
+      },
+      "aa6": "PASS",
+      "aa6_evidence": {
+        "verdict": "PASS",
+        "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+        "sigma_lo_pb": 0.023453,
+        "hard_process": "g g > H > h2 h2",
+        "weighted_input": true,
+        "h2_input_count_per_event": [
+          2
+        ]
+      },
+      "config_sha256": "e4761809587d9ced5286578385580a7a391566a3349fe44fc99756d88ee18e66",
+      "unique_input_events": 100,
+      "decay_trials": 1000,
+      "replicas_per_input_event": 10
+    },
+    {
+      "run_dir": "pack_aa/runs/20260722T071846Z_660021fb118f5f92_ctau1_bb",
+      "sample_id": "660021fb118f5f92",
+      "ctau_mm": 1.0,
+      "channels": {
+        "5 -5": 2000
+      },
+      "aa4": "PASS",
+      "aa4_evidence": {
+        "verdict": "PASS",
+        "n_decayed_h2": 2000,
+        "configured_ctau_mm": 1.0,
+        "mean_proper_length_mm": 0.987789466637495,
+        "mean_lab_radius_mm": 0.6968772072366917,
+        "chi2_95_interval_mm": [
+          0.945888565467972,
+          1.0325514228191226
+        ],
+        "ks_diagnostic": "not used as an oracle"
+      },
+      "aa5": "PASS",
+      "aa5_evidence": {
+        "verdict": "PASS",
+        "k": 3,
+        "n": 2000,
+        "channels": [
+          {
+            "channel": [
+              5,
+              -5
+            ],
+            "configured_fraction": 1.0,
+            "observed_count": 2000,
+            "observed_fraction": 1.0,
+            "expected_standard_error": 0.0,
+            "acceptance_interval": [
+              0.9967016262822914,
+              1.0
+            ],
+            "interval_method": "clopper_pearson_exact_99_73_percent",
+            "verdict": "PASS"
+          }
+        ]
+      },
+      "aa6": "PASS",
+      "aa6_evidence": {
+        "verdict": "PASS",
+        "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+        "sigma_lo_pb": 0.023453,
+        "hard_process": "g g > H > h2 h2",
+        "weighted_input": true,
+        "h2_input_count_per_event": [
+          2
+        ]
+      },
+      "config_sha256": "ac7827e7bf94fc40988f5ada6d79e11441e767cf9f2ee8d80b4932e5a2a32370",
+      "unique_input_events": 100,
+      "decay_trials": 1000,
+      "replicas_per_input_event": 10
+    },
+    {
+      "run_dir": "pack_aa/runs/20260722T071905Z_7d6ffaa5822da03f_ctau1_gamma_gamma",
+      "sample_id": "7d6ffaa5822da03f",
+      "ctau_mm": 1.0,
+      "channels": {
+        "22 22": 2000
+      },
+      "aa4": "PASS",
+      "aa4_evidence": {
+        "verdict": "PASS",
+        "n_decayed_h2": 2000,
+        "configured_ctau_mm": 1.0,
+        "mean_proper_length_mm": 1.0159810572721304,
+        "mean_lab_radius_mm": 0.7339820000521172,
+        "chi2_95_interval_mm": [
+          0.9728843010212461,
+          1.0620205232747257
+        ],
+        "ks_diagnostic": "not used as an oracle"
+      },
+      "aa5": "PASS",
+      "aa5_evidence": {
+        "verdict": "PASS",
+        "k": 3,
+        "n": 2000,
+        "channels": [
+          {
+            "channel": [
+              22,
+              22
+            ],
+            "configured_fraction": 1.0,
+            "observed_count": 2000,
+            "observed_fraction": 1.0,
+            "expected_standard_error": 0.0,
+            "acceptance_interval": [
+              0.9967016262822914,
+              1.0
+            ],
+            "interval_method": "clopper_pearson_exact_99_73_percent",
+            "verdict": "PASS"
+          }
+        ]
+      },
+      "aa6": "PASS",
+      "aa6_evidence": {
+        "verdict": "PASS",
+        "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+        "sigma_lo_pb": 0.023453,
+        "hard_process": "g g > H > h2 h2",
+        "weighted_input": true,
+        "h2_input_count_per_event": [
+          2
+        ]
+      },
+      "config_sha256": "72d9a0e509b27b16320f8ff5b2c82eecb714e62f03b3f9f0b53de105f638dbe2",
+      "unique_input_events": 100,
+      "decay_trials": 1000,
+      "replicas_per_input_event": 10
+    },
+    {
+      "run_dir": "pack_aa/runs/20260722T071924Z_c50900cc55623ce4_ctau1_mixed",
+      "sample_id": "c50900cc55623ce4",
+      "ctau_mm": 1.0,
+      "channels": {
+        "22 22": 415,
+        "5 -5": 1585
+      },
+      "aa4": "PASS",
+      "aa4_evidence": {
+        "verdict": "PASS",
+        "n_decayed_h2": 2000,
+        "configured_ctau_mm": 1.0,
+        "mean_proper_length_mm": 1.0080813678395688,
+        "mean_lab_radius_mm": 0.7290706780101757,
+        "chi2_95_interval_mm": [
+          0.9653197073933709,
+          1.053762857204255
+        ],
+        "ks_diagnostic": "not used as an oracle"
+      },
+      "aa5": "PASS",
+      "aa5_evidence": {
+        "verdict": "PASS",
+        "k": 3,
+        "n": 2000,
+        "channels": [
+          {
+            "channel": [
+              22,
+              22
+            ],
+            "configured_fraction": 0.2,
+            "observed_count": 415,
+            "observed_fraction": 0.2075,
+            "expected_standard_error": 0.00894427190999916,
+            "acceptance_interval": [
+              0.17316718427000252,
+              0.2268328157299975
+            ],
+            "interval_method": "three_sigma_binomial_band",
+            "verdict": "PASS"
+          },
+          {
+            "channel": [
+              5,
+              -5
+            ],
+            "configured_fraction": 0.8,
+            "observed_count": 1585,
+            "observed_fraction": 0.7925,
+            "expected_standard_error": 0.008944271909999158,
+            "acceptance_interval": [
+              0.7731671842700025,
+              0.8268328157299976
+            ],
+            "interval_method": "three_sigma_binomial_band",
+            "verdict": "PASS"
+          }
+        ]
+      },
+      "aa6": "PASS",
+      "aa6_evidence": {
+        "verdict": "PASS",
+        "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+        "sigma_lo_pb": 0.023453,
+        "hard_process": "g g > H > h2 h2",
+        "weighted_input": true,
+        "h2_input_count_per_event": [
+          2
+        ]
+      },
+      "config_sha256": "76ad275649a7dc46a10341d169134822fa79a27b6360eb11f74864d6af384979",
+      "unique_input_events": 100,
+      "decay_trials": 1000,
+      "replicas_per_input_event": 10
+    },
+    {
+      "run_dir": "pack_aa/runs/20260722T071941Z_9db01cdd5f1bc783_ctau50000_bb",
+      "sample_id": "9db01cdd5f1bc783",
+      "ctau_mm": 50000.0,
+      "channels": {
+        "5 -5": 2000
+      },
+      "aa4": "PASS",
+      "aa4_evidence": {
+        "verdict": "PASS",
+        "n_decayed_h2": 2000,
+        "configured_ctau_mm": 50000.0,
+        "mean_proper_length_mm": 49389.47333187475,
+        "mean_lab_radius_mm": 34843.86036183459,
+        "chi2_95_interval_mm": [
+          47294.4282733986,
+          51627.571140956126
+        ],
+        "ks_diagnostic": "not used as an oracle"
+      },
+      "aa5": "PASS",
+      "aa5_evidence": {
+        "verdict": "PASS",
+        "k": 3,
+        "n": 2000,
+        "channels": [
+          {
+            "channel": [
+              5,
+              -5
+            ],
+            "configured_fraction": 1.0,
+            "observed_count": 2000,
+            "observed_fraction": 1.0,
+            "expected_standard_error": 0.0,
+            "acceptance_interval": [
+              0.9967016262822914,
+              1.0
+            ],
+            "interval_method": "clopper_pearson_exact_99_73_percent",
+            "verdict": "PASS"
+          }
+        ]
+      },
+      "aa6": "PASS",
+      "aa6_evidence": {
+        "verdict": "PASS",
+        "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+        "sigma_lo_pb": 0.023453,
+        "hard_process": "g g > H > h2 h2",
+        "weighted_input": true,
+        "h2_input_count_per_event": [
+          2
+        ]
+      },
+      "config_sha256": "778b3b0a89692071baab5a46221d0d1f2d305ab843428895d6c6ce2cf2fd0d47",
+      "unique_input_events": 100,
+      "decay_trials": 1000,
+      "replicas_per_input_event": 10
+    },
+    {
+      "run_dir": "pack_aa/runs/20260722T072001Z_b3f66512c7b91693_ctau50000_gamma_gamma",
+      "sample_id": "b3f66512c7b91693",
+      "ctau_mm": 50000.0,
+      "channels": {
+        "22 22": 2000
+      },
+      "aa4": "PASS",
+      "aa4_evidence": {
+        "verdict": "PASS",
+        "n_decayed_h2": 2000,
+        "configured_ctau_mm": 50000.0,
+        "mean_proper_length_mm": 50799.052863606514,
+        "mean_lab_radius_mm": 36699.100002605854,
+        "chi2_95_interval_mm": [
+          48644.215051062296,
+          53101.02616373628
+        ],
+        "ks_diagnostic": "not used as an oracle"
+      },
+      "aa5": "PASS",
+      "aa5_evidence": {
+        "verdict": "PASS",
+        "k": 3,
+        "n": 2000,
+        "channels": [
+          {
+            "channel": [
+              22,
+              22
+            ],
+            "configured_fraction": 1.0,
+            "observed_count": 2000,
+            "observed_fraction": 1.0,
+            "expected_standard_error": 0.0,
+            "acceptance_interval": [
+              0.9967016262822914,
+              1.0
+            ],
+            "interval_method": "clopper_pearson_exact_99_73_percent",
+            "verdict": "PASS"
+          }
+        ]
+      },
+      "aa6": "PASS",
+      "aa6_evidence": {
+        "verdict": "PASS",
+        "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+        "sigma_lo_pb": 0.023453,
+        "hard_process": "g g > H > h2 h2",
+        "weighted_input": true,
+        "h2_input_count_per_event": [
+          2
+        ]
+      },
+      "config_sha256": "9fbf7a5b96f411c9a0142ad8ca5a3760e5e9d65ba3a040729d26dfb18fec93b2",
+      "unique_input_events": 100,
+      "decay_trials": 1000,
+      "replicas_per_input_event": 10
+    },
+    {
+      "run_dir": "pack_aa/runs/20260722T072019Z_79ba74fb49c2f8c4_ctau50000_mixed",
+      "sample_id": "79ba74fb49c2f8c4",
+      "ctau_mm": 50000.0,
+      "channels": {
+        "22 22": 415,
+        "5 -5": 1585
+      },
+      "aa4": "PASS",
+      "aa4_evidence": {
+        "verdict": "PASS",
+        "n_decayed_h2": 2000,
+        "configured_ctau_mm": 50000.0,
+        "mean_proper_length_mm": 50404.06839197844,
+        "mean_lab_radius_mm": 36453.53390050878,
+        "chi2_95_interval_mm": [
+          48265.98536966855,
+          52688.142860212756
+        ],
+        "ks_diagnostic": "not used as an oracle"
+      },
+      "aa5": "PASS",
+      "aa5_evidence": {
+        "verdict": "PASS",
+        "k": 3,
+        "n": 2000,
+        "channels": [
+          {
+            "channel": [
+              22,
+              22
+            ],
+            "configured_fraction": 0.2,
+            "observed_count": 415,
+            "observed_fraction": 0.2075,
+            "expected_standard_error": 0.00894427190999916,
+            "acceptance_interval": [
+              0.17316718427000252,
+              0.2268328157299975
+            ],
+            "interval_method": "three_sigma_binomial_band",
+            "verdict": "PASS"
+          },
+          {
+            "channel": [
+              5,
+              -5
+            ],
+            "configured_fraction": 0.8,
+            "observed_count": 1585,
+            "observed_fraction": 0.7925,
+            "expected_standard_error": 0.008944271909999158,
+            "acceptance_interval": [
+              0.7731671842700025,
+              0.8268328157299976
+            ],
+            "interval_method": "three_sigma_binomial_band",
+            "verdict": "PASS"
+          }
+        ]
+      },
+      "aa6": "PASS",
+      "aa6_evidence": {
+        "verdict": "PASS",
+        "sigma_preservation": "Pack A sigma field not modified; no BR rescaling",
+        "sigma_lo_pb": 0.023453,
+        "hard_process": "g g > H > h2 h2",
+        "weighted_input": true,
+        "h2_input_count_per_event": [
+          2
+        ]
+      },
+      "config_sha256": "31cd4aa9f8c9597b423fe6a08af15afdc2702fad2fb350223670bbf5c5397986",
+      "unique_input_events": 100,
+      "decay_trials": 1000,
+      "replicas_per_input_event": 10
+    }
+  ],
+  "total_processed_events": 9000,
+  "aa2": {
+    "pure_channel_smokes": [
+      {
+        "config": "ctau_1_bb.yaml",
+        "driver": {
+          "command": [
+            "/home/fabi/atlas_dihiggs/ufos/pack_aa/bin/.pack_aa_driver",
+            "--lhe",
+            "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+            "--out",
+            "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_bb/events.truth.jsonl",
+            "--events",
+            "1",
+            "--seed",
+            "900006002",
+            "--mass",
+            "200.0",
+            "--ctau",
+            "1.0",
+            "--is-resonance",
+            "0",
+            "--production-events",
+            "1",
+            "--channels",
+            "1:5,-5"
+          ],
+          "exit_code": 0,
+          "log": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_bb/events.truth.driver.log",
+          "output": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_bb/events.truth.jsonl"
+        },
+        "verdict": "PASS",
+        "configured_daughters_before_hadronization": [
+          [
+            5,
+            -5
+          ],
+          [
+            5,
+            -5
+          ]
+        ],
+        "direct_daughters_after_hadronization": [
+          [
+            -513,
+            511
+          ],
+          [
+            -523,
+            523
+          ]
+        ],
+        "proper_time": [
+          1.7071129347954377,
+          0.71845974001415
+        ],
+        "event_integrity": true
+      },
+      {
+        "config": "ctau_1_gamma_gamma.yaml",
+        "driver": {
+          "command": [
+            "/home/fabi/atlas_dihiggs/ufos/pack_aa/bin/.pack_aa_driver",
+            "--lhe",
+            "/home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+            "--out",
+            "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_gamma_gamma/events.truth.jsonl",
+            "--events",
+            "1",
+            "--seed",
+            "900006001",
+            "--mass",
+            "200.0",
+            "--ctau",
+            "1.0",
+            "--is-resonance",
+            "0",
+            "--production-events",
+            "1",
+            "--channels",
+            "1:22,22"
+          ],
+          "exit_code": 0,
+          "log": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_gamma_gamma/events.truth.driver.log",
+          "output": "/home/fabi/atlas_dihiggs/ufos/pack_aa/runs/aa2_pure/ctau_1_gamma_gamma/events.truth.jsonl"
+        },
+        "verdict": "PASS",
+        "configured_daughters_before_hadronization": [
+          [
+            22,
+            22
+          ],
+          [
+            22,
+            22
+          ]
+        ],
+        "direct_daughters_after_hadronization": [
+          [
+            22,
+            22
+          ],
+          [
+            22,
+            22
+          ]
+        ],
+        "proper_time": [
+          1.7071129347954377,
+          0.71845974001415
+        ],
+        "event_integrity": true
+      }
+    ],
+    "is_resonance_ab": {
+      "default": false,
+      "comparison": [
+        {
+          "isResonance": false,
+          "verdict": "PASS",
+          "decay_occurrence": true,
+          "direct_daughters_after_hadronization": [
+            [
+              -513,
+              511
+            ],
+            [
+              -523,
+              523
+            ]
+          ],
+          "configured_daughters_before_hadronization": [
+            [
+              5,
+              -5
+            ],
+            [
+              5,
+              -5
+            ]
+          ],
+          "configured_daughters_match": true,
+          "finite_vertices": true,
+          "lifetime_treatment": [
+            85355.64673977188,
+            35922.9870007075
+          ],
+          "vertex_coordinates": [
+            [
+              0,
+              0,
+              0,
+              -6238.760266444583,
+              -20634.697296254697,
+              56496.235070475675
+            ],
+            [
+              0,
+              0,
+              0,
+              736.9018241411235,
+              12081.271516150393,
+              9488.70341287062
+            ]
+          ],
+          "proper_time": [
+            85355.64673977188,
+            35922.9870007075
+          ],
+          "event_integrity": true
+        },
+        {
+          "isResonance": true,
+          "verdict": "PASS",
+          "decay_occurrence": true,
+          "direct_daughters_after_hadronization": [
+            [
+              22,
+              22
+            ],
+            [
+              5,
+              -5
+            ]
+          ],
+          "configured_daughters_before_hadronization": [
+            [
+              22,
+              22
+            ],
+            [
+              5,
+              -5
+            ]
+          ],
+          "configured_daughters_match": true,
+          "finite_vertices": true,
+          "lifetime_treatment": [
+            85355.64673977188,
+            35922.9870007075
+          ],
+          "vertex_coordinates": [
+            [
+              0,
+              0,
+              0,
+              -4165.9981299387,
+              -16636.364446740285,
+              56008.67544418742
+            ],
+            [
+              0,
+              0,
+              0,
+              -1325.9724313725528,
+              13994.593794673518,
+              9579.85235924244
+            ]
+          ],
+          "proper_time": [
+            85355.64673977188,
+            35922.9870007075
+          ],
+          "event_integrity": true
+        }
+      ],
+      "retained_default": false,
+      "labels": [
+        "PIPELINE_DEMONSTRATION_ONLY",
+        "NOT_MODEL_DERIVED",
+        "NOT_PI_ENDORSED"
+      ]
+    }
+  },
+  "aa3": {
+    "verdict": "PASS",
+    "canonical_observable_hash_1": "224e0df6aa63ef918f7844209bc44e82dd2782f3ecdae03923940c43c7fabc02",
+    "canonical_observable_hash_2": "224e0df6aa63ef918f7844209bc44e82dd2782f3ecdae03923940c43c7fabc02",
+    "event_accounting_identity": true,
+    "h2_observation_count_1": 200,
+    "h2_observation_count_2": 200,
+    "driver_exit_statuses": [
+      0,
+      0
+    ],
+    "raw_file_hash_not_used": true
+  },
+  "aa7": {
+    "verdict": "PROVISIONAL_ADAPTER_REQUIRED",
+    "truth_jsonl_reader": "PASS",
+    "cmnd_adapter_smoke": "PASS"
+  },
+  "unique_production_events_per_configuration": 100,
+  "decay_trials_per_configuration": 1000,
+  "replicas_per_input_event": 10
+}

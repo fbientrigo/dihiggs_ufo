@@ -1,0 +1,99 @@
+{
+  "schema": "pack_aa.event_bundle_review.v1",
+  "verdict": "FIX_REQUIRED",
+  "review_scope": "read_only_independent_event_bundle_review",
+  "bundle_zip": "releases/pack_aa/event_samples/20260722T092243Z_4/PACK_AA_EVENT_BUNDLE_20260722T092243Z_4.zip",
+  "clean_extraction": "scratch/pack_aa_event_bundle_20260722T092243Z_4_clean",
+  "hashes": {
+    "bundle_zip_sha256": "39922fefbb808e7bbe4f6a7c49b553f33be0b9eeb1d46d655df5f8be7f7fc0bb",
+    "candidate_expected": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+    "candidate_observed": "fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291",
+    "pack_a_expected": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "pack_a_observed": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6"
+  },
+  "finding_count": 1,
+  "findings": [
+    {
+      "id": "AA-EVT-003",
+      "severity": "release_identity_provenance",
+      "location": [
+        "releases/pack_aa/event_samples/20260722T092243Z_4/PACK_AA_EVENT_BUNDLE_MANIFEST.json:9",
+        "releases/pack_aa/event_samples/20260722T092243Z_4/samples/743390d495cb995c/events.truth.driver.meta.json:2",
+        "releases/pack_aa/event_samples/20260722T092243Z_4/samples/743390d495cb995c/driver_command.txt:1",
+        "releases/pack_aa/event_samples/20260722T092243Z_4/samples/743390d495cb995c/run_summary.json:89,106-107"
+      ],
+      "summary": "The requested cycle-4 bundle declares cycle-2 identity and retains cycle-2 scratch provenance paths in all nine sample records.",
+      "evidence": {
+        "requested_bundle_id": "PACK_AA_EVENT_BUNDLE_20260722T092243Z_4",
+        "declared_bundle_id": "PACK_AA_EVENT_BUNDLE_20260722T092243Z_2",
+        "affected_sample_count": 9,
+        "affected_file_count": 28,
+        "affected_reference_count": 46,
+        "reference": "scratch/pack_aa_event_bundle_20260722T092243Z_2",
+        "impact": "Release metadata and recorded generation provenance identify the wrong event-bundle cycle."
+      },
+      "requires_sol_level_reasoning": {
+        "scientific": false,
+        "architectural": false,
+        "concurrency": false,
+        "protocol": false,
+        "security": false
+      }
+    }
+  ],
+  "verification": {
+    "zip_integrity": "verified",
+    "zip_members": 119,
+    "clean_extraction_byte_match": "verified; disposable marker is the only extra file",
+    "bundle_checksums": "verified",
+    "manifest_file_hashes": "verified",
+    "json_files": "all parsed",
+    "jsonl_files": 9,
+    "jsonl_schema": "all pack_aa.truth.v1",
+    "records_per_jsonl": 1000,
+    "unique_production_ids_per_jsonl": 100,
+    "replicas_per_production_id": 10,
+    "h2_records_per_trial": 2,
+    "h2_observations_per_jsonl": 2000,
+    "vertices_and_proper_times": "verified finite; proper times and lengths positive",
+    "weights": "verified against 0.023453 pb within 1e-12",
+    "sigmaGen_pb": "verified against 0.023453 pb within 1e-12",
+    "aa4_statistics": "independently recomputed and consistent for all nine configurations",
+    "aa5_statistics": "independently recomputed and consistent for all nine configurations",
+    "catalog_numeric_accuracy": "verified",
+    "catalog_hash_accuracy": "verified for all nine JSONL files",
+    "scientific_labels_and_claims": "verified; demonstration-only and no detector/recast/exclusion/limit claims",
+    "driver_source_hash": {
+      "declared": "c2dff2510d45ff3662907e71f3941b50b0f1a90d08ad6039f4d2a49ebbdfcd52",
+      "observed": "c2dff2510d45ff3662907e71f3941b50b0f1a90d08ad6039f4d2a49ebbdfcd52",
+      "match": true
+    },
+    "driver_binary_hash": {
+      "declared": "fbb9b8bae925ba86a6653978efbe8f63cf63a87832f8ff737031691bb4566f7e",
+      "observed": "fbb9b8bae925ba86a6653978efbe8f63cf63a87832f8ff737031691bb4566f7e",
+      "match": true
+    },
+    "pack_a_immutability": "expected SHA-256 matches observed",
+    "pack_aa_candidate_immutability": "expected SHA-256 matches observed",
+    "cleanup_safety": "dry-run verified; only marked disposable cycle-4 scratch target; no deletion"
+  },
+  "scientific_validation": {
+    "source_sigma_pb": 0.023453,
+    "sol_level_reasoning_required": {
+      "scientific": false,
+      "architectural": false,
+      "concurrency": false,
+      "protocol": false,
+      "security": false
+    }
+  },
+  "scope": {
+    "implementation_or_protected_artifact_edits": false,
+    "review_artifacts_written": [
+      "review/event_bundle_cycle_3/REVIEW.md",
+      "review/event_bundle_cycle_3/REVIEW.json",
+      "review/event_bundle_cycle_3/CORRECTION_PROMPT.md"
+    ]
+  },
+  "correction_prompt": "review/event_bundle_cycle_3/CORRECTION_PROMPT.md"
+}

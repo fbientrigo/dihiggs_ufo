@@ -1,0 +1,12 @@
+{
+  "verdict": "PASS",
+  "n_decayed_h2": 2000,
+  "configured_ctau_mm": 1.0,
+  "mean_proper_length_mm": 0.987789466637495,
+  "mean_lab_radius_mm": 0.6968772072366917,
+  "chi2_95_interval_mm": [
+    0.945888565467972,
+    1.0325514228191226
+  ],
+  "ks_diagnostic": "not used as an oracle"
+}

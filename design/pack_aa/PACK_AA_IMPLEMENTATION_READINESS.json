@@ -1,0 +1,121 @@
+{
+  "verdict": "PACK_AA_APPROVED_FOR_IMPLEMENTATION",
+  "design_status": "DESIGN_ONLY",
+  "implementation_allowed": true,
+  "implementation_allowed_note": "PACK_AA_RESEARCHER_DECISION_SHEET.md Decisions 1-4 approved 2026-07-21 (recommended defaults for all four, see the sheet's Approval Record): illustrative-only lifetime/BR values (D1), both diphoton and b bbar channels run independently for the demo phase (D2), standalone HepMC2 output kept as Pack AA's primary deliverable with .cmnd-fragment adapter deferred to future work (D3), illustrative nine-point demonstration run now rather than waiting for model-derived values (D4). Implementation may proceed per PACK_AA_IMPLEMENTATION_MISSION.md. This approval authorizes implementation only -- it does not itself constitute an implementation, a Pack AA run, or any physics claim.",
+  "technical_decisions_resolved": [
+    {
+      "id": "T1",
+      "topic": "h2 particle identity and self-conjugacy",
+      "resolution": "self-conjugate, confirmed by direct inspection of the frozen UFO's particles.py and object_library.py",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "T2",
+      "topic": "Pythia isResonance",
+      "resolution": "provisional fail-closed default isResonance=false; defined one-event A/B micro-test required at implementation time (AA2), not a researcher decision",
+      "confidence": "MEDIUM"
+    },
+    {
+      "id": "T3",
+      "topic": "downstream event format",
+      "resolution": "ADAPTER_REQUIRED -- the frozen llp_recast reader (recast_2301_13866.cc) consumes raw LHE via its own in-process Pythia run, not HepMC2/HepMC3/ROOT; original HepMC2 default was factually wrong and is superseded",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "T4",
+      "topic": "Pythia version",
+      "resolution": "Pythia 8.308, exact commit 38ebd86865e4f25e9cf461b610f5c82d475ab77a, matching llp_recast's pinned toolchain; no HepMC library currently installed in that toolchain (headers only)",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "T5",
+      "topic": "AA4 lifetime validation threshold",
+      "resolution": "boost-corrected proper-length chi-square closure test on the exponential mean, N=1000, 95% CL, KS retained as diagnostic only",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "T6",
+      "topic": "AA5 branching-ratio validation threshold",
+      "resolution": "binomial per-channel band k=3 sigma when N*BR>=5, Clopper-Pearson exact interval otherwise, N=1000 shared with AA4",
+      "confidence": "HIGH"
+    }
+  ],
+  "researcher_decisions_open": [
+    {
+      "id": "R1",
+      "topic": "authoritative h2 lifetime and branching-ratio values",
+      "type": "scientific"
+    },
+    {
+      "id": "R2",
+      "topic": "priority decay channels for real physics use",
+      "type": "scientific"
+    },
+    {
+      "id": "R3",
+      "topic": "standalone persisted output file vs. .cmnd-fragment adapter for the frozen llp_recast analysis",
+      "type": "scope/architecture, newly raised by the T3 finding"
+    },
+    {
+      "id": "R4",
+      "topic": "illustrative vs. model-derived demonstration",
+      "type": "scientific"
+    }
+  ],
+  "authoritative_Pythia_version": "8.308",
+  "authoritative_Pythia_source_commit": "38ebd86865e4f25e9cf461b610f5c82d475ab77a",
+  "authoritative_output_format": "ADAPTER_REQUIRED (frozen llp_recast reader consumes raw LHE via its own in-process Pythia invocation; no persisted HepMC2/HepMC3/ROOT file is read by it; standalone HepMC2 output remains a candidate Pack AA internal artifact pending researcher decision R3 and pending addition of a HepMC library to the pinned toolchain)",
+  "particle_registration": {
+    "pdg": 9000006,
+    "name": "h2",
+    "self_conjugate": true,
+    "spin": "scalar (UFO spin=1)",
+    "color": "singlet",
+    "charge": 0,
+    "confidence": "HIGH, confirmed by direct inspection of frozen UFO particles.py / object_library.py"
+  },
+  "AA4_threshold": {
+    "method": "boost-corrected proper-length chi-square closure test on exponential mean (2N*mean/ctau_mm ~ chi2(2N))",
+    "minimum_N": 1000,
+    "confidence_level": "95% two-sided",
+    "diagnostic_only": "Kolmogorov-Smirnov test, reported alongside, never sole pass/fail oracle"
+  },
+  "AA5_threshold": {
+    "method": "per-channel binomial band BR +/- k*sqrt(BR*(1-BR)/N), k=3, when N*BR>=5 and N*(1-BR)>=5; Clopper-Pearson exact interval otherwise",
+    "minimum_N": 1000,
+    "shared_sample_with_AA4": true
+  },
+  "design_documents": {
+    "original_seven": [
+      "PACK_AA_DESIGN_CONTRACT.md",
+      "PACK_AA_CONFIG_SCHEMA.yaml",
+      "PACK_AA_VALIDATION_MATRIX.json",
+      "PACK_AA_DECAY_OWNERSHIP.md",
+      "PACK_AA_RESEARCHER_DEMO_PLAN.md",
+      "PACK_AA_OPEN_DECISIONS.md",
+      "PACK_AA_IMPLEMENTATION_MISSION.md"
+    ],
+    "status": "unmodified, DESIGN_ONLY, ACTIVE_DESIGN per ARTIFACT_REGISTRY.json",
+    "addendum_added": [
+      "PACK_AA_TECHNICAL_DECISIONS.md",
+      "PACK_AA_DESIGN_ADDENDUM_V1.md",
+      "PACK_AA_RESEARCHER_DECISION_SHEET.md",
+      "PACK_AA_DEMO_MATRIX_V1.yaml",
+      "PACK_AA_IMPLEMENTATION_READINESS.json",
+      "PACK_AA_RESEARCHER_MEETING_BRIEF.md"
+    ]
+  },
+  "pack_a_frozen_artifact_verified": {
+    "path": "releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip",
+    "sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "verification": "live sha256sum computed this session, matches ARTIFACT_REGISTRY.json and CURRENT_STATE.md",
+    "modified": false
+  },
+  "llp_recast_bootstrap_state_observed": {
+    "external_recastingCodes_present": true,
+    "pinned_analysis": "DisplacedVertices/ATLAS-SUSY-2018-13_GCottin",
+    "pinned_upstream_commit": "d4047c744062094c9f88e507bb1ccf69e9fe88d6",
+    "note": "Read-only inspection only; no cutflow executed, no compilation performed, no files modified in llp_recast."
+  }
+}

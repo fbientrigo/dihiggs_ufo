@@ -1,0 +1,9 @@
+timestamp_utc	command	result	log_or_evidence
+20260722T000000Z	sha256sum releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip	PASS	pack_aa/mission/logs/20260722T_preflight.log
+20260722T000000Z	./pack_aa/bin/pack-aa preflight	PASS	pack_aa/validation/aa0_provenance_check.json
+20260722T000000Z	g++ -std=c++17 ... pack_aa/src/pack_aa_driver.cc	PASS	pack_aa/bin/.pack_aa_driver
+20260722T000000Z	pack-aa driver isResonance=true one-event	PASS	pack_aa/mission/logs/20260722T_ab_true_postinit.log
+20260722T092243Z	corrected Pythia build and one-event sigmaGen_pb probe	PASS	pack_aa/mission/logs/20260722T_event_bundle_sigma_probe.log
+20260722T092243Z_2	RUN_EVENT_BUNDLE.sh in detached tmux	PASS	releases/pack_aa/event_samples/20260722T092243Z_2/PACK_AA_EVENT_BUNDLE_20260722T092243Z_2.zip
+20260722T092243Z_5	packaging-only provenance repair and clean extraction	PASS	releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_20260722T092243Z_5.zip
+20260722T092243Z_5	independent reviewer cycle 4	PASS	review/event_bundle_cycle_4/REVIEW.json

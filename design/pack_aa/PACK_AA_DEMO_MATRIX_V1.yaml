@@ -1,0 +1,135 @@
+# Pack AA — Explicit Demonstration Matrix V1
+#
+# DESIGN_ONLY. No Pack AA implementation exists yet; no Pack AA run has
+# ever been executed. All numeric values below are candidate inputs for
+# researcher approval (see PACK_AA_RESEARCHER_DECISION_SHEET.md,
+# Decisions 1 and 4), not results, not model-derived predictions, and not
+# PI-endorsed physics. No output hashes are included because no Pack AA
+# run exists to produce them.
+
+schema: pack_aa_demo_matrix.v1
+labels:
+  - PIPELINE_DEMONSTRATION_ONLY
+  - NOT_MODEL_DERIVED
+  - NOT_PI_ENDORSED
+
+pack_a_artifact:
+  frozen_artifact: pi_ufo_baseline_v1_frozen_hotfix1.zip
+  frozen_artifact_sha256: 58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6
+  note: >
+    Single canonical, frozen Pack A production input for all 9
+    configurations below. Pack A is read-only; never modified by this
+    demonstration.
+
+llp:
+  pdg: 9000006
+  name: h2
+  mass_GeV: 200.0
+  self_conjugate: true   # confirmed, see PACK_AA_TECHNICAL_DECISIONS.md T1
+
+# Three illustrative ctau_mm values, geometrically chosen to span
+# qualitatively distinct ATLAS-scale detector regimes (approximate ATLAS
+# radii used for justification only: pixel/SCT/TRT tracker ~3cm-1.1m,
+# calorimeters ~1.5-4m, muon spectrometer to ~11m). These are NOT derived
+# from any 2HDM width calculation.
+illustrative_lifetimes_mm:
+  - id: short_displaced
+    ctau_mm: 1.0
+    justification: >
+      Sub-cm scale: most decays occur within the innermost pixel/SCT
+      tracker volume (ATLAS inner tracker radius ~3cm-56cm), producing a
+      displaced vertex resolvable from the primary vertex but well inside
+      the tracking volume.
+  - id: detector_scale
+    ctau_mm: 1000.0
+    justification: >
+      ~1 m: comparable to the ATLAS calorimeter/inner-tracker envelope
+      (~1-2m), so decays straddle multiple sub-detectors — the
+      qualitatively richest regime for displaced-vertex reconstruction.
+  - id: mostly_outside_detector
+    ctau_mm: 50000.0
+    justification: >
+      50 m: well beyond the ATLAS muon spectrometer's outer radius
+      (~11m), so the large majority of h2 decays occur outside any
+      plausible detector volume, illustrating the "invisible/escaping"
+      regime.
+
+# Three decay configurations. BR values chosen so the smallest configured
+# channel in the mixed configuration still yields an expected count of
+# N * BR_min = 200 at N=1000 (see PACK_AA_TECHNICAL_DECISIONS.md T6) —
+# comfortably inside normal-approximation territory for the AA5 gate.
+decay_configurations:
+  - id: diphoton_only
+    daughters: [[22, 22]]
+    branching_ratios: [1.0]
+    note: simplest channel, cleanest truth-level signature, no hadronization.
+  - id: bbbar_only
+    daughters: [[5, -5]]
+    branching_ratios: [1.0]
+    note: exercises hadronization from a displaced decay vertex.
+  - id: mixed_diphoton_bbbar
+    daughters: [[22, 22], [5, -5]]
+    branching_ratios: [0.2, 0.8]
+    note: >
+      exercises branching-ratio sampling and per-channel bookkeeping
+      (AA5). BR_min=0.2 chosen so N*BR_min=200 at the recommended N=1000.
+
+# 3 lifetimes x 3 decay configs = 9 configurations, all sharing the one
+# Pack A input LHE above.
+demo_points:
+  count: 9
+  event_count_per_configuration: 1000   # matches AA4/AA5 minimum N, see T5/T6
+  total_events_processed: 9000
+  seeds:
+    pythia_seed_base: 900006001   # illustrative; one distinct seed per
+                                    # configuration recommended, e.g.
+                                    # base + configuration_index
+    channel_selection_seed: null   # unset; Pythia's single seed governs
+                                     # channel sampling too (per design
+                                     # contract §6)
+
+expected_statistical_precision:
+  aa4_lifetime_closure: >
+    ~3% relative precision on the reconstructed proper-length mean at 95%
+    CL, from the chi-square interval on N=1000 decayed events per
+    configuration (see PACK_AA_TECHNICAL_DECISIONS.md T5).
+  aa5_branching_fraction: >
+    per-channel band of +/- k*sqrt(BR*(1-BR)/N) with k=3, N=1000; for the
+    mixed config's BR=0.2 channel this is roughly +/-3.8 percentage
+    points (absolute) at k=3.
+
+expected_output_size:
+  note: >
+    Rough order-of-magnitude ONLY, not a commitment: a text-format HepMC2
+    event record is typically a few KB/event depending on final-state
+    multiplicity after showering/hadronization; 9000 events across all 9
+    configurations is expected to be on the order of tens of MB total.
+    This has not been measured against any real Pack AA run because none
+    exists yet.
+
+required_plots:
+  - decay_radius_distribution_per_lifetime_regime
+  - proper_decay_length_closure_plot   # AA4 evidence, boost-corrected
+  - generated_channel_fractions_bar_chart   # AA5 evidence, mixed config only
+  - single_event_display_truth_diagram   # one illustrative event, any config
+  - provenance_table   # Pack A zip hash, LHE hash, config hash, Pythia seed,
+                         # output hash (once a run exists) -- one row per
+                         # configuration
+  - pack_a_pack_aa_ownership_diagram   # rendering of PACK_AA_DECAY_OWNERSHIP.md's table
+
+non_claims:
+  - This matrix demonstrates pipeline correctness (gates AA2-AA6 in
+    PACK_AA_VALIDATION_MATRIX.json), not a physics result.
+  - No configuration here may be described as a detector efficiency, an
+    exclusion limit, or a recast result.
+  - ctau_mm values are illustrative only and are not derived from any
+    2HDM width calculation or paper reference.
+  - Branching ratios are illustrative only and are not derived from any
+    2HDM coupling structure.
+  - No output file hashes are included; no Pack AA run has been executed.
+  - This matrix does not resolve or depend on Researcher Decision 3
+    (standalone file vs. .cmnd-fragment adapter) -- it assumes Pack AA
+    produces a persisted output artifact for its own internal gates
+    (AA2/AA3/AA7 as redefined in PACK_AA_DESIGN_ADDENDUM_V1.md), independent
+    of whether that artifact is later wired into the frozen llp_recast
+    analysis.

@@ -1,0 +1,149 @@
+{
+  "review": "Pack AA release-candidate cycle 1",
+  "verdict": "FIX_REQUIRED",
+  "candidate": {
+    "path": "releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip",
+    "sha256": "d0ae57a1dd383bcb7271caa422163d9b5f1d8d9ae733fccbfdb34a9f30553495",
+    "declared_sha256": "d0ae57a1dd383bcb7271caa422163d9b5f1d8d9ae733fccbfdb34a9f30553495",
+    "zip_integrity": "unzip -t: OK"
+  },
+  "scope": {
+    "pack_a_modified": false,
+    "pack_b_modified": false,
+    "implementation_edited": false,
+    "review_artifacts_written": [
+      "review/cycle_1/REVIEW.md",
+      "review/cycle_1/REVIEW.json",
+      "review/cycle_1/CORRECTION_PROMPT.md"
+    ]
+  },
+  "provenance": {
+    "pack_a_expected_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "pack_a_live_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "input_lhe_declared_sha256": "38b471d8f5c7aec4b983dce9229bd1564a264e87be687c0cbbf0d9d6f0e768cb",
+    "input_lhe_live_sha256": "38b471d8f5c7aec4b983dce9229bd1564a264e87be687c0cbbf0d9d6f0e768cb",
+    "input_derivation": "1000 event blocks are a byte-preserving repetition of a separate 100-event source; source hash c83fbf9d29b3f58bbe98579e6c7b9846d60f45ed4f0262528cb61875b3646838"
+  },
+  "acceptance_checks": [
+    {
+      "command": "unzip -q releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip -d /tmp/pack_aa_rc_review_3ttaoD",
+      "result": "OK"
+    },
+    {
+      "command": "./pack_aa/bin/pack-aa preflight",
+      "cwd": "/tmp/pack_aa_rc_review_3ttaoD",
+      "result": "BLOCKED",
+      "evidence": "FileNotFoundError: runs/A_PI_NATIVE/pi_ufo_baseline_v1/build/A_PI_NATIVE_200/MG5_PROC/Events/smoke2/unweighted_events.lhe.gz"
+    },
+    {
+      "command": "./pack_aa/bin/pack-aa validate-config pack_aa/configs/*.yaml",
+      "cwd": "/tmp/pack_aa_rc_review_3ttaoD",
+      "result": "FAIL",
+      "evidence": "all nine configurations report Pack A frozen ZIP live hash mismatch because the required parent is absent"
+    },
+    {
+      "command": "python3 -m py_compile pack_aa/python/pack_aa.py pack_aa/python/prepare_input.py",
+      "cwd": "/tmp/pack_aa_rc_review_3ttaoD",
+      "result": "OK"
+    },
+    {
+      "command": "git apply --check PATCH_PACK_AA_IMPLEMENTATION.diff",
+      "result": "FAIL",
+      "evidence": "corrupt patch at line 1165; binary __pycache__ bytes are embedded"
+    },
+    {
+      "command": "g++ -std=c++17 -fsyntax-only -I/home/fabi/.local/pythia8308/include pack_aa/tests/hepmc2_compile_probe.cc",
+      "result": "FAIL_EXPECTED",
+      "evidence": "Pythia8Plugins/HepMC2.h includes absent HepMC/IO_BaseClass.h; no linkable HepMC2 library"
+    }
+  ],
+  "findings": [
+    {
+      "id": "AA-RC-001",
+      "severity": "release_blocking",
+      "area": "clean extraction/runtime/provenance",
+      "files_symbols": ["pack_aa/python/prepare_input.py:20-48", "pack_aa/python/pack_aa.py:111-118,570-575", "PACK_AA_IMPLEMENTATION_MANIFEST.json"],
+      "finding": "The candidate declares clean extraction required but preflight depends on an unshipped source LHE and a parent Pack A ZIP outside the extraction; validation cannot start from the release itself.",
+      "impact": "No independent release acceptance run is possible; the operator contract fails with an unhandled traceback rather than a documented dependency/exit path.",
+      "required_fix": "Either make the release self-contained or make external immutable inputs explicit, configurable, and preflight-validated with exact commands; then rerun preflight and all nine validations from a fresh extraction.",
+      "sol_level_reasoning": {"scientific": false, "architectural": true, "concurrency": false, "protocol": false, "security": false}
+    },
+    {
+      "id": "AA-RC-002",
+      "severity": "release_blocking",
+      "area": "output contract/adapter",
+      "files_symbols": ["pack_aa/configs/*.yaml", "pack_aa/src/pack_aa_driver.cc:195-246", "pack_aa/validation/aa7_reader_smoke_report.json", "design/pack_aa/PACK_AA_DESIGN_ADDENDUM_V1.md:3"],
+      "finding": "The declared HepMC2 output is not produced or parsed; the actual output is JSONL, and the required recast .cmnd adapter smoke is absent.",
+      "impact": "The release is not a compatible downstream handoff and AA7 remains an undischargeable provisional claim.",
+      "required_fix": "Resolve the standalone-output decision, implement or rename the actual format, and add the addendum-defined in-process .cmnd syntax smoke without claiming recast cutflow.",
+      "sol_level_reasoning": {"scientific": true, "architectural": true, "concurrency": false, "protocol": true, "security": false}
+    },
+    {
+      "id": "AA-RC-003",
+      "severity": "release_blocking",
+      "area": "AA3/accounting/statistics",
+      "files_symbols": ["pack_aa/python/pack_aa.py:243-318,338-345,392-399", "PACK_AA_DEMO_RESULTS.json", "presentation_evidence/source_data/demo_configuration_matrix.csv"],
+      "finding": "The implementation reports 100 unique inputs, 1000 output events, and 2000 h2 observations, but its accounting identity is a custom replica identity and the demo hard-codes it true; per-run AA3 is left pending.",
+      "impact": "Event accounting and BR/lifetime denominators are ambiguous and do not satisfy the declared n_in = n_out + failed + filtered gate.",
+      "required_fix": "Declare event-level versus h2-observation-level N, compute both identities from driver metadata, record all failures/filter reasons, and fail closed on mismatch; rerun AA3, AA4, AA5 and regenerate summaries/source data/plots.",
+      "sol_level_reasoning": {"scientific": true, "architectural": false, "concurrency": false, "protocol": false, "security": false}
+    },
+    {
+      "id": "AA-RC-004",
+      "severity": "high",
+      "area": "AA0 provenance/weights",
+      "files_symbols": ["pack_aa/python/pack_aa.py:111-180", "pack_aa/python/prepare_input.py:20-48", "pack_aa/mission/BLOCKERS.md", "pack_aa/validation/aa0_provenance_check.json"],
+      "finding": "AA0 validates a hard-coded Pack A path, only substring-matches the process banner, and never verifies the required weighted_input/<init> mode; the shipped LHE is a separately hashed repeated derivative.",
+      "impact": "A config can name a different artifact while the validator checks the global one, and weighted inputs could be misinterpreted while AA0 is reported complete.",
+      "required_fix": "Validate the configured immutable artifact and parsed zero-jet process, add explicit derived-input provenance and weighting checks, and regenerate AA0 evidence.",
+      "sol_level_reasoning": {"scientific": true, "architectural": true, "concurrency": false, "protocol": false, "security": false}
+    },
+    {
+      "id": "AA-RC-005",
+      "severity": "high",
+      "area": "AA1/schema/runtime",
+      "files_symbols": ["pack_aa/python/pack_aa.py:98-149,198-220", "design/pack_aa/PACK_AA_CONFIG_SCHEMA.yaml", "pack_aa/configs/*.yaml"],
+      "finding": "AA1 omits required-field enforcement and substitutes a hard-coded daughter table for Pythia database checks; the configured Pythia executable is ignored.",
+      "impact": "Invalid or non-portable configurations can be accepted and later run against an unintended environment.",
+      "required_fix": "Enforce the schema, query the pinned Pythia particle data, honor the configured toolchain, and rerun AA1 for every configuration.",
+      "sol_level_reasoning": {"scientific": true, "architectural": true, "concurrency": false, "protocol": false, "security": false}
+    },
+    {
+      "id": "AA-RC-006",
+      "severity": "high",
+      "area": "AA2/AA6 gate validity",
+      "files_symbols": ["pack_aa/python/pack_aa.py:243-270,307-314,352-369", "pack_aa/src/pack_aa_driver.cc:218-245"],
+      "finding": "AA2/AA6 rely on summary fields and hard-coded counts/status rather than asserting one Pythia decay, finite decay vertex, direct configured daughters, reader parse, sigma/hard-process preservation, and pre-decay h2 identity.",
+      "impact": "Malformed or ownership-violating output can still produce the recorded gate claims.",
+      "required_fix": "Add fail-closed assertions and an actual reader/adapter smoke, then rerun AA2, AA6, AA7 and regenerate event dumps and reports.",
+      "sol_level_reasoning": {"scientific": true, "architectural": true, "concurrency": false, "protocol": true, "security": false}
+    },
+    {
+      "id": "AA-RC-007",
+      "severity": "high",
+      "area": "release artifact/provenance",
+      "files_symbols": ["PATCH_PACK_AA_IMPLEMENTATION.diff", "pack_aa/python/pack_aa.py:454-459,477-491"],
+      "finding": "The shipped implementation diff is corrupt because generated patch assembly includes binary __pycache__ files; git apply cannot verify it.",
+      "impact": "The claimed implementation delta is not independently reviewable or reproducibly applicable.",
+      "required_fix": "Regenerate the diff from implementation sources only, exclude caches/generated evidence, and require unzip -t plus git apply --check before release.",
+      "sol_level_reasoning": {"scientific": false, "architectural": false, "concurrency": false, "protocol": false, "security": false}
+    },
+    {
+      "id": "AA-RC-008",
+      "severity": "medium",
+      "area": "release state/provenance",
+      "files_symbols": ["pack_aa/mission/MISSION_STATE.json", "PACK_AA_DEMO_RESULTS.json", "PACK_AA_IMPLEMENTATION_MANIFEST.json"],
+      "finding": "The shipped mission state says implementation is in progress and awaiting a corrected demo, while top-level artifacts claim completed AA0-AA6 evidence; absolute workspace paths also prevent portable replay.",
+      "impact": "Reviewers cannot identify one authoritative release state or reproduce evidence from the candidate.",
+      "required_fix": "Regenerate mission state, manifests, result paths and checksums after the final clean-extraction run; use extraction-relative provenance.",
+      "sol_level_reasoning": {"scientific": false, "architectural": true, "concurrency": false, "protocol": false, "security": false}
+    }
+  ],
+  "sol_level_reasoning_required": {
+    "scientific": ["AA-RC-002", "AA-RC-003", "AA-RC-004", "AA-RC-005", "AA-RC-006"],
+    "architectural": ["AA-RC-001", "AA-RC-002", "AA-RC-004", "AA-RC-005", "AA-RC-006", "AA-RC-008"],
+    "concurrency": [],
+    "protocol": ["AA-RC-002", "AA-RC-006"],
+    "security": []
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "review": "Pack AA final release cycle 2",
+  "verdict": "PASS",
+  "candidate": {
+    "path": "releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip",
+    "sha256": "0acd078aedb7ec20e4fe8c99c8c567d96314ecc8a9a3c5eda9e04390c1d40bb5",
+    "pack_a_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6"
+  },
+  "checks": {
+    "unzip_test": "PASS",
+    "preflight_clean_extraction": "PASS",
+    "validate_configurations": {"count": 9, "result": "PASS"},
+    "py_compile": "PASS",
+    "source_only_patch_forward_check_p0": "PASS",
+    "source_only_patch_reverse_check_p0": "PASS"
+  },
+  "demo_evidence": {
+    "configurations": 9,
+    "unique_input_events": 100,
+    "decay_trials_per_configuration": 1000,
+    "replicas_per_input_event": 10,
+    "aa0_aa6": "PASS",
+    "aa7": "PROVISIONAL_ADAPTER_REQUIRED",
+    "truth_jsonl_reader": "PASS",
+    "cmnd_adapter_smoke": "PASS",
+    "recast_cutflow": "NOT_RUN"
+  },
+  "scope": {
+    "implementation_edited": false,
+    "pack_a_modified": false,
+    "pack_b_modified": false,
+    "correction_prompt_written": false
+  },
+  "sol_level_reasoning_required": {
+    "scientific": false,
+    "architectural": false,
+    "concurrency": false,
+    "protocol": false,
+    "security": false
+  },
+  "findings": []
+}

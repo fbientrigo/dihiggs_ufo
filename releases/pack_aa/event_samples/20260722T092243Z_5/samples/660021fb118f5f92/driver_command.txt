@@ -1,0 +1,1 @@
+/home/fabi/atlas_dihiggs/ufos/pack_aa/bin/.pack_aa_driver --lhe /home/fabi/atlas_dihiggs/ufos/pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz --out samples/660021fb118f5f92/events.truth.jsonl --events 1000 --seed 900006002 --mass 200.0 --ctau 1.0 --is-resonance 0 --production-events 100 --channels 1:5,-5

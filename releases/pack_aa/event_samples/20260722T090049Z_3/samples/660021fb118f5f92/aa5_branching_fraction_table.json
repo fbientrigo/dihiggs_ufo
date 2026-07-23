@@ -1,0 +1,23 @@
+{
+  "verdict": "PASS",
+  "k": 3,
+  "n": 2000,
+  "channels": [
+    {
+      "channel": [
+        5,
+        -5
+      ],
+      "configured_fraction": 1.0,
+      "observed_count": 2000,
+      "observed_fraction": 1.0,
+      "expected_standard_error": 0.0,
+      "acceptance_interval": [
+        0.9967016262822914,
+        1.0
+      ],
+      "interval_method": "clopper_pearson_exact_99_73_percent",
+      "verdict": "PASS"
+    }
+  ]
+}
