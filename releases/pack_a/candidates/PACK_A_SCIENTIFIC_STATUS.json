@@ -1,0 +1,110 @@
+{
+  "verdict": "PASS_WITH_WARNINGS",
+  "generated_at_utc": "2026-07-18T06:34:00Z",
+  "artifact_status": {
+    "immutable_original_sha256": "632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd",
+    "previous_runtimefix_sha256": "2a9cde7af91ea66a6275a86ab073b3677efc8a46d7e8913d8475b948a468b755",
+    "candidate_runtimefix_sha256": "df36904843dc05710f4e0869bbf7c64ec87f501a6f52840b01df29461b94a06d",
+    "previous_report_hash_matches_previous_zip": true,
+    "previous_report_mechanism_claim_accurate": false,
+    "candidate_source_diff_from_previous_runtimefix": [
+      "README.md",
+      "build/point_000001/provenance.json",
+      "checksums.sha256",
+      "manifest.json",
+      "scripts/run_mg5_smoke.sh",
+      "validation/EXTERNAL_RUNTIME_STATUS.md"
+    ],
+    "candidate_generated_evidence_omitted": [
+      "build/A_PI_NATIVE_200"
+    ],
+    "integrity_manifest_verified": true,
+    "portable_relative_provenance_paths": true
+  },
+  "madevent": {
+    "previous_sequence": ["update missing", "0"],
+    "previous_actual_action": "update dependent triggered automatically when EOF selected default 0 in AskforEditCard",
+    "selected_sequence": ["0", "update dependent", "0"],
+    "rejected_command_dependency_removed": true,
+    "unexpected_prompts": 0,
+    "dependent_updates_per_run": 1,
+    "deterministic_under_pinned_mg5_3_5_3": true
+  },
+  "physics_invariants": {
+    "llp_pdg": 9000006,
+    "mediator_pdg": 25,
+    "process": "g g > H > h2 h2",
+    "coupling": "GC_90 = 8*complex(0,1)*Mh2**2/vev",
+    "production": "ZERO_JET_ONLY",
+    "llp_stable_in_lhe": true,
+    "physics_files_byte_identical": true,
+    "physics_file_sha256": {
+      "couplings.py": "199021f332fa57314f1a9dbd487a08c8310f9d5b4ce408eaa6c5ea99a649c3f4",
+      "vertices.py": "60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba",
+      "particles.py": "01c61a7a352a5bebb747fff0c9ac3e228fa7575dfc381a339ecb285332b223c6",
+      "parameters.py": "7f84d779ff83dd52bbfecbbfe31df147e2df79faab0bcda716d5908d63b3d45b",
+      "decays.py": "ebb92183abff92cdaf55aeb80399effe2cc0256f1423ce807a390cd420564e23",
+      "form_factors.py": "9fdae69a684ddd1eb5963a1695e0f5449045755826aa62a8829569848b32f478",
+      "lorentz.py": "4b818a0fd7a9f1ded91a957251380f4116a30454f8e1fc72e1c7ccacdab6bf8f",
+      "coupling_orders.py": "80d652d3441c1fed3242dc7a4141a12f5a7ccc2f2cc6764dd5d22bb39083d132"
+    }
+  },
+  "mass_materialization": {
+    "mw_expression_value_GeV": 79.82435974619784,
+    "madevent_log_value_GeV": 79.82435974619784,
+    "relative_difference_expression_vs_log": 0.0,
+    "serialized_card_value_GeV": 79.82436,
+    "relative_difference_expression_vs_serialized_card": 3.179507571215015e-09,
+    "pdg_24_width_before_and_after_GeV": 2.085,
+    "pdg_9000006_width_after_GeV": 1.97327e-15,
+    "pdg_9000006_lhe_status": 1
+  },
+  "accepted_runs": {
+    "count": 3,
+    "all_exit_zero": true,
+    "all_events": 100,
+    "all_exactly_two_final_llp_per_event": true,
+    "all_nonfinal_llp_records": 0,
+    "all_mother_assignments": [1, 2],
+    "all_llp_mass_GeV": 200.0,
+    "all_no_hidden_llp_decay": true,
+    "momentum_tolerance_GeV": 1e-06,
+    "maximum_observed_four_momentum_residual_GeV": 1.1200017979717813e-07,
+    "same_seed_event_blocks_identical": true,
+    "different_seed_cross_sections_compatible_at_3sigma": true
+  },
+  "cross_section": {
+    "classification": "PACK_A_LO_SMOKE_XSEC",
+    "seed_12345_sigma_pb": 0.02349,
+    "seed_12345_integration_error_pb": 0.0001364,
+    "seed_67890_sigma_pb": 0.02356,
+    "seed_67890_integration_error_pb": 0.0001374,
+    "publishable": false
+  },
+  "uses": {
+    "baseline_production_regression": "YES",
+    "A_vs_B_PI_FIXED_comparison": "CONDITIONAL",
+    "stable_LLP_LHE_generation": "YES",
+    "later_separate_Pack_AA_Pythia_input": "YES",
+    "final_2HDM_prediction": "NO",
+    "physical_branching_ratio_prediction": "NO",
+    "publishable_production_normalization": "NO",
+    "final_recast_normalization": "NO"
+  },
+  "warnings": [
+    "No LHAPDF installation was available, so MG5 did not compute PDF systematics.",
+    "Scale/PDF systematic uncertainties are absent.",
+    "GC_15 has direct aS dependence while its QCD order is 0; automatic scale uncertainty can be wrong.",
+    "MG5 3.5.3 identifies itself as an unknown development build and warns against production use.",
+    "Python 3.12 support is marked experimental by this MG5 build.",
+    "Only the zero-extra-parton sample was generated."
+  ],
+  "non_goals_respected": {
+    "pythia_run": false,
+    "pack_aa_created": false,
+    "pack_b_run": false,
+    "recast_run": false,
+    "artifact_frozen": false
+  },
+  "safe_for_documentation_ergonomics_handoff": true
+}

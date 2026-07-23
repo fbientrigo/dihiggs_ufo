@@ -1,0 +1,170 @@
+diff -ru '--exclude=build/A_PI_NATIVE_200' pi_ufo_baseline_v1_runtimefix/README.md pi_ufo_baseline_v1_runtimefix_candidate/README.md
+--- pi_ufo_baseline_v1_runtimefix/README.md	2026-07-16 12:00:00.000000000 -0400
++++ pi_ufo_baseline_v1_runtimefix_candidate/README.md	2026-07-18 02:31:56.174001858 -0400
+@@ -1,6 +1,6 @@
+ # PI UFO Baseline v1
+ 
+-    Static status: **PASS**. End-to-end HEP runtime status: **PENDING_EXTERNAL_RUNTIME**.
++    Static status: **PASS**. Pack A native MadGraph/LHE status: **PASS_WITH_WARNINGS**; Pythia, Pack AA, Pack B, and recast were not run.
+ 
+     ## Classification
+ 
+diff -ru '--exclude=build/A_PI_NATIVE_200' pi_ufo_baseline_v1_runtimefix/build/point_000001/provenance.json pi_ufo_baseline_v1_runtimefix_candidate/build/point_000001/provenance.json
+--- pi_ufo_baseline_v1_runtimefix/build/point_000001/provenance.json	2026-07-16 12:00:00.000000000 -0400
++++ pi_ufo_baseline_v1_runtimefix_candidate/build/point_000001/provenance.json	2026-07-18 02:31:56.181867888 -0400
+@@ -8,10 +8,10 @@
+     "run_card.dat",
+     "pythia8.cmnd"
+   ],
+-  "mg5_pythia_recast_state": "PENDING_EXTERNAL_RUNTIME",
++  "mg5_pythia_recast_state": "PACK_A_NATIVE_PASS_WITH_WARNINGS; PYTHIA_PACK_AA_PACK_B_RECAST_NOT_RUN",
+   "model_pack": "pi_ufo_baseline_v1",
+   "pack_kind": "A",
+-  "runtime_model_dir": "/mnt/data/ufo_pack_build/out/pi_ufo_baseline_v1/model/LLscalar_v3_UFO_runtime",
++  "runtime_model_dir": "model/LLscalar_v3_UFO_runtime",
+   "runtime_model_files_sha256": {
+     "CT_couplings.py": "58e07e6b6dea344858f32bccd1948a10768d38a217b88448aa4dc976c0a77b58",
+     "__init__.py": "e2198b46e727a0aa09378d715bd33364095057dd910f3b8cf7d7dd6ec1bc71d7",
+@@ -28,6 +28,6 @@
+     "vertices.py": "60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba",
+     "write_param_card.py": "081e24c63a197a6c58fd60a4253e10960738ac35050fe49364941268381ffbb9"
+   },
+-  "source_config": "/mnt/data/ufo_pack_build/out/pi_ufo_baseline_v1/points/point_000001.yaml",
++  "source_config": "points/point_000001.yaml",
+   "source_config_sha256": "e039065312c82e5f44367f09035dc4d73d8ea58891faa5ff5e15c6f25b527f05"
+ }
+diff -ru '--exclude=build/A_PI_NATIVE_200' pi_ufo_baseline_v1_runtimefix/checksums.sha256 pi_ufo_baseline_v1_runtimefix_candidate/checksums.sha256
+--- pi_ufo_baseline_v1_runtimefix/checksums.sha256	2026-07-16 12:00:00.000000000 -0400
++++ pi_ufo_baseline_v1_runtimefix_candidate/checksums.sha256	2026-07-18 02:31:56.177116273 -0400
+@@ -2,12 +2,12 @@
+ 45d9ae5e457158e37fc8303a3ee74a3f98bbd028601f9397f010b059714a5159  KNOWN_LIMITATIONS.md
+ 0776312fe51bce3b4dd6595f05044408feb0585e08febe29006fd5911684229e  MODEL_CARD.md
+ c0e2cca2ecd310972a32818dff00f46382057a9822b597487f7e0af00d6d0474  PROVENANCE.md
+-f55290a1b7f397c09068336021322fec5a309aab4db27de7571c5b497e8d8bfe  README.md
++68df93a0489bc0322063e22d6e2cc5996da9f3d2f8faba65258cf0bd2f08315d  README.md
+ b28ab25311a3e1796c0018c33c14d8709ec31456ef45df9940d1b5bdf1086741  build/point_000001/decay.slha
+ b5e68dde0222854f72892cc79c0c90becca83a13502fec9bc29c69150a4f4bbf  build/point_000001/param_card.dat
+ a598573864361f674283cabb0ca478c3965ec362bca355a53c46f5cbdd164e90  build/point_000001/point.json
+ a1232e3019d1348a8a6c0fd5fbb38aa05745547bfc9f6f88e53b9bef7a4e556e  build/point_000001/proc_card.dat
+-e06f571851fa0b1b83c8e94bfc98f6a3399ecff21c1e7d0ceac995742d67fa05  build/point_000001/provenance.json
++dfa2abd2441abd0094dc3b5bd901a92927b729242d68f34d74c80fa68aa2ac46  build/point_000001/provenance.json
+ 92e5f0cbf76a3e2009e41b8c8beb85fc3a6c97fb1fa2aaa6c6376460cc925129  build/point_000001/pythia8.cmnd
+ 0f0ea8bd8bda68e30ef4da98d145b6563045b64a13830104806fed244ed2ec1e  build/point_000001/run_card.dat
+ 4540a601faeb6f1744f8486d7de849b0117627e7c6641efa0e42b14aff27f50c  cards/README.md
+@@ -15,7 +15,7 @@
+ 41d264542323dff06edbcd30fd90ecfb4eeba2417544050cdc29e9a41f9de477  cards/pythia8.template.cmnd
+ 85abb3e99fc9503e59ecb6bff21a1aa804e248ff64f230afff8f20d8b5d156c3  cards/run_card_smoke.dat
+ db1fb31cea7019a7399c4074d0e674a00653c40fba5618c1f5a9aad5c5d8ad3f  expected/smoke_contract.json
+-c9355e29f447b15be7f724fd9225e684b80ee881f63e42d3fdafdf3b12d00c5b  manifest.json
++e577337ab8f621ea13e484b82e7aed0c742a6b305de4ee0e41ec066defd688de  manifest.json
+ 58e07e6b6dea344858f32bccd1948a10768d38a217b88448aa4dc976c0a77b58  model/LLscalar_v3_UFO_runtime/CT_couplings.py
+ e2198b46e727a0aa09378d715bd33364095057dd910f3b8cf7d7dd6ec1bc71d7  model/LLscalar_v3_UFO_runtime/__init__.py
+ 80d652d3441c1fed3242dc7a4141a12f5a7ccc2f2cc6764dd5d22bb39083d132  model/LLscalar_v3_UFO_runtime/coupling_orders.py
+@@ -42,8 +42,8 @@
+ b4b986692637a92539a2ee83480a4c12384d8a40ce2b9c8f7e79a3ec54518f12  scripts/make_param_card.py
+ caf3a366988f220bd08805f27e33d8eef92aac36e1f832f6b27f85f2eeed0f9a  scripts/model_utils.py
+ d313f0444e1adf5c2f92a81d97aa92efc3ccee50063ddd8669ceb785ce7b2366  scripts/pack_constants.py
+-b5d8bbe8cee689e8d88ac1d8d9625c5e2cb2c3037e425f84a00c635286de988f  scripts/patch_mg5_run_card.py
+-d2f19c450e03d7a8b86e2a703bdc2c873eb77ae2fdcba78bbd80a8a96c5400ee  scripts/run_mg5_smoke.sh
++80fafee866999908411847cb43ee9e8aceba89ee01a5ba91d19b81b1d191a3f7  scripts/patch_mg5_run_card.py
++3eb940665ec779d489653ae3fa435f0dd5db8e18d1f7db68fa440f70d0e31a84  scripts/run_mg5_smoke.sh
+ f90529ab57434adfc4d1d1a27e74ccf951a44933294b144242150eeb397dc81d  scripts/run_pythia_smoke.sh
+ 4dfafdbc9f40dd70f66a09613f5a2b885f844d30520ed1787774ad3112455d08  scripts/run_recast_smoke.sh
+ dd62bced24d1bc951f1d90a8432767948be20affec6ae8e7b81586d2e59339e2  scripts/run_static_tests.py
+@@ -51,7 +51,7 @@
+ 14f4013f789860815db3aa0df9465f63d439c21e924e6793252e72173926e3f9  tests/test_invalid_points.py
+ 1b69812e914ccb6ee91f5e08764895a2b810342b9e09b1218803a00f87c68090  tests/test_model_contract.py
+ 8820eeede0af161ef5de48bdde24928d4da78bc8ff3e744f6cc609e5bbb81b19  validation/AB_STATIC_REGRESSION.json
+-92a681803f3a97d4b0cf198a627d132934b2ec9278d5f852771bb8dabb603315  validation/EXTERNAL_RUNTIME_STATUS.md
++7216956d3a6af6fdd0a9783b80dbe8fed7ea22fe4d9204ae37b8b9eef7573081  validation/EXTERNAL_RUNTIME_STATUS.md
+ 071f5b79b7836d9e16d0c659f624dfb4738221577cebb768a5e2b3fa18b00b2c  validation/RECAST_ADAPTER.md
+ a755e05135e9a65090650f180aa101d9e7a71eace754adde74c291ac3f4305f5  validation/STATIC_VALIDATION.json
+ add34281d7b1547db4ab6f92d6d73c321b892e95d2b6f7fd89ce62ea24a6dd26  validation/logs/build_point.log
+diff -ru '--exclude=build/A_PI_NATIVE_200' pi_ufo_baseline_v1_runtimefix/manifest.json pi_ufo_baseline_v1_runtimefix_candidate/manifest.json
+--- pi_ufo_baseline_v1_runtimefix/manifest.json	2026-07-16 12:00:00.000000000 -0400
++++ pi_ufo_baseline_v1_runtimefix_candidate/manifest.json	2026-07-18 02:31:56.179627926 -0400
+@@ -30,8 +30,8 @@
+     },
+     {
+       "path": "README.md",
+-      "sha256": "f55290a1b7f397c09068336021322fec5a309aab4db27de7571c5b497e8d8bfe",
+-      "size_bytes": 1526
++      "sha256": "68df93a0489bc0322063e22d6e2cc5996da9f3d2f8faba65258cf0bd2f08315d",
++      "size_bytes": 1574
+     },
+     {
+       "path": "build/point_000001/decay.slha",
+@@ -55,8 +55,8 @@
+     },
+     {
+       "path": "build/point_000001/provenance.json",
+-      "sha256": "e06f571851fa0b1b83c8e94bfc98f6a3399ecff21c1e7d0ceac995742d67fa05",
+-      "size_bytes": 1905
++      "sha256": "dfa2abd2441abd0094dc3b5bd901a92927b729242d68f34d74c80fa68aa2ac46",
++      "size_bytes": 1855
+     },
+     {
+       "path": "build/point_000001/pythia8.cmnd",
+@@ -225,13 +225,13 @@
+     },
+     {
+       "path": "scripts/patch_mg5_run_card.py",
+-      "sha256": "b5d8bbe8cee689e8d88ac1d8d9625c5e2cb2c3037e425f84a00c635286de988f",
+-      "size_bytes": 1122
++      "sha256": "80fafee866999908411847cb43ee9e8aceba89ee01a5ba91d19b81b1d191a3f7",
++      "size_bytes": 2485
+     },
+     {
+       "path": "scripts/run_mg5_smoke.sh",
+-      "sha256": "d2f19c450e03d7a8b86e2a703bdc2c873eb77ae2fdcba78bbd80a8a96c5400ee",
+-      "size_bytes": 1475
++      "sha256": "3eb940665ec779d489653ae3fa435f0dd5db8e18d1f7db68fa440f70d0e31a84",
++      "size_bytes": 2039
+     },
+     {
+       "path": "scripts/run_pythia_smoke.sh",
+@@ -270,8 +270,8 @@
+     },
+     {
+       "path": "validation/EXTERNAL_RUNTIME_STATUS.md",
+-      "sha256": "92a681803f3a97d4b0cf198a627d132934b2ec9278d5f852771bb8dabb603315",
+-      "size_bytes": 426
++      "sha256": "7216956d3a6af6fdd0a9783b80dbe8fed7ea22fe4d9204ae37b8b9eef7573081",
++      "size_bytes": 416
+     },
+     {
+       "path": "validation/RECAST_ADAPTER.md",
+diff -ru '--exclude=build/A_PI_NATIVE_200' pi_ufo_baseline_v1_runtimefix/scripts/run_mg5_smoke.sh pi_ufo_baseline_v1_runtimefix_candidate/scripts/run_mg5_smoke.sh
+--- pi_ufo_baseline_v1_runtimefix/scripts/run_mg5_smoke.sh	2026-07-18 00:58:01.000000000 -0400
++++ pi_ufo_baseline_v1_runtimefix_candidate/scripts/run_mg5_smoke.sh	2026-07-18 02:31:56.186281463 -0400
+@@ -25,12 +25,9 @@
+   # MadEvent 3.5.3 derives PDG-24 (W) mass from internal UFO parameters
+   # (MW = f(MZ, Gf, aEW)); the deterministic pack writer only serializes
+   # external parameters, so BLOCK MASS never carries an entry for it.
+-  # "update missing" is MadEvent's own supported card-completion command
+-  # (it is what MadEvent's own WARNING message names); answering it during
+-  # the interactive card-review step (i.e. without -f) materializes the
+-  # missing masses from the model's own internal-parameter evaluation
+-  # before generation, without touching the UFO or the PI coupling.
+-  printf 'update missing\n0\n' | ./bin/generate_events smoke | tee "$POINT_DIR/mg5_events.log"
++  # The first 0 closes the switch menu; update dependent runs in AskforEditCard
++  # and evaluates/materializes internal parameters; the final 0 closes cards.
++  printf '0\nupdate dependent\n0\n' | ./bin/generate_events smoke | tee "$POINT_DIR/mg5_events.log"
+ )
+ LHE=$(find "$PROC/Events" -type f \( -name 'unweighted_events.lhe.gz' -o -name 'unweighted_events.lhe' \) | sort | tail -1)
+ [[ -n "$LHE" ]] || { echo 'FAIL: no LHE produced' >&2; exit 21; }
+diff -ru '--exclude=build/A_PI_NATIVE_200' pi_ufo_baseline_v1_runtimefix/validation/EXTERNAL_RUNTIME_STATUS.md pi_ufo_baseline_v1_runtimefix_candidate/validation/EXTERNAL_RUNTIME_STATUS.md
+--- pi_ufo_baseline_v1_runtimefix/validation/EXTERNAL_RUNTIME_STATUS.md	2026-07-16 12:00:00.000000000 -0400
++++ pi_ufo_baseline_v1_runtimefix_candidate/validation/EXTERNAL_RUNTIME_STATUS.md	2026-07-18 02:31:56.189314306 -0400
+@@ -6,7 +6,7 @@
+ | Python compile/import | PASS |
+ | Point/card generation | PASS |
+ | Coupling/lifetime/BR tests | PASS |
+-| MadGraph import and cross section | PENDING_EXTERNAL_RUNTIME |
+-| Stable LLP in generated LHE | PENDING_EXTERNAL_RUNTIME |
+-| Pythia displaced decay | PENDING_EXTERNAL_RUNTIME |
+-| FastJet/recast A/B cutflow | PENDING_EXTERNAL_RUNTIME |
++| MadGraph import and Pack A LO smoke cross section | PASS_WITH_WARNINGS |
++| Stable LLP in generated LHE | PASS |
++| Pythia displaced decay | NOT RUN — OUT OF SCOPE |
++| FastJet/recast A/B cutflow | NOT RUN — OUT OF SCOPE |

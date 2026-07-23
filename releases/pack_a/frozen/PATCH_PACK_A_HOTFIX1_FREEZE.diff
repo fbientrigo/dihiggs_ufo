@@ -1,0 +1,314 @@
+diff -ruN '--exclude=py3_model.pkl' a/PACK_A_FREEZE_RECORD.json b/PACK_A_FREEZE_RECORD.json
+--- a/PACK_A_FREEZE_RECORD.json	1969-12-31 21:00:00.000000000 -0300
++++ b/PACK_A_FREEZE_RECORD.json	2026-07-20 23:16:34.978975744 -0400
+@@ -0,0 +1,120 @@
++{
++  "mission": "pack_a_hotfix1_independent_freeze",
++  "freeze_timestamp_utc": "2026-07-21T03:15:39Z",
++  "freeze_status": "FROZEN",
++  "scientific_status": "PASS_WITH_WARNINGS",
++  "operator_status_at_intake": "READY_FOR_FREEZE_REVIEW",
++  "note": "This record is internal to the frozen pack. The final frozen ZIP's own SHA-256 cannot be recorded here (self-reference); it is held authoritatively by the external sidecar PACK_A_HOTFIX1_FROZEN_MANIFEST.json and PACK_A_HOTFIX1_FROZEN_CHECKSUMS.sha256 at the workspace root.",
++  "provenance": {
++    "pi_original_zip": {
++      "path": "pi_ufo_baseline_v1.zip",
++      "sha256": "632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd"
++    },
++    "sol_scientific_candidate_zip": {
++      "path": "pi_ufo_baseline_v1_runtimefix_candidate.zip",
++      "sha256": "df36904843dc05710f4e0869bbf7c64ec87f501a6f52840b01df29461b94a06d"
++    },
++    "hotfix1_candidate_zip": {
++      "path": "pi_ufo_baseline_v1_release_candidate_hotfix1.zip",
++      "sha256": "d0547c1fa571eb95b2db81deb736c5d73a4f6fc95284bacc5f7229c73c67c4a8",
++      "role": "source_of_this_freeze"
++    },
++    "pre_existing_frozen_artifacts_not_authoritative": {
++      "files": [
++        "pi_ufo_baseline_v1_frozen.zip",
++        "PACK_A_FROZEN_MANIFEST.json",
++        "PACK_A_FREEZE_VALIDATION.md",
++        "PATCH_PACK_A_FREEZE.diff",
++        "PACK_A_FROZEN_CHECKSUMS.sha256"
++      ],
++      "reason": "Historical and non-authoritative: they predate the confirmed reproduce -> status/results pointer-defect correction and did not exercise that regression correctly. Preserved byte-for-byte for provenance; not deleted, overwritten, or superseded in place. This freeze (pi_ufo_baseline_v1_frozen_hotfix1.zip) is the authoritative frozen artifact."
++    }
++  },
++  "physics_invariant_file_hashes": {
++    "couplings.py": "199021f332fa57314f1a9dbd487a08c8310f9d5b4ce408eaa6c5ea99a649c3f4",
++    "vertices.py": "60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba",
++    "particles.py": "01c61a7a352a5bebb747fff0c9ac3e228fa7575dfc381a339ecb285332b223c6",
++    "parameters.py": "7f84d779ff83dd52bbfecbbfe31df147e2df79faab0bcda716d5908d63b3d45b",
++    "decays.py": "ebb92183abff92cdaf55aeb80399effe2cc0256f1423ce807a390cd420564e23",
++    "form_factors.py": "9fdae69a684ddd1eb5963a1695e0f5449045755826aa62a8829569848b32f478",
++    "lorentz.py": "4b818a0fd7a9f1ded91a957251380f4116a30454f8e1fc72e1c7ccacdab6bf8f",
++    "coupling_orders.py": "80d652d3441c1fed3242dc7a4141a12f5a7ccc2f2cc6764dd5d22bb39083d132",
++    "verified_identical_to": "pi_ufo_baseline_v1.zip (632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd)",
++    "independently_reverified_by_freeze_reviewer": true
++  },
++  "mutable_derived_files": [
++    {
++      "path": "model/LLscalar_v3_UFO_runtime/py3_model.pkl",
++      "classification": "MUTABLE_DERIVED_CACHE",
++      "packaged_sha256": "00049f2b99b48f7619fd576c7327ef635369dfa36563a9f80387389f533da4f3",
++      "runtime_checksum_excluded": true,
++      "reason": "UFO model pickle cache, rewritten in place by MG5's model-loading machinery on first load under the local Python/pickle-protocol combination, then stable. Not one of the eight physics-invariant .py sources and not the sole provenance for any coupling/parameter (those are the .py files, checked byte-for-byte above).",
++      "independent_verification_by_freeze_reviewer": {
++        "delete_and_regenerate_test": "Deleted the packaged pkl from a disposable extraction, ran `bin/pack-a run --seed 12345`; MG5 regenerated it deterministically to a stable hash (5342d538309c8b64a435e15e2166a75f3de5882af9b5943c60f2447d294a3472), identical across repeated invocations.",
++        "physical_output_after_regeneration": "unchanged: sigma_pb=0.02349, integration_err_pb=0.0001364, events=100",
++        "conclusion": "confirmed derived, not authoritative; safe to exclude from runtime integrity checksums"
++      }
++    },
++    {
++      "path": "vendor/LLscalar_v3_UFO_original/py3_model.pkl",
++      "classification": "INHERITED_PI_ORIGINAL_CACHE",
++      "packaged_sha256": "353b9c51a80539a71ee91f859d3119a5196263d51496a390ea1313df39180d77",
++      "runtime_checksum_excluded": false,
++      "reason": "Byte-identical to pi_ufo_baseline_v1.zip's vendor copy; inherited backup, tracked in checksums.sha256 (not rewritten by pack-a, which loads model/LLscalar_v3_UFO_runtime, not vendor/)."
++    }
++  ],
++  "toolchain": {
++    "expected": {
++      "python": "/home/fabi/anaconda3/bin/python3 (3.12.x)",
++      "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
++      "mg5_version": "3.5.3"
++    },
++    "observed_by_freeze_reviewer": {
++      "python": "/home/fabi/anaconda3/bin/python3, version 3.12.7",
++      "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
++      "mg5_version_confirmed": "3.5.3",
++      "match": true
++    }
++  },
++  "independent_precheck_matrix": {
++    "5.1_hash_chain": "PASS (all 8 authoritative-input hashes independently recomputed and matched)",
++    "5.2_manifest_and_sidecars": "PASS (manifest.json valid JSON; sidecar checksums 5/5 OK via PACK_A_HOTFIX1_CHECKSUMS.sha256; script_hashes 9/9 and documentation_hashes 5/5 independently recomputed and matched manifest claims)",
++    "5.2_note": "PASS_WITH_WARNINGS scientific status is present in README_PACK_A.md and preflight/status output but not as a literal JSON field in PACK_A_HOTFIX1_MANIFEST.json (only 'verdict':'READY_FOR_FREEZE_REVIEW' and 'freeze_status':'NOT_FROZEN' are literal fields there). Documentation completeness gap, not a correctness defect; recorded here explicitly to close it.",
++    "5.3_hotfix_scope": "PASS (diff of clean release-candidate vs hotfix1 extractions: only bin/lib/{common,run,reproduce,status,results}.sh, README_PACK_A.md, docs/{PACK_A_QUICKSTART,PACK_A_TROUBLESHOOTING,PACK_A_FREEZE_CHECKLIST}.md, checksums.sha256, manifest.json changed, plus new tests/test_pack_a_run_pointers.sh; no physics/card/process changes)",
++    "5.4_physics_identity": "PASS (8/8 physics files byte-identical to PI original by independent hash recomputation; LLP PDG=9000006, mediator=H(PDG 25), process='g g > H > h2 h2' confirmed in cards/proc_card_zerojet.dat, GC_90='8*complex(0,1)*Mh2**2/vev' confirmed in couplings.py, MadeEvent sequence '0/update dependent/0' confirmed in scripts/run_mg5_smoke.sh)",
++    "5.5_mutable_cache": "PASS (see mutable_derived_files above; delete+regenerate test performed independently)",
++    "5.6_zip_inventory": "PASS (no __pycache__, no stray .pyc beyond inherited vendor/*.pyc byte-identical to PI original, no venvs, no MG5 process/build dirs, no LHE files, no credentials/tokens/keys found)",
++    "5.7_static_integrity": "PASS (bash -n on all .sh: 0 failures; shellcheck: SKIPPED_NOT_INSTALLED; sha256sum -c checksums.sha256: 133/133 OK; JSON parse: all valid; focused pointer test: 19/19 passed; preflight from external cwd: 0 operational blockers)",
++    "5.8_direct_run_regression": "PASS (run exit 0, status exit 0, results exit 0; sigma_pb=0.02349, integration_err_pb=0.0001364, events=100; .last_run correctly points to the direct physical run)",
++    "5.9_reproduce_regression": "PASS (reproduce exit 0, status exit 0, results exit 0; .last_reproduce points to the wrapper, .last_run points to the nested physical run; comparison.json pass=true, worst_four_momentum_residual_gev=8.199998546842835e-08)",
++    "5.10_pointer_failure_behavior": "PASS (missing pointer: informational exit 0; stale pointer: exit 21 BLOCKED; pointer to dir without events/: exit 21 BLOCKED; pointer to dir missing LHE: exit 21 BLOCKED; all cases: resolved path printed, no crash, no truncation, shell survived)",
++    "5.11_repeated_operation": "PASS (run -> status/results -> reproduce -> status/results -> run -> status/results -> reproduce -> status/results executed in one extraction; .last_run advanced monotonically to a distinct, latest successful physical run at every step)",
++    "5.12_scientific_reproduction": "PASS (independently re-run from a fresh Hotfix1 extraction: exit 0, 100 events, sigma=0.02349 +/- 0.0001364 pb, 200 final LLP records (2/event, PDG 9000006, status 1, mothers 1,2, no daughters confirmed directly in raw LHE), 0 non-final LLP records, h2 mass 200 GeV, worst four-momentum residual 8.199998546842835e-08 GeV < 1e-6 GeV tolerance; Pythia not executed, MadSpin did not decay h2, Pack AA absent, Pack B untouched, recast not executed)",
++    "5.13_checklist": "PASS (Hotfix1 docs/PACK_A_FREEZE_CHECKLIST.md ends exactly 'FREEZE_STATUS=NOT_FROZEN' with one trailing newline, verified byte-for-byte)"
++  },
++  "scope_integrity": {
++    "no_physics_file_changed": true,
++    "h2_stable": true,
++    "pythia_executed": false,
++    "madspin_decayed_h2": false,
++    "pack_aa_created": false,
++    "pack_b_modified": false,
++    "recast_executed": false
++  },
++  "reference": "See PACK_A_SCIENTIFIC_STATUS.json (workspace root) for the underlying Sol scientific validation this freeze relies on.",
++  "files_changed_by_freeze": [
++    "docs/PACK_A_FREEZE_CHECKLIST.md (final line: FREEZE_STATUS=FROZEN)",
++    "README_PACK_A.md (one added Release status line)",
++    "PACK_A_FREEZE_RECORD.json (new)",
++    "PACK_A_FREEZE_VALIDATION.md (new)",
++    "checksums.sha256 (regenerated to include the two changed/added files above)",
++    "manifest.json (regenerated file list/hashes for the same two files)"
++  ],
++  "files_explicitly_unchanged_by_freeze": [
++    "all bin/pack-a and bin/lib/*.sh (identical to Hotfix1 candidate)",
++    "all model/LLscalar_v3_UFO_runtime/*.py physics-invariant sources",
++    "cards/*, scripts/*, points/*, schemas/*, patches/*, vendor/*",
++    "tests/* (including tests/test_pack_a_run_pointers.sh)",
++    "model/LLscalar_v3_UFO_runtime/py3_model.pkl (packaged at its pristine Hotfix1 hash 00049f2b99b48f7619fd576c7327ef635369dfa36563a9f80387389f533da4f3; this staging tree never executed MG5 prior to packaging)"
++  ]
++}
+diff -ruN '--exclude=py3_model.pkl' a/PACK_A_FREEZE_VALIDATION.md b/PACK_A_FREEZE_VALIDATION.md
+--- a/PACK_A_FREEZE_VALIDATION.md	1969-12-31 21:00:00.000000000 -0300
++++ b/PACK_A_FREEZE_VALIDATION.md	2026-07-20 23:16:55.875651643 -0400
+@@ -0,0 +1,86 @@
++# Pack A Hotfix1 — Independent Freeze Validation
++
++**Freeze status:** `FROZEN`
++**Scientific status (inherited from Sol/Hotfix1):** `PASS_WITH_WARNINGS`
++**Operator status at intake:** `READY_FOR_FREEZE_REVIEW`
++**Freeze timestamp (UTC):** 2026-07-21T03:15:39Z
++
++This is an independent review and freeze pass. It did not reopen the general
++scientific audit, redesign the UFO, or modify operator scripts. See
++`PACK_A_FREEZE_RECORD.json` in this pack for the full machine-readable
++precheck matrix and hash chain.
++
++## Summary of independent re-verification
++
++All gates below were independently re-executed by the freeze reviewer from
++fresh clean extractions of the authoritative Hotfix1 candidate
++(`pi_ufo_baseline_v1_release_candidate_hotfix1.zip`,
++`sha256=d0547c1fa571eb95b2db81deb736c5d73a4f6fc95284bacc5f7229c73c67c4a8`) —
++not merely re-read from its own manifest:
++
++- Hash chain for all 8 authoritative inputs/sidecars: **PASS**
++- Hotfix1 scope diff against the release candidate: limited exactly to
++  `bin/lib/{common,run,reproduce,status,results}.sh`, focused docs,
++  `tests/test_pack_a_run_pointers.sh`, `checksums.sha256`, `manifest.json`.
++  No physics, card, or process-definition changes. **PASS**
++- Eight physics-invariant files byte-identical to the PI original
++  (independently re-hashed, not read from the manifest). **PASS**
++- `py3_model.pkl` mutable-cache behavior: independently deleted the packaged
++  cache in a disposable extraction and re-ran `bin/pack-a run --seed 12345`;
++  MG5 regenerated it deterministically and physical output
++  (sigma/events/residual) was unchanged. Classified `MUTABLE_DERIVED_CACHE`.
++  **PASS**
++- ZIP inventory: no `__pycache__`, no stray build artifacts, no venvs, no
++  MG5 process directories, no LHE files, no credentials/tokens. **PASS**
++- Static integrity (`bash -n`, `sha256sum -c` 133/133, JSON parse, 19/19
++  focused pointer tests, preflight from an external working directory):
++  **PASS**
++- Direct-run regression (`run` -> `status` -> `results`) in a fresh
++  extraction: exit 0/0/0; sigma_pb=0.02349 ± 0.0001364; 100 events;
++  `.last_run` correctly resolves the direct physical run. **PASS**
++- Reproduce regression (`reproduce` -> `status` -> `results`) in a separate
++  fresh extraction: exit 0/0/0; `.last_reproduce` points to the wrapper,
++  `.last_run` points to the nested physical run; worst four-momentum
++  residual 8.199998546842835e-08 GeV. **PASS**
++- Pointer failure-path tests (missing / stale / dir-without-events /
++  dir-missing-LHE): all deliberate exit 21 with clear `BLOCKED:` messages
++  except the "no pointer" case (informational, exit 0); no crash, no
++  truncation, parent shell alive in every case. **PASS**
++- Repeated-operation test (`run -> status/results -> reproduce ->
++  status/results -> run -> status/results -> reproduce -> status/results`)
++  in one extraction: `.last_run` advanced monotonically to a distinct
++  physical run at every successful step. **PASS**
++- Scientific reproduction independently re-run from a fresh extraction:
++  exit 0, 100 events, sigma=0.02349 ± 0.0001364 pb, 200 final LLP records
++  (2/event, PDG 9000006, status 1, mothers 1 2, no daughters — confirmed by
++  reading the raw LHE `<event>` block directly, not only the JSON summary),
++  0 non-final LLP records, h2 mass 200 GeV, worst four-momentum residual
++  8.199998546842835e-08 GeV (< 1e-6 GeV tolerance). Pythia not executed,
++  MadSpin did not decay h2, Pack AA absent, Pack B untouched, recast not
++  executed. **PASS**
++- Hotfix1 checklist ends exactly `FREEZE_STATUS=NOT_FROZEN` with one
++  trailing newline (verified byte-for-byte via `xxd`). **PASS**
++
++## Documentation gap noted (non-blocking)
++
++`PACK_A_HOTFIX1_MANIFEST.json` does not carry `PASS_WITH_WARNINGS` as a
++literal JSON field (only `verdict` and `freeze_status` are literal top-level
++fields); the scientific status is stated in `README_PACK_A.md` and in
++`preflight`/`status` command output. This is a documentation completeness
++gap, not a correctness defect, and does not block the freeze. It is closed
++explicitly in `PACK_A_FREEZE_RECORD.json`'s `scientific_status` field.
++
++## What this freeze does not do
++
++- Does not reopen the general scientific audit (see
++  `PACK_A_SOL_SCIENTIFIC_VALIDATION.md` and `PACK_A_SCIENTIFIC_STATUS.json`
++  at the workspace root for that record).
++- Does not modify any operator script (`bin/pack-a`, `bin/lib/*.sh`) beyond
++  what Hotfix1 already shipped.
++- Does not modify any physics file, card, or process definition.
++- Does not create Pack AA, touch Pack B, run Pythia, or run the recast.
++- Does not overwrite or delete any prior artifact
++  (`pi_ufo_baseline_v1_frozen.zip` and its sidecars remain in place,
++  explicitly marked historical/non-authoritative).
++
++FREEZE_STATUS=FROZEN
+diff -ruN '--exclude=py3_model.pkl' a/README_PACK_A.md b/README_PACK_A.md
+--- a/README_PACK_A.md	2026-07-20 04:13:28.000000000 -0400
++++ b/README_PACK_A.md	2026-07-20 23:15:37.015727983 -0400
+@@ -9,6 +9,9 @@
+ apply MadSpin, is not "Pack AA" (a future separate layer that would consume
+ this LHE), does not touch "Pack B", and does not execute any recast.
+ 
++**Release status:** `FROZEN` (Hotfix1; see `PACK_A_FREEZE_RECORD.json` at the
++pack root for the freeze record).
++
+ **Scientific status:** `PASS_WITH_WARNINGS` (Sol validation — see
+ `PACK_A_SOL_SCIENTIFIC_VALIDATION.md` at the workspace root). The generated
+ cross section is classified `PACK_A_LO_SMOKE_XSEC`: usable for baseline
+diff -ruN '--exclude=py3_model.pkl' a/checksums.sha256 b/checksums.sha256
+--- a/checksums.sha256	2026-07-20 04:13:28.000000000 -0400
++++ b/checksums.sha256	2026-07-20 23:17:41.962060468 -0400
+@@ -1,9 +1,11 @@
+ c3d53198fd200b55e50ab8e29a0cb0f934aba20ee4a8d996fd9fee141cf09cba  CHANGELOG.md
+ 45d9ae5e457158e37fc8303a3ee74a3f98bbd028601f9397f010b059714a5159  KNOWN_LIMITATIONS.md
+ 0776312fe51bce3b4dd6595f05044408feb0585e08febe29006fd5911684229e  MODEL_CARD.md
++9edf1d999c62ddca377f11199ec6314dc48f8178929c2b907ed3e233b418bf09  PACK_A_FREEZE_RECORD.json
++6354cc21f2ee7167f98c63ec62561995942acfc1c84fbf43411b54837b42b3c8  PACK_A_FREEZE_VALIDATION.md
+ c0e2cca2ecd310972a32818dff00f46382057a9822b597487f7e0af00d6d0474  PROVENANCE.md
+ 68df93a0489bc0322063e22d6e2cc5996da9f3d2f8faba65258cf0bd2f08315d  README.md
+-f5271c3144dfb32bafa571dd91904e4fb65cb25dd592568f77bf98632b088b88  README_PACK_A.md
++046c921bf021bc970e5a42c705b031550e87fc1c1a25b65eef57661fb6bc3cbd  README_PACK_A.md
+ 86f4f71fe99566e9a7d76fa417ded671e2be01f4b6c9ad064e6cf3a1b8764cf5  bin/lib/clean.sh
+ 6e7cc71352db1b0234fe77221b96d6a65e90cc27c6a8d7429980f6936d426a42  bin/lib/common.sh
+ 81325b809a05bbaa18c9a93f7b5af29710c39358c27d2369c28113095ca2aaf5  bin/lib/lhe_invariants.py
+@@ -26,7 +28,7 @@
+ 41d264542323dff06edbcd30fd90ecfb4eeba2417544050cdc29e9a41f9de477  cards/pythia8.template.cmnd
+ 85abb3e99fc9503e59ecb6bff21a1aa804e248ff64f230afff8f20d8b5d156c3  cards/run_card_smoke.dat
+ 9cbba47624ef7a26eb29b86821825e71ca79e4f830b2975387e40e4896e48f9f  docs/PACK_A_FILE_MAP.md
+-5f4e2a6db06e076521fbcf6194e2990134d1936bfc273ccfa318e4e2f46aeb90  docs/PACK_A_FREEZE_CHECKLIST.md
++9cae2b8158e2394a9606d71dc5ba6271cf2ca155546ba1a6fb49f35d6edaeb7c  docs/PACK_A_FREEZE_CHECKLIST.md
+ bff09b5281346596ea6912dd6f72795017607203ae62274c59d526504d3cc726  docs/PACK_A_QUICKSTART.md
+ 9b59f39b1fec4adb2f0744cf86458a112a70b184e4541e35be1f72f684cb750d  docs/PACK_A_SCIENTIFIC_SCOPE.md
+ 921e85cba1ee108bad9f28c94135724c73e99806a94ae1ba93bf71f3dec911c0  docs/PACK_A_TROUBLESHOOTING.md
+diff -ruN '--exclude=py3_model.pkl' a/docs/PACK_A_FREEZE_CHECKLIST.md b/docs/PACK_A_FREEZE_CHECKLIST.md
+--- a/docs/PACK_A_FREEZE_CHECKLIST.md	2026-07-20 04:13:28.000000000 -0400
++++ b/docs/PACK_A_FREEZE_CHECKLIST.md	2026-07-20 23:15:27.194233309 -0400
+@@ -30,4 +30,4 @@
+ Do not mark any item above as complete from this mission's evidence alone;
+ this file exists to be filled in by the freeze mission itself.
+ 
+-FREEZE_STATUS=NOT_FROZEN
++FREEZE_STATUS=FROZEN
+diff -ruN '--exclude=py3_model.pkl' a/manifest.json b/manifest.json
+--- a/manifest.json	2026-07-20 04:13:28.000000000 -0400
++++ b/manifest.json	2026-07-20 23:17:50.680203642 -0400
+@@ -24,6 +24,16 @@
+       "size_bytes": 907
+     },
+     {
++      "path": "PACK_A_FREEZE_RECORD.json",
++      "sha256": "9edf1d999c62ddca377f11199ec6314dc48f8178929c2b907ed3e233b418bf09",
++      "size_bytes": 9840
++    },
++    {
++      "path": "PACK_A_FREEZE_VALIDATION.md",
++      "sha256": "6354cc21f2ee7167f98c63ec62561995942acfc1c84fbf43411b54837b42b3c8",
++      "size_bytes": 4736
++    },
++    {
+       "path": "PROVENANCE.md",
+       "sha256": "c0e2cca2ecd310972a32818dff00f46382057a9822b597487f7e0af00d6d0474",
+       "size_bytes": 945
+@@ -35,8 +45,8 @@
+     },
+     {
+       "path": "README_PACK_A.md",
+-      "sha256": "f5271c3144dfb32bafa571dd91904e4fb65cb25dd592568f77bf98632b088b88",
+-      "size_bytes": 2685
++      "sha256": "046c921bf021bc970e5a42c705b031550e87fc1c1a25b65eef57661fb6bc3cbd",
++      "size_bytes": 2798
+     },
+     {
+       "path": "bin/lib/clean.sh",
+@@ -150,8 +160,8 @@
+     },
+     {
+       "path": "docs/PACK_A_FREEZE_CHECKLIST.md",
+-      "sha256": "5f4e2a6db06e076521fbcf6194e2990134d1936bfc273ccfa318e4e2f46aeb90",
+-      "size_bytes": 1888
++      "sha256": "9cae2b8158e2394a9606d71dc5ba6271cf2ca155546ba1a6fb49f35d6edaeb7c",
++      "size_bytes": 1884
+     },
+     {
+       "path": "docs/PACK_A_QUICKSTART.md",
+@@ -675,8 +685,8 @@
+     }
+   ],
+   "luna_release_candidate": true,
+-  "manifest_regenerated_utc": "2026-07-20T08:12:45Z",
+-  "manifest_scope": "all files except manifest.json, checksums.sha256, and model/LLscalar_v3_UFO_runtime/py3_model.pkl (UFO model pickle cache, rewritten in place on first load; see docs/PACK_A_TROUBLESHOOTING.md)",
++  "manifest_regenerated_utc": "2026-07-21T03:15:39Z",
++  "manifest_scope": "all files except manifest.json, checksums.sha256, and model/LLscalar_v3_UFO_runtime/py3_model.pkl (UFO model pickle cache, rewritten in place on first load; see docs/PACK_A_TROUBLESHOOTING.md and PACK_A_FREEZE_RECORD.json's mutable_derived_files section)",
+   "original_ufo_zip_sha256": "9d5e7d75e177e8b0ae7e4719c955e0ec9cc8dc9f95a8617d1561f5811cffa97d",
+   "pack_name": "pi_ufo_baseline_v1",
+   "pack_version": "1.0.0",

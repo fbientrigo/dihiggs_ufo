@@ -1,0 +1,101 @@
+{
+  "status": "PACK_A_NATIVE_RUNTIME_PASS",
+  "generated_at_utc": "2026-07-18T05:32:26Z",
+  "original_zip": {
+    "path": "pi_ufo_baseline_v1.zip",
+    "sha256": "632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd",
+    "modified": false
+  },
+  "runtime_fix_zip": {
+    "path": "pi_ufo_baseline_v1_runtimefix.zip",
+    "sha256": "2a9cde7af91ea66a6275a86ab073b3677efc8a46d7e8913d8475b948a468b755"
+  },
+  "physics_files_byte_identical": [
+    "couplings.py",
+    "vertices.py",
+    "particles.py",
+    "parameters.py",
+    "decays.py",
+    "form_factors.py",
+    "lorentz.py",
+    "coupling_orders.py"
+  ],
+  "gc90_unchanged": true,
+  "process_card": "generate g g > H > h2 h2",
+  "llp_pdg": 9000006,
+  "mediator_pdg": 25,
+  "coupling_mode": "PI_FIXED",
+  "point": {
+    "mphi_GeV": 200.0,
+    "ctau_mm": 100.0,
+    "seed": 12345
+  },
+  "root_cause": "PDG 24 (W) mass parameter MW is nature='internal' (derived from MZ, Gf, aEW) in parameters.py; the deterministic pack writer only serializes external parameters into BLOCK MASS, so PDG 24 never gets a mass row even though DECAY 24 is present. MadEvent 3.5.3 requires a BLOCK MASS row for every DECAY-referenced particle and raises KeyError('id (24,) is not in mass') otherwise.",
+  "fix_approach": "superseded_fragile",
+  "fix_description": "The previous runtime-fix pipes 'update missing\\n0\\n'. The first line is rejected by the switch menu; the following 0 closes that menu, then EOF selects default 0 in the card menu and its postcmd hook runs update dependent. The numerical result is valid, but this mechanism is superseded by pi_ufo_baseline_v1_runtimefix_candidate.zip.",
+  "mechanism_correction": {
+    "status": "SUPERSEDED",
+    "corrected_sequence": ["0", "update dependent", "0"],
+    "authoritative_trace": "PACK_A_MADEVENT_INTERACTION_TRACE.md",
+    "scientific_status": "PACK_A_SCIENTIFIC_STATUS.json"
+  },
+  "fallback_tooling_added": "scripts/materialize_internal_masses.py: independent pure-Python re-evaluation of UFO-internal mass expressions (restricted-AST, fail-closed), used here only as a cross-check; also exposes a documented --patch fallback, unused in the primary path.",
+  "separate_issue_fixed": "scripts/patch_mg5_run_card.py previously required ickkw/xqcut to be present in the MG5-generated run_card.dat, which they are not for a ZERO_JET_ONLY (unmatched) process; now REQUIRED_FIELDS={nevents,iseed,lpp1,lpp2,ebeam1,ebeam2} are enforced and OPTIONAL_FIELDS={ickkw,xqcut} are skipped when absent. Verified idempotent.",
+  "mw_value_gev": 79.82435974619784,
+  "mw_cross_check_method": "independent AST-restricted evaluation of Param.MW's own cmath expression against the same external MZ/Gf/aEWM1 inputs; matches MadEvent's own materialized value to rel=1e-12",
+  "acceptance_criteria": {
+    "original_zip_hash_unchanged": true,
+    "physics_files_byte_identical": true,
+    "gc90_unchanged": true,
+    "mg5_imports_model": true,
+    "one_process_one_diagram": true,
+    "positive_cross_section": true,
+    "cross_section_pb": 0.02349,
+    "integration_error_pb": 0.0001364,
+    "lhe_exists": true,
+    "lhe_path": "runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/build/A_PI_NATIVE_200/events.lhe.gz",
+    "events_generated": 100,
+    "events_with_exactly_two_final_llp": 100,
+    "nonfinal_llp_records": 0,
+    "llp_stable_in_lhe": true,
+    "no_pythia_output": true,
+    "no_external_decays_applied": true,
+    "pack_aa_created": false,
+    "pack_b_touched": false
+  },
+  "tests": {
+    "command": "python3 -m pytest tests/ -q",
+    "passed": 26,
+    "skipped": 2,
+    "failed": 0
+  },
+  "commands_executed": [
+    "sha256sum pi_ufo_baseline_v1.zip",
+    "unzip -q pi_ufo_baseline_v1_runtimefix.zip (fresh extraction under .pack_a_native_clean)",
+    "env -u MG5_BIN bash -lc '<documented clean-shell reproduction command>'"
+  ],
+  "exit_statuses": {
+    "run_static_tests.py": 0,
+    "pytest tests/": 0,
+    "build_point.py": 0,
+    "run_mg5_smoke.sh": 0,
+    "overall": 0,
+    "clean_shell_runner": 0
+  },
+  "non_blocking_warnings_recorded_not_fixed": [
+    "Python 3.12 SyntaxWarning: invalid escape sequence (MG5 vendored regex strings)",
+    "MG5 development-version warning banner",
+    "missing LHAPDF external installation",
+    "missing eps viewer / web browser",
+    "native h2 -> gamma gamma width/lifetime inconsistency",
+    "extra-parton samples outside scope"
+  ],
+  "deliverables": [
+    "pi_ufo_baseline_v1_runtimefix.zip",
+    "PACK_A_NATIVE_ROOT_CAUSE.md",
+    "PACK_A_NATIVE_RUNTIME_REPORT.md",
+    "PACK_A_NATIVE_RUNTIME_STATUS.json",
+    "PATCH_PACK_A_RUNTIMEFIX.diff",
+    "PACK_A_NATIVE_REPRODUCE.md"
+  ]
+}

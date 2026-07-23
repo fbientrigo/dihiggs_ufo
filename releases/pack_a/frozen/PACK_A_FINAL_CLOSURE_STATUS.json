@@ -1,0 +1,94 @@
+{
+  "verdict": "PACK_A_CLOSURE_CONFIRMED",
+  "authoritative_artifact": "pi_ufo_baseline_v1_frozen_hotfix1.zip",
+  "sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+  "parent_artifacts": {
+    "pi_original_zip": {
+      "path": "pi_ufo_baseline_v1.zip",
+      "sha256": "632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd"
+    },
+    "scientific_parent_zip": {
+      "path": "pi_ufo_baseline_v1_runtimefix_candidate.zip",
+      "sha256": "df36904843dc05710f4e0869bbf7c64ec87f501a6f52840b01df29461b94a06d"
+    },
+    "authoritative_parent_zip": {
+      "path": "pi_ufo_baseline_v1_release_candidate_hotfix1.zip",
+      "sha256": "d0547c1fa571eb95b2db81deb736c5d73a4f6fc95284bacc5f7229c73c67c4a8"
+    }
+  },
+  "scientific_status": "PASS_WITH_WARNINGS",
+  "freeze_status": "FROZEN",
+  "toolchain": {
+    "python": "/home/fabi/anaconda3/bin/python3 (3.12.7)",
+    "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+    "mg5_version": "3.5.3"
+  },
+  "physics_file_identity": {
+    "files_evaluated": [
+      "couplings.py",
+      "vertices.py",
+      "particles.py",
+      "parameters.py",
+      "decays.py",
+      "form_factors.py",
+      "lorentz.py",
+      "coupling_orders.py"
+    ],
+    "identity_status": "8/8 byte-identical to PI original"
+  },
+  "operator_tests": {
+    "bash_syntax_check": "PASS (0 failures)",
+    "shellcheck": "SKIPPED_NOT_INSTALLED",
+    "checksum_check": "PASS (135/135 OK)",
+    "pointer_suite": "PASS (19/19 passed)",
+    "preflight": "PASS (0 operational blockers)",
+    "pointer_failure_tests": "PASS (missing -> exit 0, stale/invalid -> exit 21 BLOCKED)"
+  },
+  "reproduction_metrics": {
+    "exit_code": 0,
+    "events": 100,
+    "sigma_pb": 0.02349,
+    "sigma_error_pb": 0.0001364,
+    "cross_section_name": "PACK_A_LO_SMOKE_XSEC",
+    "total_llp_final_records": 200,
+    "llp_final_records_per_event": 2,
+    "llp_pdg": 9000006,
+    "lhe_status": 1,
+    "total_llp_nonfinal_records": 0,
+    "h2_mass_GeV": 200.0,
+    "mothers": [1, 2],
+    "daughters": [0, 0],
+    "worst_four_momentum_residual_gev": 8.199998546842835e-08,
+    "momentum_tolerance_gev": 1e-06
+  },
+  "mutable_derived_files": [
+    {
+      "path": "model/LLscalar_v3_UFO_runtime/py3_model.pkl",
+      "classification": "MUTABLE_DERIVED_CACHE",
+      "packaged_initial_sha256": "00049f2b99b48f7619fd576c7327ef635369dfa36563a9f80387389f533da4f3",
+      "excluded_from_checksums": true,
+      "regeneration_verified": true
+    }
+  ],
+  "warnings": [
+    "no external LHAPDF",
+    "no PDF/scale systematics",
+    "GC_15 depends directly on aS while declaring QCD order zero",
+    "MG5 3.5.3 identifies as a development build",
+    "Python 3.12 is experimental",
+    "ZERO_JET_ONLY production"
+  ],
+  "allowed_uses": [
+    "regression testing",
+    "smoke testing",
+    "baseline cross-section verification"
+  ],
+  "forbidden_claims": [
+    "publishable cross-section normalization",
+    "final physical normalization",
+    "final 2HDM prediction",
+    "recast normalization"
+  ],
+  "pack_aa_status": "NOT_CREATED",
+  "recast_status": "NOT_RUN"
+}

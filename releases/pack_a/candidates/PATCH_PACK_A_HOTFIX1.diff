@@ -1,0 +1,471 @@
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/README_PACK_A.md hotfix1_staging/README_PACK_A.md
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/README_PACK_A.md	2026-07-18 03:50:50.000000000 -0400
++++ hotfix1_staging/README_PACK_A.md	2026-07-20 04:00:15.271913423 -0400
+@@ -36,8 +36,13 @@
+ Every `run`/`reproduce` invocation creates a new, timestamped, non-overwritten
+ directory under `runs/`. Each contains `command.txt`, `environment.json`,
+ `run.log`, `build_point.log`, `exit_status.txt`, `manifest.json`, and the
+-generated cards/LHE/validation artifacts. `status` and `results` read the
+-most recent one; nothing here is deleted except by `clean --confirm`.
++generated cards/LHE/validation artifacts. `status` and `results` always
++resolve `runs/.last_run` — the most recent *physical* run directory,
++whether created directly by `run` or nested inside a `reproduce` clean
++extraction — and print an explicit, non-crashing error if that pointer is
++missing, stale, or incomplete. `reproduce` also records its own wrapper
++directory in `runs/.last_reproduce`, which `status`/`results` never treat as
++a physical run. Nothing here is deleted except by `clean --confirm`.
+ 
+ ## Scientific scope reference
+ 
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/common.sh hotfix1_staging/bin/lib/common.sh
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/common.sh	2026-07-18 03:40:38.000000000 -0400
++++ hotfix1_staging/bin/lib/common.sh	2026-07-20 03:38:57.978344092 -0400
+@@ -22,3 +22,42 @@
+   s="${s//$'\n'/\\n}"
+   printf '%s' "$s"
+ }
++
++# pack_a_atomic_write_pointer POINTER_FILE VALUE - writes VALUE (plus a
++# trailing newline) to POINTER_FILE via a same-directory temp file + rename,
++# so a reader never observes a partially written pointer.
++pack_a_atomic_write_pointer() {
++  local pointer_file="$1" value="$2"
++  local dir tmp
++  dir="$(dirname "$pointer_file")"
++  mkdir -p "$dir"
++  tmp="$(mktemp "$dir/.pointer.XXXXXX")"
++  printf '%s\n' "$value" > "$tmp"
++  mv -f "$tmp" "$pointer_file"
++}
++
++# pack_a_first_lhe RUN_DIR - prints the path to the first *.lhe/*.lhe.gz file
++# directly under RUN_DIR/events, or nothing. Never fails under
++# `set -Eeuo pipefail` even when RUN_DIR/events does not exist.
++pack_a_first_lhe() {
++  local run_dir="$1"
++  local f
++  [[ -d "$run_dir/events" ]] || return 0
++  for f in "$run_dir/events"/*.lhe.gz "$run_dir/events"/*.lhe; do
++    [[ -f "$f" ]] && { printf '%s\n' "$f"; return 0; }
++  done
++  return 0
++}
++
++# pack_a_is_physical_run RUN_DIR - true only if RUN_DIR looks like a genuine
++# operator-visible physical run: has command.txt and at least one LHE file
++# under events/. Used to gate promotion to .last_run and to make
++# status/results fail cleanly instead of running `find` on a directory that
++# may not exist (a reproduce-wrapper directory, a stale pointer target, ...).
++pack_a_is_physical_run() {
++  local run_dir="$1"
++  [[ -n "$run_dir" && -d "$run_dir" ]] || return 1
++  [[ -f "$run_dir/command.txt" ]] || return 1
++  [[ -n "$(pack_a_first_lhe "$run_dir")" ]] || return 1
++  return 0
++}
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/reproduce.sh hotfix1_staging/bin/lib/reproduce.sh
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/reproduce.sh	2026-07-18 03:47:28.000000000 -0400
++++ hotfix1_staging/bin/lib/reproduce.sh	2026-07-20 03:39:22.194458805 -0400
+@@ -63,8 +63,23 @@
+   fi
+ 
+   local lhe
+-  lhe="$(find "$gen_dir/events" -maxdepth 1 -type f \( -name '*.lhe.gz' -o -name '*.lhe' \) 2>/dev/null | head -1 || true)"
+-  [[ -n "$lhe" ]] || { echo 21 > "$repro_dir/exit_status.txt"; pack_a_log "REPRODUCE: no LHE found after generation"; return 21; }
++  lhe="$(pack_a_first_lhe "$gen_dir")"
++  if ! pack_a_is_physical_run "$gen_dir"; then
++    echo 21 > "$repro_dir/exit_status.txt"
++    pack_a_log "REPRODUCE: no LHE found after generation; refusing to promote $gen_dir to .last_run"
++    return 21
++  fi
++
++  # The nested clean-extraction generation directory is the actual physical
++  # run (events/, command.txt, environment.json, run.log, manifest.json, ...).
++  # Promote it to the outer pack's .last_run now, independent of the
++  # Sol cross-section/LHE-invariant comparison below, so that `status` and
++  # `results` resolve it exactly as they would for a direct `run`. The
++  # reproduce-wrapper directory ($repro_dir) is never itself a physical run
++  # and must never be mistaken for one; it stays recorded only via
++  # runs/.last_reproduce.
++  pack_a_atomic_write_pointer "$PACK_ROOT/runs/.last_run" "$gen_dir"
++  pack_a_log "REPRODUCE: .last_run updated to nested physical run $gen_dir"
+ 
+   local sigma="" err=""
+   sigma="$("$PACK_A_PYTHON" -c "import json; print(json.load(open('$gen_dir/validation/cross_section.json'))['sigma_pb'])" 2>/dev/null || true)"
+@@ -88,6 +103,6 @@
+   else
+     pack_a_log "REPRODUCE: invariant/cross-section comparison FAILED (seed=$seed); see $repro_dir/comparison.json"
+   fi
+-  echo "$repro_dir" > "$PACK_ROOT/runs/.last_reproduce"
++  pack_a_atomic_write_pointer "$PACK_ROOT/runs/.last_reproduce" "$repro_dir"
+   return "$cmp_rc"
+ }
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/results.sh hotfix1_staging/bin/lib/results.sh
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/results.sh	2026-07-18 03:49:00.000000000 -0400
++++ hotfix1_staging/bin/lib/results.sh	2026-07-20 03:40:09.741126975 -0400
+@@ -5,10 +5,23 @@
+ pack_a_cmd_results() {
+   local run_dir
+   run_dir="$(pack_a_find_last_run)"
+-  if [[ -z "$run_dir" || ! -d "$run_dir" ]]; then
++  if [[ -z "$run_dir" ]]; then
+     echo "No Pack A runs found under $PACK_ROOT/runs. Run '$0 run' first."
+     return 0
+   fi
++  if [[ ! -d "$run_dir" ]]; then
++    echo "BLOCKED: $PACK_ROOT/runs/.last_run points to a directory that no longer exists." >&2
++    echo "  resolved path: $run_dir" >&2
++    echo "  fix: re-run '$0 run' or '$0 reproduce' to establish a fresh pointer." >&2
++    return 21
++  fi
++  if ! pack_a_is_physical_run "$run_dir"; then
++    echo "BLOCKED: resolved run does not look like a complete physical run." >&2
++    echo "  resolved path: $run_dir" >&2
++    echo "  expected: $run_dir/command.txt and at least one *.lhe/*.lhe.gz under $run_dir/events/" >&2
++    echo "  fix: re-run '$0 run' or '$0 reproduce'; do not treat this directory as evidence." >&2
++    return 21
++  fi
+ 
+   echo "=== PACK_A_LO_SMOKE_XSEC evidence ($run_dir) ==="
+   echo
+@@ -24,7 +37,7 @@
+     [[ -f "$run_dir/$f" ]] && echo "  $f -> $run_dir/$f"
+   done
+   local lhe
+-  lhe="$(find "$run_dir/events" -maxdepth 1 -type f \( -name '*.lhe.gz' -o -name '*.lhe' \) 2>/dev/null | head -1)"
++  lhe="$(pack_a_first_lhe "$run_dir")"
+   [[ -n "$lhe" ]] && echo "  LHE -> $lhe"
+   echo "  run.log -> $run_dir/run.log"
+   echo "  build_point.log -> $run_dir/build_point.log"
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/run.sh hotfix1_staging/bin/lib/run.sh
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/run.sh	2026-07-18 03:46:56.000000000 -0400
++++ hotfix1_staging/bin/lib/run.sh	2026-07-20 03:39:04.409202387 -0400
+@@ -167,7 +167,11 @@
+   pack_a_log "RUN: $run_name (config=$config, seed=$seed)"
+   local rc=0
+   pack_a_do_generate "$run_dir" "$seed" "$config" || rc=$?
+-  echo "$run_dir" > "$output_root/.last_run"
+-  pack_a_log "run directory: $run_dir"
++  if [[ $rc -eq 0 ]] && pack_a_is_physical_run "$run_dir"; then
++    pack_a_atomic_write_pointer "$output_root/.last_run" "$run_dir"
++    pack_a_log "run directory: $run_dir (.last_run updated)"
++  else
++    pack_a_log "run directory: $run_dir (exit $rc; .last_run NOT updated - incomplete or failed run is never promoted)"
++  fi
+   return "$rc"
+ }
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/status.sh hotfix1_staging/bin/lib/status.sh
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/bin/lib/status.sh	2026-07-18 03:48:40.000000000 -0400
++++ hotfix1_staging/bin/lib/status.sh	2026-07-20 03:39:51.875832019 -0400
+@@ -8,16 +8,40 @@
+     cat "$runs_dir/.last_run"
+     return 0
+   fi
+-  find "$runs_dir" -maxdepth 1 -mindepth 1 -type d -name '2*_seed*' 2>/dev/null | sort | tail -1
++  # Legacy fallback only (no .last_run pointer at all, e.g. a pre-hotfix run
++  # directory copied in by hand): pick the newest top-level directory that
++  # actually looks like a physical run, skipping reproduce-wrapper
++  # directories (which never contain command.txt/events/ directly).
++  local d
++  while IFS= read -r d; do
++    if pack_a_is_physical_run "$d"; then
++      printf '%s\n' "$d"
++      return 0
++    fi
++  done < <(find "$runs_dir" -maxdepth 1 -mindepth 1 -type d -name '2*_seed*' 2>/dev/null | sort -r)
++  return 0
+ }
+ 
+ pack_a_cmd_status() {
+   local run_dir
+   run_dir="$(pack_a_find_last_run)"
+-  if [[ -z "$run_dir" || ! -d "$run_dir" ]]; then
++  if [[ -z "$run_dir" ]]; then
+     echo "No Pack A runs found under $PACK_ROOT/runs. Run '$0 run' first."
+     return 0
+   fi
++  if [[ ! -d "$run_dir" ]]; then
++    echo "BLOCKED: $PACK_ROOT/runs/.last_run points to a directory that no longer exists." >&2
++    echo "  resolved path: $run_dir" >&2
++    echo "  fix: re-run '$0 run' or '$0 reproduce' to establish a fresh pointer." >&2
++    return 21
++  fi
++  if ! pack_a_is_physical_run "$run_dir"; then
++    echo "BLOCKED: resolved run does not look like a complete physical run." >&2
++    echo "  resolved path: $run_dir" >&2
++    echo "  expected: $run_dir/command.txt and at least one *.lhe/*.lhe.gz under $run_dir/events/" >&2
++    echo "  fix: re-run '$0 run' or '$0 reproduce'; do not treat this directory as evidence." >&2
++    return 21
++  fi
+ 
+   local exit_status="(unknown - run may still be in progress or crashed before finalize)"
+   [[ -f "$run_dir/exit_status.txt" ]] && exit_status="$(cat "$run_dir/exit_status.txt")"
+@@ -44,7 +68,7 @@
+ " || true
+   fi
+   local lhe
+-  lhe="$(find "$run_dir/events" -maxdepth 1 -type f \( -name '*.lhe.gz' -o -name '*.lhe' \) 2>/dev/null | head -1)"
++  lhe="$(pack_a_first_lhe "$run_dir")"
+   [[ -n "$lhe" ]] && echo "LHE path:         $lhe"
+   echo "Log path:         $run_dir/run.log"
+ 
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/checksums.sha256 hotfix1_staging/checksums.sha256
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/checksums.sha256	2026-07-18 13:42:24.000000000 -0400
++++ hotfix1_staging/checksums.sha256	2026-07-20 04:12:45.503215743 -0400
+@@ -3,16 +3,16 @@
+ 0776312fe51bce3b4dd6595f05044408feb0585e08febe29006fd5911684229e  MODEL_CARD.md
+ c0e2cca2ecd310972a32818dff00f46382057a9822b597487f7e0af00d6d0474  PROVENANCE.md
+ 68df93a0489bc0322063e22d6e2cc5996da9f3d2f8faba65258cf0bd2f08315d  README.md
+-3679608f7c50d48d81efa0be8b6c9e2d4b5a022af20c19d9db788d30ed38117f  README_PACK_A.md
++f5271c3144dfb32bafa571dd91904e4fb65cb25dd592568f77bf98632b088b88  README_PACK_A.md
+ 86f4f71fe99566e9a7d76fa417ded671e2be01f4b6c9ad064e6cf3a1b8764cf5  bin/lib/clean.sh
+-43b3a63ce1544c79f3e7f242570f37322ef12cd4a66107c4488c226d80e9fc54  bin/lib/common.sh
++6e7cc71352db1b0234fe77221b96d6a65e90cc27c6a8d7429980f6936d426a42  bin/lib/common.sh
+ 81325b809a05bbaa18c9a93f7b5af29710c39358c27d2369c28113095ca2aaf5  bin/lib/lhe_invariants.py
+ 8cc818c1bfa4ccbf34f5ef3b6f9a5466373fcc27d22f1dea84a410286f42f910  bin/lib/preflight.sh
+-c3c215710f504b54231952107fd2b1d4d1f2b49e481df2b50074b4730e50fb5c  bin/lib/reproduce.sh
++a7283455efa7986103ca64580b43063c8ad013708721c8a8e53426e273cc829b  bin/lib/reproduce.sh
+ 6006b8c9c041d8e45ace8ee4a61dd65e026ad0053b266685e1cf46ef1662d7bf  bin/lib/resolve.sh
+-83ea1215df9eab8d217308271112cdb625f496d6bd517fc8b0d3bc08de98cacc  bin/lib/results.sh
+-e5319f544652d51174d8522036771a00488c2b74d2e276389b5650db3dc98880  bin/lib/run.sh
+-1ae481b208edc6c15691664b8769d9584b1bce8fbdbb4720bdae4a194c9620d0  bin/lib/status.sh
++52c502bc8dfdac9ae267974eff005d562206a4e07d2600932eab741bbbfd89ce  bin/lib/results.sh
++84cbeedd7db5a5ab8eed093644eaee3f57026f1a401c332100df611b3b838486  bin/lib/run.sh
++82f816b81452dc7972a8f1267301d7bf52a8718086cad5ea88fbcf1301283c2f  bin/lib/status.sh
+ 82cabec740e2728543b0f76f0683780fef18c6ac838a9d64f2e634412817ab75  bin/pack-a
+ b28ab25311a3e1796c0018c33c14d8709ec31456ef45df9940d1b5bdf1086741  build/point_000001/decay.slha
+ b5e68dde0222854f72892cc79c0c90becca83a13502fec9bc29c69150a4f4bbf  build/point_000001/param_card.dat
+@@ -26,10 +26,10 @@
+ 41d264542323dff06edbcd30fd90ecfb4eeba2417544050cdc29e9a41f9de477  cards/pythia8.template.cmnd
+ 85abb3e99fc9503e59ecb6bff21a1aa804e248ff64f230afff8f20d8b5d156c3  cards/run_card_smoke.dat
+ 9cbba47624ef7a26eb29b86821825e71ca79e4f830b2975387e40e4896e48f9f  docs/PACK_A_FILE_MAP.md
+-4947befc41dc5605dfd972b122e8bce768f9921270ec70ec9e6a52491a529fd7  docs/PACK_A_FREEZE_CHECKLIST.md
+-186e1fc2762429873b6d659612aec900eeab4949a9475b1788bb7f7f8255876d  docs/PACK_A_QUICKSTART.md
++5f4e2a6db06e076521fbcf6194e2990134d1936bfc273ccfa318e4e2f46aeb90  docs/PACK_A_FREEZE_CHECKLIST.md
++bff09b5281346596ea6912dd6f72795017607203ae62274c59d526504d3cc726  docs/PACK_A_QUICKSTART.md
+ 9b59f39b1fec4adb2f0744cf86458a112a70b184e4541e35be1f72f684cb750d  docs/PACK_A_SCIENTIFIC_SCOPE.md
+-d7e7a97b62b61041dfdbab030ba7d1e02507d0725a8bd26a70100996ea31b587  docs/PACK_A_TROUBLESHOOTING.md
++921e85cba1ee108bad9f28c94135724c73e99806a94ae1ba93bf71f3dec911c0  docs/PACK_A_TROUBLESHOOTING.md
+ db1fb31cea7019a7399c4074d0e674a00653c40fba5618c1f5a9aad5c5d8ad3f  expected/smoke_contract.json
+ 58e07e6b6dea344858f32bccd1948a10768d38a217b88448aa4dc976c0a77b58  model/LLscalar_v3_UFO_runtime/CT_couplings.py
+ e2198b46e727a0aa09378d715bd33364095057dd910f3b8cf7d7dd6ec1bc71d7  model/LLscalar_v3_UFO_runtime/__init__.py
+@@ -43,7 +43,6 @@
+ 7f84d779ff83dd52bbfecbbfe31df147e2df79faab0bcda716d5908d63b3d45b  model/LLscalar_v3_UFO_runtime/parameters.py
+ 01c61a7a352a5bebb747fff0c9ac3e228fa7575dfc381a339ecb285332b223c6  model/LLscalar_v3_UFO_runtime/particles.py
+ 1a4495d00654b6de8044d7a993b798cb12ca7265199f8e25ce42abdfbc98384a  model/LLscalar_v3_UFO_runtime/propagators.py
+-00049f2b99b48f7619fd576c7327ef635369dfa36563a9f80387389f533da4f3  model/LLscalar_v3_UFO_runtime/py3_model.pkl
+ 60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba  model/LLscalar_v3_UFO_runtime/vertices.py
+ 081e24c63a197a6c58fd60a4253e10960738ac35050fe49364941268381ffbb9  model/LLscalar_v3_UFO_runtime/write_param_card.py
+ 91b2955b7f8c537fe50c2bd8577d1d4583327b9645be81bf44a53cadaeece49f  patches/python3_param_card_compat.patch
+@@ -77,6 +76,7 @@
+ 14f4013f789860815db3aa0df9465f63d439c21e924e6793252e72173926e3f9  tests/test_invalid_points.py
+ ae37a0620247d1986983249d87336699c6db0025efa2ddfce35c7c776a1d0cfb  tests/test_materialize_internal_masses.py
+ 1b69812e914ccb6ee91f5e08764895a2b810342b9e09b1218803a00f87c68090  tests/test_model_contract.py
++e1f508b44e9df344b21c71eba6b0f33d19a108f134f9ae06a633d9f90054fd14  tests/test_pack_a_run_pointers.sh
+ 3ed62ff673860b3547c6288a8bfce486e25bee155ae71daf32f070b3aa482547  tests/test_patch_mg5_run_card.py
+ 8820eeede0af161ef5de48bdde24928d4da78bc8ff3e744f6cc609e5bbb81b19  validation/AB_STATIC_REGRESSION.json
+ 7216956d3a6af6fdd0a9783b80dbe8fed7ea22fe4d9204ae37b8b9eef7573081  validation/EXTERNAL_RUNTIME_STATUS.md
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/docs/PACK_A_FREEZE_CHECKLIST.md hotfix1_staging/docs/PACK_A_FREEZE_CHECKLIST.md
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/docs/PACK_A_FREEZE_CHECKLIST.md	2026-07-18 03:52:58.000000000 -0400
++++ hotfix1_staging/docs/PACK_A_FREEZE_CHECKLIST.md	2026-07-20 04:00:20.675847820 -0400
+@@ -21,6 +21,7 @@
+ [ ] manifest.json and checksums.sha256 internally consistent (sha256sum -c passes)
+ [ ] all JSON in the pack parses with a real parser
+ [ ] clean --confirm tested: rejects without --confirm, removes only interface-generated runs/
++[ ] reproduce -> status/results resolves the nested physical run (hotfix1 regression) reverified independently
+ [ ] no absolute machine-specific paths in any distributed manifest
+ [ ] documentation (Sol + Luna) reviewed for consistency with the frozen artifact
+ [ ] explicit sign-off recorded from whoever authorizes the freeze
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/docs/PACK_A_QUICKSTART.md hotfix1_staging/docs/PACK_A_QUICKSTART.md
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/docs/PACK_A_QUICKSTART.md	2026-07-18 03:51:34.000000000 -0400
++++ hotfix1_staging/docs/PACK_A_QUICKSTART.md	2026-07-20 03:59:53.160194174 -0400
+@@ -47,6 +47,19 @@
+ bin/pack-a reproduce --seed 67890
+ ```
+ 
++## `.last_run` vs `.last_reproduce`
++
++`runs/.last_run` always identifies the most recent *physical* run — the
++directory that actually contains `events/`, `command.txt`,
++`environment.json`, `run.log`, and `manifest.json` — whether it was produced
++by `run` or by `reproduce` (in which case it is the nested generation
++directory under `reproduce`'s own clean extraction). `runs/.last_reproduce`
++separately records the reproduce-wrapper directory itself and is never used
++by `status`/`results` to locate evidence. If `.last_run` is missing, stale,
++or points at an incomplete directory, `status`/`results` print an explicit
++`BLOCKED:` message and exit nonzero rather than crashing or truncating
++output.
++
+ ## Never source it
+ 
+ ```bash
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/docs/PACK_A_TROUBLESHOOTING.md hotfix1_staging/docs/PACK_A_TROUBLESHOOTING.md
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/docs/PACK_A_TROUBLESHOOTING.md	2026-07-18 03:52:24.000000000 -0400
++++ hotfix1_staging/docs/PACK_A_TROUBLESHOOTING.md	2026-07-20 04:00:08.214162836 -0400
+@@ -99,6 +99,40 @@
+ regenerated, or you are looking at a stale copy. Never "fix" this by
+ skipping the check — resolve which file is authoritative first.
+ 
++## `status`/`results` after `reproduce` (hotfix1)
++
++`reproduce` runs its canonical generation nested inside its own clean
++extraction (`runs/<ts>_reproduce_seed<N>/clean_extraction/runs/...`). As of
++hotfix1, `reproduce` promotes that nested generation directory to the outer
++pack's `runs/.last_run` as soon as it is confirmed complete (has
++`command.txt` and an LHE under `events/`), independent of whether the
++subsequent Sol cross-section/LHE-invariant comparison passes. `status` and
++`results` therefore resolve the same physical run after either `run` or
++`reproduce`. The reproduce-wrapper directory is recorded separately in
++`runs/.last_reproduce` and is never treated as a physical run.
++
++## Stale or incomplete `.last_run` pointer
++
++If `runs/.last_run` points at a directory that no longer exists, or at a
++directory missing `command.txt` / any `*.lhe`/`*.lhe.gz` under `events/`,
++`status` and `results` print an explicit `BLOCKED:` message naming the
++resolved path and exit nonzero (21). They never run `find` against a
++directory that may not exist and never promote an incomplete or failed run
++to `.last_run` in the first place — `run` and `reproduce` only update the
++pointer after confirming the target directory is a complete physical run.
++
++## `py3_model.pkl` and `checksums.sha256`
++
++`model/LLscalar_v3_UFO_runtime/py3_model.pkl` is the UFO model's own pickled
++object cache; the model machinery rewrites it in place the first time it is
++loaded under a given Python/pickle-protocol combination, then leaves it
++stable on subsequent loads. It is intentionally excluded from
++`checksums.sha256`/`manifest.json` (as of hotfix1) so that this expected,
++environment-dependent one-time rewrite never registers as a pack-integrity
++failure. The eight physics-invariant `.py` source files remain checked
++byte-for-byte regardless (see `preflight`'s dedicated check); only this one
++derived binary cache is excluded.
++
+ ## Pythia/FastJet ausentes pero no requeridos
+ 
+ `preflight` reports these as `INFO`, never `FAIL`/`WARN`-with-blocking-intent.
+diff -ru '--exclude=runs' hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/manifest.json hotfix1_staging/manifest.json
+--- hotfix1_rc_extract/pi_ufo_baseline_v1_release_candidate/manifest.json	2026-07-18 13:42:24.000000000 -0400
++++ hotfix1_staging/manifest.json	2026-07-20 04:13:05.600325635 -0400
+@@ -35,8 +35,8 @@
+     },
+     {
+       "path": "README_PACK_A.md",
+-      "sha256": "3679608f7c50d48d81efa0be8b6c9e2d4b5a022af20c19d9db788d30ed38117f",
+-      "size_bytes": 2321
++      "sha256": "f5271c3144dfb32bafa571dd91904e4fb65cb25dd592568f77bf98632b088b88",
++      "size_bytes": 2685
+     },
+     {
+       "path": "bin/lib/clean.sh",
+@@ -45,8 +45,8 @@
+     },
+     {
+       "path": "bin/lib/common.sh",
+-      "sha256": "43b3a63ce1544c79f3e7f242570f37322ef12cd4a66107c4488c226d80e9fc54",
+-      "size_bytes": 450
++      "sha256": "6e7cc71352db1b0234fe77221b96d6a65e90cc27c6a8d7429980f6936d426a42",
++      "size_bytes": 1930
+     },
+     {
+       "path": "bin/lib/lhe_invariants.py",
+@@ -60,8 +60,8 @@
+     },
+     {
+       "path": "bin/lib/reproduce.sh",
+-      "sha256": "c3c215710f504b54231952107fd2b1d4d1f2b49e481df2b50074b4730e50fb5c",
+-      "size_bytes": 3907
++      "sha256": "a7283455efa7986103ca64580b43063c8ad013708721c8a8e53426e273cc829b",
++      "size_bytes": 4607
+     },
+     {
+       "path": "bin/lib/resolve.sh",
+@@ -70,18 +70,18 @@
+     },
+     {
+       "path": "bin/lib/results.sh",
+-      "sha256": "83ea1215df9eab8d217308271112cdb625f496d6bd517fc8b0d3bc08de98cacc",
+-      "size_bytes": 1490
++      "sha256": "52c502bc8dfdac9ae267974eff005d562206a4e07d2600932eab741bbbfd89ce",
++      "size_bytes": 2057
+     },
+     {
+       "path": "bin/lib/run.sh",
+-      "sha256": "e5319f544652d51174d8522036771a00488c2b74d2e276389b5650db3dc98880",
+-      "size_bytes": 6576
++      "sha256": "84cbeedd7db5a5ab8eed093644eaee3f57026f1a401c332100df611b3b838486",
++      "size_bytes": 6817
+     },
+     {
+       "path": "bin/lib/status.sh",
+-      "sha256": "1ae481b208edc6c15691664b8769d9584b1bce8fbdbb4720bdae4a194c9620d0",
+-      "size_bytes": 2118
++      "sha256": "82f816b81452dc7972a8f1267301d7bf52a8718086cad5ea88fbcf1301283c2f",
++      "size_bytes": 3111
+     },
+     {
+       "path": "bin/pack-a",
+@@ -150,13 +150,13 @@
+     },
+     {
+       "path": "docs/PACK_A_FREEZE_CHECKLIST.md",
+-      "sha256": "4947befc41dc5605dfd972b122e8bce768f9921270ec70ec9e6a52491a529fd7",
+-      "size_bytes": 1777
++      "sha256": "5f4e2a6db06e076521fbcf6194e2990134d1936bfc273ccfa318e4e2f46aeb90",
++      "size_bytes": 1888
+     },
+     {
+       "path": "docs/PACK_A_QUICKSTART.md",
+-      "sha256": "186e1fc2762429873b6d659612aec900eeab4949a9475b1788bb7f7f8255876d",
+-      "size_bytes": 1381
++      "sha256": "bff09b5281346596ea6912dd6f72795017607203ae62274c59d526504d3cc726",
++      "size_bytes": 2083
+     },
+     {
+       "path": "docs/PACK_A_SCIENTIFIC_SCOPE.md",
+@@ -165,8 +165,8 @@
+     },
+     {
+       "path": "docs/PACK_A_TROUBLESHOOTING.md",
+-      "sha256": "d7e7a97b62b61041dfdbab030ba7d1e02507d0725a8bd26a70100996ea31b587",
+-      "size_bytes": 4351
++      "sha256": "921e85cba1ee108bad9f28c94135724c73e99806a94ae1ba93bf71f3dec911c0",
++      "size_bytes": 6259
+     },
+     {
+       "path": "expected/smoke_contract.json",
+@@ -234,11 +234,6 @@
+       "size_bytes": 1351
+     },
+     {
+-      "path": "model/LLscalar_v3_UFO_runtime/py3_model.pkl",
+-      "sha256": "00049f2b99b48f7619fd576c7327ef635369dfa36563a9f80387389f533da4f3",
+-      "size_bytes": 57643
+-    },
+-    {
+       "path": "model/LLscalar_v3_UFO_runtime/vertices.py",
+       "sha256": "60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba",
+       "size_bytes": 36546
+@@ -404,6 +399,11 @@
+       "size_bytes": 2432
+     },
+     {
++      "path": "tests/test_pack_a_run_pointers.sh",
++      "sha256": "e1f508b44e9df344b21c71eba6b0f33d19a108f134f9ae06a633d9f90054fd14",
++      "size_bytes": 5658
++    },
++    {
+       "path": "tests/test_patch_mg5_run_card.py",
+       "sha256": "3ed62ff673860b3547c6288a8bfce486e25bee155ae71daf32f070b3aa482547",
+       "size_bytes": 2372
+@@ -675,8 +675,8 @@
+     }
+   ],
+   "luna_release_candidate": true,
+-  "manifest_regenerated_utc": "2026-07-18T17:42:24Z",
+-  "manifest_scope": "all files except manifest.json and checksums.sha256",
++  "manifest_regenerated_utc": "2026-07-20T08:12:45Z",
++  "manifest_scope": "all files except manifest.json, checksums.sha256, and model/LLscalar_v3_UFO_runtime/py3_model.pkl (UFO model pickle cache, rewritten in place on first load; see docs/PACK_A_TROUBLESHOOTING.md)",
+   "original_ufo_zip_sha256": "9d5e7d75e177e8b0ae7e4719c955e0ec9cc8dc9f95a8617d1561f5811cffa97d",
+   "pack_name": "pi_ufo_baseline_v1",
+   "pack_version": "1.0.0",
+Only in hotfix1_staging/tests: test_pack_a_run_pointers.sh

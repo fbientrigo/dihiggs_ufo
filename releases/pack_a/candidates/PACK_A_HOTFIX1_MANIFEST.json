@@ -1,0 +1,194 @@
+{
+  "mission": "pack_a_operator_interface_hotfix1",
+  "created_at_utc": "2026-07-20T08:10:00Z",
+  "freeze_status": "NOT_FROZEN",
+  "verdict": "READY_FOR_FREEZE_REVIEW",
+  "provenance": {
+    "pi_original_zip": {
+      "path": "pi_ufo_baseline_v1.zip",
+      "sha256": "632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd",
+      "role": "provenance_only"
+    },
+    "sol_scientific_candidate_zip": {
+      "path": "pi_ufo_baseline_v1_runtimefix_candidate.zip",
+      "sha256": "df36904843dc05710f4e0869bbf7c64ec87f501a6f52840b01df29461b94a06d",
+      "role": "provenance_only"
+    },
+    "luna_release_candidate_zip": {
+      "path": "pi_ufo_baseline_v1_release_candidate.zip",
+      "sha256": "fec8628b3386379b0dae9f308ff949872ff2b6247bba7fdca0a4b35e6df7b3dd",
+      "role": "authoritative_input"
+    },
+    "hotfix_candidate_zip": {
+      "path": "pi_ufo_baseline_v1_release_candidate_hotfix1.zip",
+      "sha256": "d0547c1fa571eb95b2db81deb736c5d73a4f6fc95284bacc5f7229c73c67c4a8",
+      "role": "this_mission_output"
+    },
+    "pre_existing_frozen_artifacts_not_authoritative": [
+      "pi_ufo_baseline_v1_frozen.zip",
+      "PACK_A_FROZEN_MANIFEST.json",
+      "PACK_A_FREEZE_VALIDATION.md",
+      "PATCH_PACK_A_FREEZE.diff",
+      "PACK_A_FROZEN_CHECKSUMS.sha256"
+    ],
+    "pre_existing_frozen_artifacts_note": "Preserved byte-for-byte for provenance. Not authoritative: their validation did not exercise the reproduce -> status/results sequence correctly and missed the confirmed regression fixed by this hotfix. Not marked valid, final, or superseding this candidate."
+  },
+  "confirmed_defect": {
+    "id": "PACK_A_REPRODUCE_LAST_RUN_POINTER_DEFECT",
+    "summary": "reproduce wrote runs/.last_reproduce but never runs/.last_run; the status/results glob fallback matched the reproduce-wrapper directory (no events/) instead of the nested physical run, and an unguarded `find` on that missing directory crashed both commands under set -Eeuo pipefail.",
+    "reproduced_before_fix": true,
+    "reproduced_evidence": "reproduce exit=0; status exit=1 (truncated); results exit=1 (truncated)"
+  },
+  "second_defect_found_during_regression": {
+    "id": "PACK_A_PY3_MODEL_PKL_CHECKSUM_FALSE_POSITIVE",
+    "summary": "model/LLscalar_v3_UFO_runtime/py3_model.pkl (UFO model pickle cache) is rewritten in place on first load under the local Python/pickle-protocol combination, then stable; tracking it in checksums.sha256 caused a false pack-integrity FAIL on every invocation after the first, blocking the mandated run->reproduce->run->reproduce regression (Section 7.4 of the mission). Reproduced on the unmodified release candidate; not introduced by this hotfix.",
+    "fix": "excluded model/LLscalar_v3_UFO_runtime/py3_model.pkl from checksums.sha256 and manifest.json's file list. The eight physics-invariant .py files remain checked byte-for-byte by preflight.sh, unmodified.",
+    "no_physics_or_script_behavior_changed": true
+  },
+  "files_changed": [
+    "bin/lib/common.sh",
+    "bin/lib/run.sh",
+    "bin/lib/reproduce.sh",
+    "bin/lib/status.sh",
+    "bin/lib/results.sh",
+    "README_PACK_A.md",
+    "docs/PACK_A_QUICKSTART.md",
+    "docs/PACK_A_TROUBLESHOOTING.md",
+    "docs/PACK_A_FREEZE_CHECKLIST.md",
+    "tests/test_pack_a_run_pointers.sh",
+    "checksums.sha256",
+    "manifest.json"
+  ],
+  "files_added": [
+    "tests/test_pack_a_run_pointers.sh"
+  ],
+  "files_explicitly_unchanged": [
+    "model/LLscalar_v3_UFO_runtime/couplings.py",
+    "model/LLscalar_v3_UFO_runtime/vertices.py",
+    "model/LLscalar_v3_UFO_runtime/particles.py",
+    "model/LLscalar_v3_UFO_runtime/parameters.py",
+    "model/LLscalar_v3_UFO_runtime/decays.py",
+    "model/LLscalar_v3_UFO_runtime/form_factors.py",
+    "model/LLscalar_v3_UFO_runtime/lorentz.py",
+    "model/LLscalar_v3_UFO_runtime/coupling_orders.py",
+    "model/LLscalar_v3_UFO_runtime/write_param_card.py",
+    "bin/pack-a",
+    "bin/lib/preflight.sh",
+    "bin/lib/resolve.sh",
+    "bin/lib/clean.sh",
+    "bin/lib/lhe_invariants.py",
+    "scripts/*",
+    "cards/*",
+    "points/*",
+    "schemas/*",
+    "patches/*",
+    "build/*",
+    "expected/*",
+    "validation/*",
+    "vendor/*",
+    "requirements.txt",
+    "CHANGELOG.md",
+    "KNOWN_LIMITATIONS.md",
+    "MODEL_CARD.md",
+    "PROVENANCE.md",
+    "README.md",
+    "tests/test_invalid_points.py",
+    "tests/test_materialize_internal_masses.py",
+    "tests/test_model_contract.py",
+    "tests/test_patch_mg5_run_card.py"
+  ],
+  "physics_invariant_file_hashes": {
+    "couplings.py": "199021f332fa57314f1a9dbd487a08c8310f9d5b4ce408eaa6c5ea99a649c3f4",
+    "vertices.py": "60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba",
+    "particles.py": "01c61a7a352a5bebb747fff0c9ac3e228fa7575dfc381a339ecb285332b223c6",
+    "parameters.py": "7f84d779ff83dd52bbfecbbfe31df147e2df79faab0bcda716d5908d63b3d45b",
+    "decays.py": "ebb92183abff92cdaf55aeb80399effe2cc0256f1423ce807a390cd420564e23",
+    "form_factors.py": "9fdae69a684ddd1eb5963a1695e0f5449045755826aa62a8829569848b32f478",
+    "lorentz.py": "4b818a0fd7a9f1ded91a957251380f4116a30454f8e1fc72e1c7ccacdab6bf8f",
+    "coupling_orders.py": "80d652d3441c1fed3242dc7a4141a12f5a7ccc2f2cc6764dd5d22bb39083d132",
+    "verified_identical_to": "pi_ufo_baseline_v1.zip (632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd)"
+  },
+  "script_hashes": {
+    "bin/pack-a": "82cabec740e2728543b0f76f0683780fef18c6ac838a9d64f2e634412817ab75",
+    "bin/lib/clean.sh": "86f4f71fe99566e9a7d76fa417ded671e2be01f4b6c9ad064e6cf3a1b8764cf5",
+    "bin/lib/preflight.sh": "8cc818c1bfa4ccbf34f5ef3b6f9a5466373fcc27d22f1dea84a410286f42f910",
+    "bin/lib/resolve.sh": "6006b8c9c041d8e45ace8ee4a61dd65e026ad0053b266685e1cf46ef1662d7bf",
+    "bin/lib/common.sh": "6e7cc71352db1b0234fe77221b96d6a65e90cc27c6a8d7429980f6936d426a42",
+    "bin/lib/run.sh": "84cbeedd7db5a5ab8eed093644eaee3f57026f1a401c332100df611b3b838486",
+    "bin/lib/reproduce.sh": "a7283455efa7986103ca64580b43063c8ad013708721c8a8e53426e273cc829b",
+    "bin/lib/status.sh": "82f816b81452dc7972a8f1267301d7bf52a8718086cad5ea88fbcf1301283c2f",
+    "bin/lib/results.sh": "52c502bc8dfdac9ae267974eff005d562206a4e07d2600932eab741bbbfd89ce",
+    "note": "bin/pack-a, clean.sh, preflight.sh, resolve.sh unchanged from the release candidate; common.sh, run.sh, reproduce.sh, status.sh, results.sh modified for this hotfix."
+  },
+  "documentation_hashes": {
+    "README_PACK_A.md": "f5271c3144dfb32bafa571dd91904e4fb65cb25dd592568f77bf98632b088b88",
+    "docs/PACK_A_QUICKSTART.md": "bff09b5281346596ea6912dd6f72795017607203ae62274c59d526504d3cc726",
+    "docs/PACK_A_TROUBLESHOOTING.md": "921e85cba1ee108bad9f28c94135724c73e99806a94ae1ba93bf71f3dec911c0",
+    "docs/PACK_A_FREEZE_CHECKLIST.md": "5f4e2a6db06e076521fbcf6194e2990134d1936bfc273ccfa318e4e2f46aeb90",
+    "tests/test_pack_a_run_pointers.sh": "e1f508b44e9df344b21c71eba6b0f33d19a108f134f9ae06a633d9f90054fd14"
+  },
+  "toolchain": {
+    "python": {"executable": "/home/fabi/anaconda3/bin/python3", "version": "3.12.7"},
+    "mg5_bin": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+    "mg5_version_confirmed": "3.5.3"
+  },
+  "test_matrix": {
+    "7.1_static_checks": {
+      "bash_-n_all_scripts": "PASS",
+      "shellcheck": "SKIPPED_NOT_INSTALLED",
+      "json_parse_all": "PASS",
+      "sha256sum_-c_checksums": "PASS (133/133 OK)",
+      "focused_pointer_test": "PASS (19 passed, 0 failed)"
+    },
+    "7.2_direct_run": {"run": 0, "status": 0, "results": 0},
+    "7.3_reproduce_blocking_regression": {"reproduce": 0, "status": 0, "results": 0, "last_reproduce_points_to_wrapper": true, "last_run_points_to_nested_physical_run": true, "events_and_lhe_found": true, "output_truncated": false},
+    "7.4_repeated_operation": {
+      "run_1_exit": 0, "reproduce_1_exit": 0, "run_2_exit": 0, "reproduce_2_exit": 0,
+      "last_run_monotonic_and_distinct_each_step": true
+    },
+    "7.5_failure_behavior": {
+      "no_pointer": {"status_exit": 0, "results_exit": 0, "note": "informational, unchanged"},
+      "stale_pointer": {"status_exit": 21, "results_exit": 21},
+      "pointer_to_dir_without_events": {"status_exit": 21, "results_exit": 21},
+      "pointer_to_dir_missing_lhe": {"status_exit": 21, "results_exit": 21},
+      "no_crash_any_case": true, "shell_survived_any_case": true, "failed_run_ever_promoted": false
+    },
+    "7.6_external_working_directory": {"run": 0, "reproduce": 0, "status": 0, "results": 0, "cwd_unchanged": true, "no_writes_outside_pack_runs": true},
+    "7.7_minimal_path_and_mg5": {
+      "preflight_under_PATH_usr_bin_bin": 0,
+      "mg5_3_5_3_selected": true,
+      "invalid_mg5_bin_fallback_explicit": true,
+      "mg5_resolution_broadened": false
+    },
+    "7.8_safe_clean": {"clean_no_confirm_exit": 22, "clean_confirm_exit": 0, "removed_only_generated_runs": true, "docs_manifests_checksums_preserved": true}
+  },
+  "scientific_reproduction": {
+    "classification": "PACK_A_LO_SMOKE_XSEC",
+    "events": 100,
+    "sigma_pb": 0.02349,
+    "sigma_error_pb": 0.0001364,
+    "ref_sigma_pb": 0.02349,
+    "ref_sigma_error_pb": 0.0001364,
+    "total_llp_final_records": 200,
+    "total_llp_nonfinal_records": 0,
+    "llp_pdg": 9000006,
+    "expected_h2_mass_gev": 200.0,
+    "mass_mismatches": [],
+    "mother_mismatches": [],
+    "momentum_tolerance_gev": 1e-06,
+    "worst_four_momentum_residual_gev": 8.199998546842835e-08,
+    "pass": true
+  },
+  "scope_integrity": {
+    "no_physics_file_changed": true,
+    "h2_stable": true,
+    "pythia_executed": false,
+    "madspin_decayed_h2": false,
+    "pack_aa_created": false,
+    "pack_b_modified": false,
+    "recast_executed": false,
+    "pack_frozen": false
+  },
+  "hotfix_zip_note": "The self-reference exception applies only to the pack-internal manifest.json shipped inside the ZIP (which cannot record its own bytes' hash). This file is external to the ZIP, so its hash is recorded directly above (provenance.hotfix_candidate_zip) and again in PACK_A_HOTFIX1_CHECKSUMS.sha256.",
+  "packaging_self_review_note": "An earlier packaging pass shipped a locally-mutated model/LLscalar_v3_UFO_runtime/py3_model.pkl (rewritten by an intermediate `pack-a run` invoked directly in the staging tree during development, before checksums.sha256 exclusion was added) instead of the pristine release-candidate bytes. Caught by re-diffing the staged tree against the release candidate for binary/`Only in` markers before finalizing; the pristine pkl was restored from a never-executed clean extraction and the ZIP/diff/hashes below were regenerated without re-invoking pack-a in the staging tree. All hashes and regression evidence in this manifest and PACK_A_HOTFIX1_VALIDATION.md reflect the corrected, final artifact."
+}
