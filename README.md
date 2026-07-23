@@ -24,7 +24,12 @@ The canonical artifacts and their cryptographic SHA-256 digests are:
   - SHA-256: `58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6`
 - **Pack AA Release Candidate**: [`releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip`](releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip)
   - SHA-256: `fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291`
-- **Pack AA Event Bundle**: [`pack_aa/runs/20260722T024329Z_2876a1054a402148_ctau1_gamma_gamma/events.truth.jsonl`](pack_aa/runs/20260722T024329Z_2876a1054a402148_ctau1_gamma_gamma/events.truth.jsonl)
+- **Pack AA Validated Event Bundle**: [`releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_MANIFEST.json`](releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_MANIFEST.json)
+  - 9 illustrative configurations.
+  - 100 unique Pack A production events per configuration.
+  - 1000 Pythia decay trials per configuration.
+  - 10 labeled decay replicas per production event.
+  - Decay replicas are not new production events.
 - **Pack A MC Ensemble Results**: [`artifacts/pack_a_seed_mc/20260722T093054Z/PACK_A_SEED_ENSEMBLE_RESULTS.csv`](artifacts/pack_a_seed_mc/20260722T093054Z/PACK_A_SEED_ENSEMBLE_RESULTS.csv)
 - **Pack B Candidate Workspace**: [`releases/pack_b/candidates/`](releases/pack_b/candidates/)
 

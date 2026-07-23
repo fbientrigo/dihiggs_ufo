@@ -64,18 +64,57 @@ def check_readme_links():
     content = readme_p.read_text(errors="ignore")
     md_link_pattern = re.compile(r'\[([^\]]+)\]\(([^)]+)\)')
     failed = False
+
+    try:
+        tracked_files = set(
+            subprocess.check_output(["git", "ls-files"], cwd=REPO_ROOT, text=True).splitlines()
+        )
+    except Exception as e:
+        print(f"FAIL: Could not retrieve tracked files from Git: {e}")
+        return False
+
     for text, target in md_link_pattern.findall(content):
         target_clean = target.split('#')[0]
         if target_clean.startswith(('http://', 'https://', 'mailto:', 'file://')):
             continue
         if not target_clean:
             continue
+
+        if "pack_aa/runs/" in target_clean or target_clean.startswith("pack_aa/runs/"):
+            print(f"FAIL: README.md points to forbidden run directory: [{text}]({target})")
+            failed = True
+            continue
+
+        if target_clean.endswith(".truth.jsonl") or "*.truth.jsonl" in target_clean:
+            print(f"FAIL: README.md points to forbidden truth event file: [{text}]({target})")
+            failed = True
+            continue
+
         target_path = (readme_p.parent / target_clean).resolve()
         if not target_path.exists():
-            print(f"FAIL: Broken link in README.md: [{text}]({target}) -> {target_path}")
+            print(f"FAIL: Broken link in README.md (does not exist): [{text}]({target}) -> {target_path}")
             failed = True
+            continue
+
+        try:
+            rel_str = str(target_path.relative_to(REPO_ROOT))
+        except ValueError:
+            print(f"FAIL: README.md link points outside repository root: [{text}]({target}) -> {target_path}")
+            failed = True
+            continue
+
+        if target_path.is_file() or target_path.is_symlink():
+            if rel_str not in tracked_files:
+                print(f"FAIL: README.md link target file is not tracked by Git: [{text}]({target}) -> {rel_str}")
+                failed = True
+        elif target_path.is_dir():
+            prefix = rel_str + "/" if rel_str != "." else ""
+            if not any(f == rel_str or f.startswith(prefix) for f in tracked_files):
+                print(f"FAIL: README.md link target directory has no tracked files in Git: [{text}]({target}) -> {rel_str}")
+                failed = True
+
     if not failed:
-        print("PASS: All README.md relative links resolved successfully.")
+        print("PASS: All README.md relative links resolved and verified tracked in Git successfully.")
     return not failed
 
 def check_json_parsing():
