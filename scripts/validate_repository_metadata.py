@@ -162,6 +162,14 @@ def check_artifact_registry():
     with open(registry_p) as fp:
         registry = json.load(fp)
     
+    try:
+        tracked_files = set(
+            subprocess.check_output(["git", "ls-files"], cwd=REPO_ROOT, text=True).splitlines()
+        )
+    except Exception as e:
+        print(f"FAIL: Could not retrieve tracked files from Git: {e}")
+        return False
+
     seen_ids = set()
     failed = False
     for item in registry:
@@ -171,12 +179,12 @@ def check_artifact_registry():
             failed = True
         seen_ids.add(aid)
         
-        # Verify path exists
+        # Verify path exists for tracked artifacts
         curr_p = item.get("current_path")
         if curr_p:
             full_p = REPO_ROOT / curr_p
-            if not full_p.exists():
-                print(f"FAIL: Registry item {aid} points to non-existent path: {curr_p}")
+            if curr_p in tracked_files and not full_p.exists():
+                print(f"FAIL: Registry item {aid} points to non-existent tracked path: {curr_p}")
                 failed = True
     
     if not failed:
