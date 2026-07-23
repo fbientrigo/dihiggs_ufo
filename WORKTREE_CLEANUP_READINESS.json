@@ -1,0 +1,31 @@
+{
+  "run_id": "20260723T062842Z",
+  "status": "READY_FOR_CLEANUP_PENDING_REVIEW_PASS",
+  "primary_repo": "/home/fabi/atlas_dihiggs/ufos",
+  "integration_branch": "integration/pack-a-mc-pack-b-20260723T062842Z",
+  "worktrees": [
+    {
+      "path": "/home/fabi/atlas_dihiggs/worktrees/pack_a_mc_20260722T091630Z",
+      "branch": "feat/pack-a-seed-ensemble-20260722T091630Z",
+      "head": "315815ac235eaae5670929f24b68915e431f8855",
+      "is_ancestor_in_git": true,
+      "paths_fully_integrated": true,
+      "cleanup_safe": true
+    },
+    {
+      "path": "/home/fabi/atlas_dihiggs/worktrees/pack_b_20260722T090734Z",
+      "branch": "agent/pack-b-20260722T090734Z",
+      "head": "e2410a5c4e3db784cf142fb73943343ef090d81b",
+      "is_ancestor_in_git": false,
+      "paths_fully_integrated": true,
+      "selective_paths_integrated": [
+        "pack_b/",
+        "releases/pack_b/",
+        "review/pack_b/"
+      ],
+      "cleanup_safe": true
+    }
+  ],
+  "backup_verified": true,
+  "backup_path": "integration/consolidation_20260723T062842Z/BACKUP/pre_consolidation.bundle"
+}

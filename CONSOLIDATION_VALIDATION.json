@@ -1,0 +1,32 @@
+{
+  "run_id": "20260723T062842Z",
+  "status": "PASS",
+  "git_branch": "integration/pack-a-mc-pack-b-20260723T062842Z",
+  "base_sha": "a317f0f",
+  "pack_a_frozen": {
+    "path": "releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip",
+    "sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "status": "FROZEN_UNTOUCHED"
+  },
+  "pack_a_mc": {
+    "status": "INTEGRATED",
+    "seeds": 30,
+    "pytest_status": "PASS",
+    "reviewer_verdict": "PASS"
+  },
+  "pack_b": {
+    "status": "INTEGRATED_INFRASTRUCTURE",
+    "preflight_status": "PASS",
+    "pytest_status": "PASS",
+    "reviewer_verdict": "HARD_BLOCKER"
+  },
+  "pack_aa": {
+    "status": "PRESERVED_NO_REGRESSION",
+    "gates": "AA0-AA6 PASS, AA7 PROVISIONAL_ADAPTER_REQUIRED"
+  },
+  "syntax_validation": {
+    "json_files_checked": 1255,
+    "yaml_files_checked": 176,
+    "diff_check": "CLEAN"
+  }
+}

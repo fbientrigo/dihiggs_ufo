@@ -32,7 +32,7 @@ seed_list:
 locked_run_conditions:
   - frozen Pack A bytes (verified by sha256 before every worker extraction)
   - UFO (LLscalar_v3 runtime, byte-identical across all workers)
-  - process: "g g > H > h2 h2" (mediator PDG 25, LLP PDG 9000006)
+  - process: "g g > H > h2 h2 (mediator PDG 25, LLP PDG 9000006)"
   - cards: param_card.dat / run_card.dat template from the frozen point configs
   - m_h2, couplings: fixed (GC_90 = 8*i*Mh2^2/vev, PI-provided)
   - toolchain: MadGraph5_aMC@NLO 3.5.3 (~/.local/mg5amcnlo/3.5.3)
