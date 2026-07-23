@@ -62,11 +62,12 @@ python3 scripts/validate_repository_metadata.py
 sha256sum releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip
 # Expected: 58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6
 
-# Run Pack AA lightweight test suite
-pytest pack_aa/tests/
+# Check the Pack AA operator CLI without executing Pythia
+python3 pack_aa/python/pack_aa.py --help
 
-# Run Pack B lightweight operator preflight check
-python3 pack_b/operator/pack_b_preflight.py
+# Run the Pack B operator preflight with its declared configuration
+# Requires the local Pack A, canonical-contract, and Pythia paths recorded in the config.
+python3 pack_b/operator/pack_b_preflight.py pack_b/operator/config.json
 ```
 
 ## Scientific Boundaries
