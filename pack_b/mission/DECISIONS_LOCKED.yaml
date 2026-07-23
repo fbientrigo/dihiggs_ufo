@@ -1,0 +1,9 @@
+schema: pack_b.mission.v1
+run_id: 20260722T092951Z
+scope: frozen Pack A stable-LLP handoff and Pythia runtime preflight
+pack_a_role: read_only_input
+pack_aa_role: excluded_and_untouched
+canonical_science: Pack A owns the stable LLP LHE handoff; Pack B owns operator/runtime gating only
+event_generation: deferred
+production_claim: forbidden_without_real_events_and_checks
+output_root: releases/pack_b/candidates/20260722T092951Z

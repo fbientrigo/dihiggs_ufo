@@ -1,0 +1,13 @@
+timestamp_utc	kind	command	status	evidence
+20260722T091121Z	workspace	pwd; git branch --show-current; git rev-parse HEAD; git status --short	RECORDED	unborn branch; all-zero HEAD; clean before edits
+20260722T091121Z	resource	ps -eo pid=,args= | awk '$0 ~ /pack_aa|pack-aa|pack_aa_driver/ && $0 !~ /awk/ {print}'	PASS	no Pack AA production process observed
+20260722T091121Z	input	rsha256 Pack A frozen ZIP and Pythia 8.308 files	PASS	stored in config.json and provenance manifest
+20260722T091121Z	preflight	python3 pack_b/operator/pack_b_preflight.py pack_b/operator/config.json --manifest scratch/pack_b_20260722T091121Z/preflight_manifest.json	PASS	immutable hashes, point contract, Pythia header identity
+20260722T091121Z	compile	c++ -O2 -std=c++17 pack_b/operator/pack_b_smoke.cc -o scratch/pack_b_20260722T091121Z/pack_b_smoke $(/home/fabi/.local/pythia8308/bin/pythia8-config --cxxflags) $(/home/fabi/.local/pythia8308/bin/pythia8-config --libs)	PASS	bounded Pythia 8.308 link probe
+20260722T091121Z	test	python3 pack_b/tests/test_pack_b_preflight.py	PASS	valid and invalid configuration cases
+20260722T091121Z	heavy	pack_b/mission/DEFERRED_HEAVY_COMMANDS.sh --execute	DEFERRED	requires later event handoff and rechecks Pack AA activity
+20260722T091121Z	review	multi_agent reviewer read-only checklist	HARD_BLOCKER	three independent review attempts timed out or were shut down without a verdict
+20260722T092951Z	continuation	new dated Pack B paths after prior candidate was populated	PASS	prior 20260722T091121Z candidate preserved; no overwrite
+20260722T092951Z	preflight	python3 pack_b/operator/pack_b_preflight.py pack_b/operator/config.json --manifest scratch/pack_b_20260722T092951Z/preflight_manifest.json	PASS	continuation run
+20260722T092951Z	compile	c++ -O2 -std=c++17 pack_b/operator/pack_b_smoke.cc -o scratch/pack_b_20260722T092951Z/pack_b_smoke $(/home/fabi/.local/pythia8308/bin/pythia8-config --cxxflags) $(/home/fabi/.local/pythia8308/bin/pythia8-config --libs)	PASS	continuation run
+20260722T092951Z	test	python3 pack_b/tests/test_pack_b_preflight.py	PASS	continuation run
