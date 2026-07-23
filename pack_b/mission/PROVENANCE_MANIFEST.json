@@ -1,0 +1,47 @@
+{
+  "schema": "pack_b.provenance.v1",
+  "run_id": "20260722T092951Z",
+  "workspace": "/home/fabi/atlas_dihiggs/worktrees/pack_b_20260722T090734Z",
+  "branch": "agent/pack-b-20260722T090734Z",
+  "head_before_commit": "0000000000000000000000000000000000000000",
+  "shared_read_only_inputs": [
+    {
+      "role": "authoritative frozen Pack A ZIP",
+      "path": "/home/fabi/atlas_dihiggs/ufos/releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip",
+      "sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6"
+    },
+    {
+      "role": "canonical scientific contract",
+      "path": "/home/fabi/atlas_dihiggs/main_dihiggs/docs/contracts/canonical_evaluators_v2.md",
+      "sha256": "cdc6aab798a2b6bc43fca62bcb9202cc3131e5938028c1f90bdb5687b7ffabd3"
+    },
+    {
+      "role": "Pythia 8.308 installation root",
+      "path": "/home/fabi/.local/pythia8308",
+      "sha256": null,
+      "hash_note": "directory identity is pinned by the hashed config, header, and shared library below"
+    },
+    {
+      "role": "Pythia version header",
+      "path": "/home/fabi/.local/pythia8308/include/Pythia8/Pythia.h",
+      "sha256": "ea13fea4baee17c1e7a247d16e5183b3f065d769d8afa761e83f34e2a6f0863f"
+    },
+    {
+      "role": "Pythia configuration tool",
+      "path": "/home/fabi/.local/pythia8308/bin/pythia8-config",
+      "sha256": "66e4fe94c3ed3b94bfc9cdd9654f61e599c2c69e30e039b8b5732e45ff14550c"
+    },
+    {
+      "role": "Pythia shared library",
+      "path": "/home/fabi/.local/pythia8308/lib/libpythia8.so",
+      "sha256": "e0228bad281125d9ae19513f5b00f6e9c00ea1d4fbca2d2c5b53b8931879a284"
+    }
+  ],
+  "scientific_ownership": {
+    "pack_a": "stable LLP LHE source and point contract",
+    "pack_b": "operator/runtime gates and later Pythia invocation",
+    "pack_aa": "excluded; no shared mutable state"
+  },
+  "production_validated": false,
+  "heavy_generation": "deferred"
+}

@@ -1,0 +1,55 @@
+{
+  "Mbar2_GeV2": null,
+  "br_sum": 1.0,
+  "br_sum_tolerance": 1e-09,
+  "branching_ratios": {
+    "WW": 0.0,
+    "ZZ": 0.0,
+    "Zgamma": 0.1,
+    "bb": 0.5,
+    "gammagamma": 0.1,
+    "gg": 0.3
+  },
+  "coupling_mode": "PI_FIXED",
+  "ctau_m_for_historical_ufo": 0.0050999999999999995,
+  "ctau_mm": 5.1,
+  "decay_runtime_status": {
+    "WW": "DISABLED",
+    "ZZ": "DISABLED",
+    "Zgamma": "DECLARED_BUT_RUNTIME_PENDING",
+    "bb": "DECLARED_BUT_RUNTIME_PENDING",
+    "gammagamma": "DECLARED_BUT_RUNTIME_PENDING",
+    "gg": "DECLARED_BUT_RUNTIME_PENDING"
+  },
+  "ghphiphi_GeV": 1299.647715071661,
+  "ghphiphi_vertex_convention": "UFO GC_90 uses +i*GHphiphi; reported GHphiphi is the real coefficient",
+  "hbar_c_GeV_mm": 1.973269804e-13,
+  "mh_GeV": 125.0,
+  "model_pack": "pi_ufo_baseline_v1",
+  "mphi_GeV": 200.0,
+  "pack_version": "1.0.0",
+  "partial_widths_GeV": {
+    "WW": 0.0,
+    "ZZ": 0.0,
+    "Zgamma": 3.869156478431373e-15,
+    "bb": 1.9345782392156864e-14,
+    "gammagamma": 3.869156478431373e-15,
+    "gg": 1.1607469435294118e-14
+  },
+  "pdg_llp": 9000006,
+  "pdg_mediator": 25,
+  "physics_classification": [
+    "PI_PROVIDED_SIMPLIFIED_MODEL",
+    "SIMPLIFIED_HEFT_PRODUCTION",
+    "FIXED_HPHIPHI_COUPLING",
+    "ZERO_JET_ONLY",
+    "NOT_FULL_2HDM"
+  ],
+  "point_id": "point_000001",
+  "schema_version": "1.0.0",
+  "seed": 12345,
+  "total_width_GeV": 3.869156478431373e-14,
+  "validation_state": "STATIC_POINT_VALIDATED_RUNTIME_PENDING",
+  "vev_GeV": 246.2205690734859,
+  "warnings": []
+}

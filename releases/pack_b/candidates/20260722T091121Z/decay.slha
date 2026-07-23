@@ -1,0 +1,14 @@
+# Phenomenological LLP decay table for Pythia validation
+# Runtime support remains DECLARED_BUT_RUNTIME_PENDING until executed.
+BLOCK QNUMBERS 9000006 # h2 neutral real scalar
+  1  0 # 3 times electric charge
+  2  1 # number of spin states
+  3  1 # colour representation
+  4  0 # self-conjugate
+BLOCK MASS
+  9000006 2.0000000000000000e+02 # h2
+DECAY 9000006 3.8691564784313728e-14 # ctau=5.0999999999999996e+00 mm
+  5.0000000000000000e-01 2         5        -5 # bb
+  2.9999999999999999e-01 2        21        21 # gg
+  1.0000000000000001e-01 2        22        22 # gammagamma
+  1.0000000000000001e-01 2        23        22 # Zgamma

@@ -1,0 +1,15 @@
+{
+  "schema": "pack_b.mission.v1",
+  "run_id": "20260722T092951Z",
+  "status": "BLOCKED_REVIEWER_UNAVAILABLE",
+  "workspace": "/home/fabi/atlas_dihiggs/worktrees/pack_b_20260722T090734Z",
+  "branch": "agent/pack-b-20260722T090734Z",
+  "head_before_commit": "0000000000000000000000000000000000000000",
+  "implementation_commit": null,
+  "initial_state": "unborn branch with no Pack B source",
+  "pack_aa_observed_active": false,
+  "scope": "operator/configuration preflight for frozen Pack A stable-LLP handoff; prior candidate 20260722T091121Z preserved",
+  "heavy_generation": "deferred",
+  "production_validated": false,
+  "next": "restore writable Pack B Git metadata, commit task files, and rerun an independent read-only reviewer"
+}

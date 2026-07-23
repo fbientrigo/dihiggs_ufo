@@ -1,0 +1,14 @@
+{
+  "run_id": "20260722T092951Z",
+  "reviewer": "independent read-only reviewer tool",
+  "verdict": "HARD_BLOCKER",
+  "findings": [
+    "Two reviewer-role invocations and one read-only explorer review were started with the required checklist but returned no verdict before timeout/shutdown.",
+    "Local self-audit passed isolation, hash, scope, runtime, config, test, deferred-command, and cleanup checks; it is not substituted for the required independent verdict."
+  ],
+  "attempts": [
+    {"agent_id": "019f891f-358e-7b51-8f5d-514ccb1c3599", "role": "reviewer", "status": "timed_out_then_shutdown"},
+    {"agent_id": "019f8923-8a29-7ef2-9e55-17042751cc88", "role": "reviewer", "status": "timed_out_then_shutdown"},
+    {"agent_id": "019f8925-77ff-7ab1-891c-1ddd80581089", "role": "explorer_review_retry", "status": "timed_out_then_shutdown"}
+  ]
+}
