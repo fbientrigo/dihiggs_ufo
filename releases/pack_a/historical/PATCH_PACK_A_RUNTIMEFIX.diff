@@ -1,0 +1,134 @@
+Only in runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/points: A_PI_NATIVE_200.yaml
+Only in runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/scripts: materialize_internal_masses.py
+diff -ru '--exclude=__pycache__' '--exclude=MG5_PROC' '--exclude=*.pyc' '--exclude=*.pkl' '--exclude=build' '--exclude=.pytest_cache' '--exclude=py.py' /tmp/pack_a_original_diff/pi_ufo_baseline_v1/scripts/patch_mg5_run_card.py runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/scripts/patch_mg5_run_card.py
+--- /tmp/pack_a_original_diff/pi_ufo_baseline_v1/scripts/patch_mg5_run_card.py	2026-07-16 12:00:00.000000000 -0400
++++ runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/scripts/patch_mg5_run_card.py	2026-07-18 00:19:57.952926320 -0400
+@@ -4,29 +4,60 @@
+ import re
+ from pathlib import Path
+ 
+-p = argparse.ArgumentParser()
+-p.add_argument('--source', required=True, type=Path)
+-p.add_argument('--settings', required=True, type=Path)
+-p.add_argument('--output', required=True, type=Path)
+-a = p.parse_args()
+-settings = {}
+-for line in a.settings.read_text(encoding='utf-8').splitlines():
+-    raw = line.split('#',1)[0].strip()
+-    if not raw or '=' not in raw:
+-        continue
+-    value, name = raw.split('=',1)
+-    settings[name.strip().split()[0]] = value.strip()
+-text = a.source.read_text(encoding='utf-8')
+-seen = set()
+-out = []
+-for line in text.splitlines():
+-    match = re.match(r'^(\s*)([^#!]+?)\s*=\s*([A-Za-z0-9_]+)(.*)$', line)
+-    if match and match.group(3) in settings:
+-        name = match.group(3)
+-        line = f'{match.group(1)}{settings[name]} = {name}{match.group(4)}'
+-        seen.add(name)
+-    out.append(line)
+-missing = sorted(set(settings) - seen)
+-if missing:
+-    raise SystemExit(f'Could not patch run-card fields: {missing}')
+-a.output.write_text('\n'.join(out)+'\n', encoding='utf-8')
++# Fields MadGraph only emits in run_card.dat for matched/merged (MLM) samples;
++# for a ZERO_JET_ONLY process with no additional partons the "Matching" hidden
++# block is absent from a freshly generated card, so these must not be required.
++OPTIONAL_FIELDS = {'ickkw', 'xqcut'}
++
++REQUIRED_FIELDS = {'nevents', 'iseed', 'lpp1', 'lpp2', 'ebeam1', 'ebeam2'}
++
++
++def parse_settings(text: str) -> dict[str, str]:
++    settings = {}
++    for line in text.splitlines():
++        raw = line.split('#', 1)[0].strip()
++        if not raw or '=' not in raw:
++            continue
++        value, name = raw.split('=', 1)
++        settings[name.strip().split()[0]] = value.strip()
++    return settings
++
++
++def patch_run_card(source_text: str, settings: dict[str, str]) -> str:
++    """Substitute `value = name` lines in source_text for every name in
++    settings that is present. Raises SystemExit if a REQUIRED_FIELDS entry
++    from settings is absent from source_text; entries in OPTIONAL_FIELDS
++    (and any other field not in REQUIRED_FIELDS) are silently skipped when
++    absent, since MadGraph only emits them for certain process shapes.
++    Idempotent: re-applying to already-patched text reproduces it unchanged.
++    """
++    seen = set()
++    out = []
++    for line in source_text.splitlines():
++        match = re.match(r'^(\s*)([^#!]+?)\s*=\s*([A-Za-z0-9_]+)(.*)$', line)
++        if match and match.group(3) in settings:
++            name = match.group(3)
++            line = f'{match.group(1)}{settings[name]} = {name}{match.group(4)}'
++            seen.add(name)
++        out.append(line)
++    missing = sorted(set(settings) - seen)
++    missing_required = [name for name in missing if name in REQUIRED_FIELDS or name not in OPTIONAL_FIELDS]
++    if missing_required:
++        raise SystemExit(f'Could not patch run-card fields: {missing_required}')
++    return '\n'.join(out) + '\n'
++
++
++def main() -> int:
++    p = argparse.ArgumentParser()
++    p.add_argument('--source', required=True, type=Path)
++    p.add_argument('--settings', required=True, type=Path)
++    p.add_argument('--output', required=True, type=Path)
++    a = p.parse_args()
++    settings = parse_settings(a.settings.read_text(encoding='utf-8'))
++    patched = patch_run_card(a.source.read_text(encoding='utf-8'), settings)
++    a.output.write_text(patched, encoding='utf-8')
++    return 0
++
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+diff -ru '--exclude=__pycache__' '--exclude=MG5_PROC' '--exclude=*.pyc' '--exclude=*.pkl' '--exclude=build' '--exclude=.pytest_cache' '--exclude=py.py' /tmp/pack_a_original_diff/pi_ufo_baseline_v1/scripts/run_mg5_smoke.sh runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/scripts/run_mg5_smoke.sh
+--- /tmp/pack_a_original_diff/pi_ufo_baseline_v1/scripts/run_mg5_smoke.sh	2026-07-16 12:00:00.000000000 -0400
++++ runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/scripts/run_mg5_smoke.sh	2026-07-18 00:58:01.425441172 -0400
+@@ -3,9 +3,14 @@
+ PACK_ROOT=$(cd "$(dirname "$0")/.." && pwd)
+ POINT_DIR=${1:-"$PACK_ROOT/build/point_000001"}
+ [[ "$POINT_DIR" = /* ]] || POINT_DIR="$PACK_ROOT/$POINT_DIR"
+-MG5_BIN=${MG5_BIN:-$(command -v mg5_aMC || command -v mg5 || true)}
+-if [[ -z "$MG5_BIN" ]]; then
+-  echo "BLOCKED: set MG5_BIN to MadGraph 3.5.3 mg5_aMC" >&2
++if [[ -z "${MG5_BIN:-}" ]]; then
++  MG5_BIN=$(command -v mg5_aMC 2>/dev/null || true)
++fi
++if [[ -z "${MG5_BIN:-}" ]]; then
++  MG5_BIN="$HOME/.local/mg5amcnlo/3.5.3/bin/mg5_aMC"
++fi
++if [[ ! -x "$MG5_BIN" ]]; then
++  echo "BLOCKED: configure MadGraph with: export MG5_BIN=\"$HOME/.local/mg5amcnlo/3.5.3/bin/mg5_aMC\"" >&2
+   exit 20
+ fi
+ cd "$PACK_ROOT"
+@@ -17,7 +22,15 @@
+ mv "$PROC/Cards/run_card.dat.tmp" "$PROC/Cards/run_card.dat"
+ (
+   cd "$PROC"
+-  ./bin/generate_events -f smoke | tee "$POINT_DIR/mg5_events.log"
++  # MadEvent 3.5.3 derives PDG-24 (W) mass from internal UFO parameters
++  # (MW = f(MZ, Gf, aEW)); the deterministic pack writer only serializes
++  # external parameters, so BLOCK MASS never carries an entry for it.
++  # "update missing" is MadEvent's own supported card-completion command
++  # (it is what MadEvent's own WARNING message names); answering it during
++  # the interactive card-review step (i.e. without -f) materializes the
++  # missing masses from the model's own internal-parameter evaluation
++  # before generation, without touching the UFO or the PI coupling.
++  printf 'update missing\n0\n' | ./bin/generate_events smoke | tee "$POINT_DIR/mg5_events.log"
+ )
+ LHE=$(find "$PROC/Events" -type f \( -name 'unweighted_events.lhe.gz' -o -name 'unweighted_events.lhe' \) | sort | tail -1)
+ [[ -n "$LHE" ]] || { echo 'FAIL: no LHE produced' >&2; exit 21; }
+Only in runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/scripts: run_validation_pack_a_native.sh
+Only in runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/tests: fixtures
+Only in runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/tests: test_materialize_internal_masses.py
+Only in runs/A_PI_NATIVE_RUNTIMEFIX/pi_ufo_baseline_v1/tests: test_patch_mg5_run_card.py

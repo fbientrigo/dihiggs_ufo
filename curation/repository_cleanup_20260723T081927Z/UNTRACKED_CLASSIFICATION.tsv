@@ -1,0 +1,16 @@
+Path	Classification	Reason	Details
+CURRENT_PACK_A	COMMIT	Repository-relative symlink pointing to frozen canonical Pack A zip	releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip
+CURRENT_PACK_AA_DESIGN	COMMIT	Repository-relative symlink pointing to active Pack AA design directory	design/pack_aa
+checksums.sha256	COMMIT	Checksum manifest for Pack AA release candidates	fb5ddffcbb82...
+releases/pack_a/frozen/PACK_A_FINAL_CLOSURE_CONFIRMATION.md	COMMIT	Authoritative closure confirmation document for Pack A frozen hotfix1	Markdown document
+releases/pack_a/frozen/PACK_A_FINAL_CLOSURE_STATUS.json	COMMIT	Authoritative closure status JSON for Pack A frozen hotfix1	JSON manifest
+releases/pack_a/frozen/PACK_A_HOTFIX1_FREEZE_VALIDATION.md	COMMIT	Authoritative validation report for Pack A hotfix1 freeze	Markdown report
+releases/pack_a/frozen/PACK_A_HOTFIX1_FROZEN_CHECKSUMS.sha256	COMMIT	Authoritative sha256 checksum manifest for Pack A frozen hotfix1	Checksum manifest
+releases/pack_a/frozen/PACK_A_HOTFIX1_FROZEN_MANIFEST.json	COMMIT	Authoritative freeze manifest JSON for Pack A frozen hotfix1	JSON manifest
+releases/pack_a/frozen/PACK_A_RESEARCHER_BRIEF.md	COMMIT	Authoritative researcher brief for Pack A frozen hotfix1 baseline	Markdown brief
+releases/pack_a/frozen/PATCH_PACK_A_HOTFIX1_FREEZE.diff	COMMIT	Authoritative git patch diff applied for Pack A hotfix1 freeze	Git diff patch
+releases/pack_a/candidates/	HISTORICAL_RETAIN	Contains pre-freeze Pack A release candidates (ZIPs ignored via .gitignore, text manifests retained)	Candidate manifests and ZIPs
+releases/pack_a/historical/	HISTORICAL_RETAIN	Contains historical release ZIP (pi_ufo_baseline_v1_runtimefix.zip, 8.0MB); zip ignored, metadata retained	Historical zip
+releases/pack_a/scientific_validation/	IGNORE	Contains local generated MadGraph build trees, PDF grid files, and python bytecode caches	Generated build & test outputs
+releases/pack_aa/candidates/pack_aa_release_candidate_v1.zip	DUPLICATE	Duplicate/variant candidate zip (tracked canonical is pi_pack_aa_release_candidate_v1.zip)	196KB ZIP candidate
+archive/	HISTORICAL_RETAIN	Contains superseded candidate build trees, invalid freeze attempts, and review graph DB; ignored via .gitignore	Superseded archives

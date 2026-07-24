@@ -1,0 +1,106 @@
+{
+  "mission": "pack_a_hotfix1_independent_freeze",
+  "verdict": "PACK_A_FROZEN",
+  "freeze_status": "FROZEN",
+  "freeze_timestamp_utc": "2026-07-21T03:15:39Z",
+  "frozen_artifact": {
+    "path": "pi_ufo_baseline_v1_frozen_hotfix1.zip",
+    "sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+    "staged_from": "a fresh, never-executed extraction of pi_ufo_baseline_v1_release_candidate_hotfix1.zip (independently reverified in Phase 1 before any freeze metadata was written)"
+  },
+  "input_hashes": {
+    "pi_original_zip": {
+      "path": "pi_ufo_baseline_v1.zip",
+      "sha256": "632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd"
+    },
+    "sol_scientific_candidate_zip": {
+      "path": "pi_ufo_baseline_v1_runtimefix_candidate.zip",
+      "sha256": "df36904843dc05710f4e0869bbf7c64ec87f501a6f52840b01df29461b94a06d"
+    },
+    "luna_release_candidate_zip": {
+      "path": "pi_ufo_baseline_v1_release_candidate.zip",
+      "sha256": "fec8628b3386379b0dae9f308ff949872ff2b6247bba7fdca0a4b35e6df7b3dd"
+    },
+    "hotfix1_candidate_zip": {
+      "path": "pi_ufo_baseline_v1_release_candidate_hotfix1.zip",
+      "sha256": "d0547c1fa571eb95b2db81deb736c5d73a4f6fc95284bacc5f7229c73c67c4a8",
+      "role": "authoritative source of this freeze"
+    }
+  },
+  "superseded_and_non_authoritative": {
+    "pre_existing_frozen_artifacts": [
+      "pi_ufo_baseline_v1_frozen.zip",
+      "PACK_A_FROZEN_MANIFEST.json",
+      "PACK_A_FREEZE_VALIDATION.md",
+      "PATCH_PACK_A_FREEZE.diff",
+      "PACK_A_FROZEN_CHECKSUMS.sha256"
+    ],
+    "note": "Preserved byte-for-byte, not deleted, overwritten, or renamed. Historical and non-authoritative: they predate the confirmed reproduce -> status/results pointer-defect correction and did not exercise that regression correctly. pi_ufo_baseline_v1_frozen_hotfix1.zip is the sole authoritative frozen Pack A artifact."
+  },
+  "sidecars": {
+    "PACK_A_HOTFIX1_FREEZE_VALIDATION.md": "external validation evidence report for this freeze",
+    "PATCH_PACK_A_HOTFIX1_FREEZE.diff": "diff of the freeze-only changes against a pristine Hotfix1 extraction",
+    "PACK_A_HOTFIX1_FROZEN_CHECKSUMS.sha256": "sha256 of this manifest, the validation report, the diff, and the frozen ZIP itself"
+  },
+  "scientific_status": "PASS_WITH_WARNINGS",
+  "operator_status_at_intake": "READY_FOR_FREEZE_REVIEW",
+  "physics_invariant_file_hashes": {
+    "couplings.py": "199021f332fa57314f1a9dbd487a08c8310f9d5b4ce408eaa6c5ea99a649c3f4",
+    "vertices.py": "60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba",
+    "particles.py": "01c61a7a352a5bebb747fff0c9ac3e228fa7575dfc381a339ecb285332b223c6",
+    "parameters.py": "7f84d779ff83dd52bbfecbbfe31df147e2df79faab0bcda716d5908d63b3d45b",
+    "decays.py": "ebb92183abff92cdaf55aeb80399effe2cc0256f1423ce807a390cd420564e23",
+    "form_factors.py": "9fdae69a684ddd1eb5963a1695e0f5449045755826aa62a8829569848b32f478",
+    "lorentz.py": "4b818a0fd7a9f1ded91a957251380f4116a30454f8e1fc72e1c7ccacdab6bf8f",
+    "coupling_orders.py": "80d652d3441c1fed3242dc7a4141a12f5a7ccc2f2cc6764dd5d22bb39083d132",
+    "verified_identical_to_pi_original": true,
+    "reverified_from_the_actual_final_frozen_zip_after_extraction": true
+  },
+  "mutable_derived_files": [
+    {
+      "path": "model/LLscalar_v3_UFO_runtime/py3_model.pkl",
+      "classification": "MUTABLE_DERIVED_CACHE",
+      "packaged_initial_sha256": "00049f2b99b48f7619fd576c7327ef635369dfa36563a9f80387389f533da4f3",
+      "runtime_checksum_excluded": true,
+      "reason": "UFO model pickle cache, rewritten in place by MG5's model-loading machinery on first load; stable thereafter. Not one of the eight physics-invariant .py sources; not the sole provenance for any coupling/parameter.",
+      "regeneration_test": "Deleted from a disposable extraction and re-ran bin/pack-a run --seed 12345: MG5 regenerated it deterministically (rewritten hash 5342d538309c8b64a435e15e2166a75f3de5882af9b5943c60f2447d294a3472); sigma_pb/integration_err_pb/events unchanged after regeneration.",
+      "confirmed_pristine_in_final_zip_before_any_execution": true,
+      "confirmed_pristine_in_final_zip_after_extraction_and_before_run": "00049f2b99b48f7619fd576c7327ef635369dfa36563a9f80387389f533da4f3"
+    },
+    {
+      "path": "vendor/LLscalar_v3_UFO_original/py3_model.pkl",
+      "classification": "INHERITED_PI_ORIGINAL_CACHE",
+      "packaged_initial_sha256": "353b9c51a80539a71ee91f859d3119a5196263d51496a390ea1313df39180d77",
+      "runtime_checksum_excluded": false,
+      "reason": "Byte-identical to pi_ufo_baseline_v1.zip's vendor copy; tracked in checksums.sha256, not rewritten by pack-a."
+    }
+  ],
+  "post_build_validation_on_final_zip": {
+    "extracted_into": "clean directories, never previously executed",
+    "zip_inventory": "PASS (no __pycache__, no stray build artifacts, no MG5 process dirs, no LHE, no credentials)",
+    "bash_-n": "PASS (0 failures)",
+    "shellcheck": "SKIPPED_NOT_INSTALLED",
+    "sha256sum_-c": "PASS (135/135 OK)",
+    "json_parsing": "PASS (all JSON files valid)",
+    "focused_pointer_tests": "PASS (19/19)",
+    "physics_file_comparison": "PASS (8/8 byte-identical to PI original)",
+    "preflight_from_external_cwd": "PASS (0 operational blockers)",
+    "run_status_results": "PASS (exit 0/0/0; sigma_pb=0.02349, integration_err_pb=0.0001364, events=100)",
+    "reproduce_status_results": "PASS (exit 0/0/0; worst_four_momentum_residual_gev=8.199998546842835e-08; pass=true)",
+    "pointer_failure_test": "PASS (stale pointer -> exit 21, BLOCKED message, no crash)",
+    "seed_12345_scientific_reproduction": {
+      "events": 100,
+      "sigma_pb": 0.02349,
+      "sigma_error_pb": 0.0001364,
+      "total_llp_final_records": 200,
+      "total_llp_nonfinal_records": 0,
+      "llp_pdg": 9000006,
+      "expected_h2_mass_gev": 200.0,
+      "worst_four_momentum_residual_gev": 8.199998546842835e-08,
+      "momentum_tolerance_gev": 1e-06,
+      "raw_lhe_directly_verified": "each event: two h2 (PDG 9000006) entries, status 1, mothers 1 2, daughters 0 0 (no decay), mass column 2.0000000000e+02"
+    },
+    "checklist_ending": "verified byte-for-byte: 'FREEZE_STATUS=FROZEN\\n' with no trailing content"
+  },
+  "final_freeze_state": "FREEZE_STATUS=FROZEN"
+}

@@ -1,0 +1,190 @@
+{
+  "manifest_schema_version": "1.0.0",
+  "manifest_kind": "PACK_A_RELEASE_CANDIDATE_MANIFEST",
+  "generated_utc": "2026-07-18T17:55:00Z",
+  "generated_by": "Luna (operator-layer ergonomics mission)",
+  "self_referential_hash_note": "This file (and manifest.json inside the ZIP) can only describe the ZIP's own content hashes, never the final ZIP's own hash, because the hash of the ZIP is a function of every byte it contains, including this file. This sidecar lives OUTSIDE the ZIP for exactly that reason: 'release_candidate_zip.sha256' below is the SHA-256 of the already-built pi_ufo_baseline_v1_release_candidate.zip, measured after packaging, not predicted or embedded inside it. The in-pack manifest.json instead documents the internal file inventory and hashes of the pack's own contents (script/doc/physics-file hashes), which is a well-posed, non-circular problem.",
+
+  "provenance_chain": {
+    "pi_original": {
+      "file": "pi_ufo_baseline_v1.zip",
+      "sha256": "632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd",
+      "role": "immutable original PI artifact"
+    },
+    "historical_runtimefix": {
+      "file": "pi_ufo_baseline_v1_runtimefix.zip",
+      "sha256": "2a9cde7af91ea66a6275a86ab073b3677efc8a46d7e8913d8475b948a468b755",
+      "role": "forbidden as a base; superseded historical artifact; not used, not modified"
+    },
+    "sol_candidate": {
+      "file": "pi_ufo_baseline_v1_runtimefix_candidate.zip",
+      "sha256": "df36904843dc05710f4e0869bbf7c64ec87f501a6f52840b01df29461b94a06d",
+      "role": "mandatory immutable base for this release; verified before any extraction"
+    },
+    "luna_release_candidate": {
+      "file": "pi_ufo_baseline_v1_release_candidate.zip",
+      "sha256": "fec8628b3386379b0dae9f308ff949872ff2b6247bba7fdca0a4b35e6df7b3dd",
+      "sha256_measurement_method": "sha256sum computed on the built ZIP after packaging (not predicted)",
+      "role": "this release's deliverable"
+    }
+  },
+
+  "input_verification": {
+    "sol_candidate_hash_check": {
+      "expected": "df36904843dc05710f4e0869bbf7c64ec87f501a6f52840b01df29461b94a06d",
+      "observed": "df36904843dc05710f4e0869bbf7c64ec87f501a6f52840b01df29461b94a06d",
+      "match": true
+    },
+    "forbidden_base_not_used": true,
+    "forbidden_base_hash_check": {
+      "expected": "2a9cde7af91ea66a6275a86ab073b3677efc8a46d7e8913d8475b948a468b755",
+      "observed": "2a9cde7af91ea66a6275a86ab073b3677efc8a46d7e8913d8475b948a468b755",
+      "match": true,
+      "note": "confirmed present unmodified at workspace root; never used as a base"
+    }
+  },
+
+  "physics_invariant_files": {
+    "authority": "byte-identical to pi_ufo_baseline_v1.zip; verified before and after this mission",
+    "files": {
+      "model/LLscalar_v3_UFO_runtime/couplings.py": "199021f332fa57314f1a9dbd487a08c8310f9d5b4ce408eaa6c5ea99a649c3f4",
+      "model/LLscalar_v3_UFO_runtime/vertices.py": "60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba",
+      "model/LLscalar_v3_UFO_runtime/particles.py": "01c61a7a352a5bebb747fff0c9ac3e228fa7575dfc381a339ecb285332b223c6",
+      "model/LLscalar_v3_UFO_runtime/parameters.py": "7f84d779ff83dd52bbfecbbfe31df147e2df79faab0bcda716d5908d63b3d45b",
+      "model/LLscalar_v3_UFO_runtime/decays.py": "ebb92183abff92cdaf55aeb80399effe2cc0256f1423ce807a390cd420564e23",
+      "model/LLscalar_v3_UFO_runtime/form_factors.py": "9fdae69a684ddd1eb5963a1695e0f5449045755826aa62a8829569848b32f478",
+      "model/LLscalar_v3_UFO_runtime/lorentz.py": "4b818a0fd7a9f1ded91a957251380f4116a30454f8e1fc72e1c7ccacdab6bf8f",
+      "model/LLscalar_v3_UFO_runtime/coupling_orders.py": "80d652d3441c1fed3242dc7a4141a12f5a7ccc2f2cc6764dd5d22bb39083d132"
+    },
+    "unchanged_vs_sol_candidate": true,
+    "unchanged_vs_pi_original": true
+  },
+
+  "operational_scripts_sol_authority_sha256": {
+    "scripts/run_mg5_smoke.sh": "3eb940665ec779d489653ae3fa435f0dd5db8e18d1f7db68fa440f70d0e31a84",
+    "scripts/build_point.py": "f9bf8fc7cd141f4d815a40a9b71c63945cba0d26670c797e812a52dd1c595591",
+    "scripts/patch_mg5_run_card.py": "80fafee866999908411847cb43ee9e8aceba89ee01a5ba91d19b81b1d191a3f7",
+    "scripts/materialize_internal_masses.py": "c82e014dbdaa4ad526bceff6e74f2a900d05f514ba62b31c2d83358a281e92a5",
+    "scripts/inspect_lhe.py": "73defccdf56547b2242cb517ea22d6e0e5ee2760f1cc12ecfd14984b50989027",
+    "scripts/extract_mg5_cross_section.py": "d69fe9bcef06229ffb501b36950c3e4f7586ed69eb8eb52a6d36f6f4d4baf67d",
+    "scripts/run_static_tests.py": "dd62bced24d1bc951f1d90a8432767948be20affec6ae8e7b81586d2e59339e2",
+    "note": "unchanged by Luna; see PATCH_PACK_A_LUNA_ERGONOMICS.diff for confirmation"
+  },
+
+  "operator_interface_luna_authority_sha256": {
+    "bin/pack-a": "82cabec740e2728543b0f76f0683780fef18c6ac838a9d64f2e634412817ab75",
+    "bin/lib/common.sh": "43b3a63ce1544c79f3e7f242570f37322ef12cd4a66107c4488c226d80e9fc54",
+    "bin/lib/resolve.sh": "6006b8c9c041d8e45ace8ee4a61dd65e026ad0053b266685e1cf46ef1662d7bf",
+    "bin/lib/preflight.sh": "8cc818c1bfa4ccbf34f5ef3b6f9a5466373fcc27d22f1dea84a410286f42f910",
+    "bin/lib/run.sh": "e5319f544652d51174d8522036771a00488c2b74d2e276389b5650db3dc98880",
+    "bin/lib/reproduce.sh": "c3c215710f504b54231952107fd2b1d4d1f2b49e481df2b50074b4730e50fb5c",
+    "bin/lib/status.sh": "1ae481b208edc6c15691664b8769d9584b1bce8fbdbb4720bdae4a194c9620d0",
+    "bin/lib/results.sh": "83ea1215df9eab8d217308271112cdb625f496d6bd517fc8b0d3bc08de98cacc",
+    "bin/lib/clean.sh": "86f4f71fe99566e9a7d76fa417ded671e2be01f4b6c9ad064e6cf3a1b8764cf5",
+    "bin/lib/lhe_invariants.py": "81325b809a05bbaa18c9a93f7b5af29710c39358c27d2369c28113095ca2aaf5"
+  },
+
+  "toolchain": {
+    "expected": "MadGraph5_aMC@NLO 3.5.3",
+    "observed_selected_binary": "/home/fabi/.local/mg5amcnlo/3.5.3/bin/mg5_aMC",
+    "observed_version_banner_match": "VERSION 3.5.3",
+    "observed_build_identity_warning": "this MG5 3.5.3 install self-identifies as an unknown development build (Sol-documented, non-blocking)",
+    "python_selected": "/home/fabi/anaconda3/bin/python3",
+    "python_version_observed": "3.12.x",
+    "python_3_12_warning": "MG5 3.5.3 marks 3.12 support experimental; non-blocking, prior full reproductions completed successfully under 3.12",
+    "pythia_fastjet": "not detected on this host; informative-only per contract, never required or invoked by Pack A native"
+  },
+
+  "validation_matrix_reference": {
+    "sol_reproducibility_matrix": "PACK_A_REPRODUCIBILITY_MATRIX.json (workspace root, authoritative, not re-derived)",
+    "sol_scientific_status": "PACK_A_SCIENTIFIC_STATUS.json (workspace root, authoritative, not re-derived)",
+    "sol_verdict_referenced": "PASS_WITH_WARNINGS",
+    "sol_classification_referenced": "PACK_A_LO_SMOKE_XSEC"
+  },
+
+  "commands_executed": [
+    {"step": "hash verification of df369... candidate before extraction", "command": "sha256sum pi_ufo_baseline_v1_runtimefix_candidate.zip", "exit_status": 0},
+    {"step": "physics-file hash verification vs PI original", "command": "sha256sum (8 files) compared to pi_ufo_baseline_v1.zip contents", "exit_status": 0},
+    {"step": "canonical go/no-go generation (pre-wrapper)", "command": "scripts/build_point.py + scripts/run_mg5_smoke.sh (seed 12345, clean extraction)", "exit_status": 0},
+    {"step": "bash -n syntax check, all shell scripts", "command": "bash -n <each *.sh and bin/pack-a>", "exit_status": 0},
+    {"step": "shellcheck", "command": "shellcheck (not installed)", "exit_status": "SKIPPED_NOT_INSTALLED"},
+    {"step": "preflight, external cwd, active env", "command": "bin/pack-a preflight", "exit_status": 0},
+    {"step": "run, MG5_BIN unset", "command": "MG5_BIN= bin/pack-a preflight / run", "exit_status": 0},
+    {"step": "run, MG5_BIN invalid", "command": "MG5_BIN=/nonexistent bin/pack-a preflight", "exit_status": "nonzero, actionable diagnostic (expected)"},
+    {"step": "minimal PATH resolution", "command": "PATH=/usr/bin:/bin bin/pack-a preflight", "exit_status": 0},
+    {"step": "shell-survival test", "command": "bin/pack-a preflight || rc=$?; echo shell-still-alive", "exit_status": "wrapper rc captured, shell continued"},
+    {"step": "clean --confirm rejection", "command": "bin/pack-a clean", "exit_status": 22},
+    {"step": "clean --confirm confirmed path", "command": "bin/pack-a clean --confirm", "exit_status": 0},
+    {"step": "manifest.json / checksums.sha256 regeneration after py.py cache removal", "command": "python3 (inline) + sha256sum -c checksums.sha256", "exit_status": 0},
+    {"step": "final clean-extraction integrity check", "command": "sha256sum -c checksums.sha256 (staging tar-copy)", "exit_status": 0},
+    {"step": "final clean-extraction preflight", "command": "bin/pack-a preflight (staging tar-copy)", "exit_status": 0},
+    {"step": "final clean-extraction reproduce (seed 12345)", "command": "bin/pack-a reproduce --seed 12345 (staging tar-copy)", "exit_status": 0},
+    {"step": "ZIP build", "command": "zip -r -X pi_ufo_baseline_v1_release_candidate.zip pi_ufo_baseline_v1_release_candidate", "exit_status": 0},
+    {"step": "ZIP hash measurement", "command": "sha256sum pi_ufo_baseline_v1_release_candidate.zip", "exit_status": 0},
+    {"step": "ZIP clean extraction + integrity", "command": "unzip; sha256sum -c checksums.sha256", "exit_status": 0},
+    {"step": "ZIP clean extraction preflight", "command": "bin/pack-a preflight", "exit_status": 0},
+    {"step": "ZIP clean extraction reproduce (seed 12345, final gate)", "command": "bin/pack-a reproduce --seed 12345", "exit_status": 0}
+  ],
+
+  "reproduction_runs": [
+    {
+      "context": "pre-wrapper canonical go/no-go, clean extraction of df369... candidate",
+      "seed": 12345,
+      "sigma_pb": 0.02349,
+      "sigma_error_pb": 0.0001364,
+      "events": 100,
+      "llp_final_records": 200,
+      "llp_nonfinal_records": 0,
+      "worst_four_momentum_residual_gev": 8.199998546842835e-08,
+      "h2_mass_gev": 200.0,
+      "exit_status": 0
+    },
+    {
+      "context": "bin/pack-a reproduce, staging tree (tar clean copy)",
+      "seed": 12345,
+      "sigma_pb": 0.02349,
+      "sigma_error_pb": 0.0001364,
+      "events": 100,
+      "llp_final_records": 200,
+      "llp_nonfinal_records": 0,
+      "worst_four_momentum_residual_gev": 8.199998546842835e-08,
+      "cross_section_pull_vs_sol_reference": 0.0,
+      "compatible_at_3sigma": true,
+      "exit_status": 0
+    },
+    {
+      "context": "bin/pack-a reproduce, final built-and-extracted release candidate ZIP (final gate)",
+      "seed": 12345,
+      "sigma_pb": 0.02349,
+      "sigma_error_pb": 0.0001364,
+      "events": 100,
+      "llp_final_records": 200,
+      "llp_nonfinal_records": 0,
+      "worst_four_momentum_residual_gev": 8.199998546842835e-08,
+      "cross_section_pull_vs_sol_reference": 0.0,
+      "compatible_at_3sigma": true,
+      "exit_status": 0
+    }
+  ],
+
+  "sol_reference_values_used_for_comparison": {
+    "seed_12345": {"sigma_pb": 0.02349, "sigma_error_pb": 0.0001364},
+    "seed_67890": {"sigma_pb": 0.02356, "sigma_error_pb": 0.0001374},
+    "cross_seed_pull": 0.3616
+  },
+
+  "warnings_active": [
+    "no LHAPDF installed; PDF systematics not computed by MG5",
+    "scale/PDF systematic uncertainties absent from this cross-section estimate",
+    "GC_15 depends on aS with QCD order declared zero; automatic scale-uncertainty estimation may be inaccurate",
+    "this MG5 3.5.3 installation self-identifies as an unknown development build",
+    "Python 3.12 marked experimental by this MG5 build (non-blocking; reproductions passed)",
+    "only the zero-extra-parton sample exists; no matched/merged sample",
+    "3 pre-existing historical absolute-path references (/mnt/data, /home/fabi) remain in validation/STATIC_VALIDATION.json, validation/logs/writer.log, validation/logs/build_point.log -- confirmed present unchanged in the Sol candidate, not introduced by Luna, documented as a known limitation rather than fixed (out of scope: editing Sol-authority runtime evidence)"
+  ],
+
+  "scientific_status_reference": "PACK_A_SCIENTIFIC_STATUS.json (workspace root)",
+
+  "luna_verdict": "READY_FOR_FREEZE_REVIEW",
+  "freeze_status": "NOT_FROZEN"
+}

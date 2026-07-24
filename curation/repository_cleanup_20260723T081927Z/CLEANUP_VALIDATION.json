@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-07-23T08:23:00Z",
+  "run_id": "20260723T081927Z",
+  "branch": "chore/repository-curation-20260723T081927Z",
+  "head_baseline": "a5226cc5a58895c11d30b58912980583c127d245",
+  "pack_a_frozen_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+  "pack_a_frozen_hash_verified": true,
+  "metadata_validation_status": "PASS",
+  "artifact_registry_valid": true,
+  "local_file_proto_links_count": 0,
+  "broken_readme_links_count": 0,
+  "pytest_suite_status": "PASS (32 tests passed)",
+  "git_merge_markers_found": false,
+  "scientific_integrity": {
+    "event_generation_executed": false,
+    "recast_executed": false,
+    "frozen_zip_modified": false,
+    "scientific_results_altered": false
+  }
+}

@@ -1,0 +1,1803 @@
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,46 @@
++# Pack A (native MadGraph/LHE) — operator overview
++
++**What Pack A is:** the PI-provided UFO baseline, run through its own native
++production chain `g g > H > h2 h2` (mediator PDG 25, LLP PDG 9000006), with
++the coupling fixed by the PI (`GC_90 = 8*complex(0,1)*Mh2**2/vev`). h2 is
++generated stable in the LHE. Zero extra partons only.
++
++**What Pack A is not:** it does not run Pythia, does not decay h2, does not
++apply MadSpin, is not "Pack AA" (a future separate layer that would consume
++this LHE), does not touch "Pack B", and does not execute any recast.
++
++**Scientific status:** `PASS_WITH_WARNINGS` (Sol validation — see
++`PACK_A_SOL_SCIENTIFIC_VALIDATION.md` at the workspace root). The generated
++cross section is classified `PACK_A_LO_SMOKE_XSEC`: usable for baseline
++production regression and as stable-LLP LHE input to a later, separate
++stage; **not** a publishable production normalization. Full scope in
++`docs/PACK_A_SCIENTIFIC_SCOPE.md`.
++
++## Operating the pack
++
++```bash
++./bin/pack-a preflight   # verify integrity, toolchain, physics invariants — no generation
++./bin/pack-a run         # canonical generation into a fresh runs/<timestamp>_seed.../
++./bin/pack-a status      # summary of the most recent run
++./bin/pack-a results     # locate and summarize evidence for the most recent run
++./bin/pack-a reproduce   # clean extraction + preflight + run + invariant check
++./bin/pack-a clean --confirm   # remove interface-generated run directories only
++```
++
++`bin/pack-a` is a normal executable — run it, don't `source` it. It resolves
++its own location and never depends on your current directory; see
++`docs/PACK_A_QUICKSTART.md` for invoking it from outside the pack.
++
++## Logs and evidence
++
++Every `run`/`reproduce` invocation creates a new, timestamped, non-overwritten
++directory under `runs/`. Each contains `command.txt`, `environment.json`,
++`run.log`, `build_point.log`, `exit_status.txt`, `manifest.json`, and the
++generated cards/LHE/validation artifacts. `status` and `results` read the
++most recent one; nothing here is deleted except by `clean --confirm`.
++
++## Scientific scope reference
++
++See `docs/PACK_A_SCIENTIFIC_SCOPE.md`, `PACK_A_SOL_SCIENTIFIC_VALIDATION.md`,
++and `PACK_A_REPRODUCIBILITY_MATRIX.json` (workspace root) for the full
++validation record this operator layer wraps but does not re-derive.
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,63 @@
++#!/usr/bin/env bash
++# `clean --confirm`: conservative removal of interface-generated workdirs
++# only. Never touches ZIPs, docs, manifests, or promoted evidence. Sourced only.
++
++pack_a_cmd_clean() {
++  local confirmed=0
++  while [[ $# -gt 0 ]]; do
++    case "$1" in
++      --confirm) confirmed=1; shift ;;
++      *) pack_a_die "unrecognized option '$1' for 'clean'" ;;
++    esac
++  done
++
++  local runs_dir="$PACK_ROOT/runs"
++  if [[ ! -d "$runs_dir" ]]; then
++    echo "Nothing to clean: $runs_dir does not exist."
++    return 0
++  fi
++
++  # Only ever consider directories directly under runs/ whose names match
++  # this interface's own naming scheme (timestamp-prefixed). Never resolve
++  # through symlinks, never touch runs_dir itself if it is empty or a
++  # symlink, never touch anything outside runs_dir.
++  if [[ -L "$runs_dir" ]]; then
++    pack_a_die "refusing to clean: $runs_dir is a symlink"
++  fi
++
++  local -a targets=()
++  local entry base
++  while IFS= read -r -d '' entry; do
++    [[ -L "$entry" ]] && continue
++    base="$(basename "$entry")"
++    [[ "$base" =~ ^[0-9]{8}T[0-9]{6}Z_ ]] || continue
++    targets+=("$entry")
++  done < <(find "$runs_dir" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
++
++  if [[ ${#targets[@]} -eq 0 ]]; then
++    echo "Nothing to clean: no interface-generated run directories found under $runs_dir."
++    return 0
++  fi
++
++  echo "The following run directories would be removed:"
++  local t
++  for t in "${targets[@]}"; do
++    echo "  $t"
++  done
++  echo "(ZIPs, docs, manifests, checksums, and promoted evidence are never touched by this command.)"
++
++  if [[ $confirmed -eq 0 ]]; then
++    echo
++    echo "Refusing to delete without --confirm. Re-run as: $0 clean --confirm"
++    return 22
++  fi
++
++  for t in "${targets[@]}"; do
++    [[ -n "$t" && "$t" != "/" && "$t" == "$runs_dir"/* ]] || { pack_a_die "internal error: refusing unsafe removal target '$t'"; }
++    rm -rf -- "$t"
++    echo "removed: $t"
++  done
++  rm -f -- "$runs_dir/.last_run" "$runs_dir/.last_reproduce"
++  echo "clean complete."
++  return 0
++}
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,24 @@
++#!/usr/bin/env bash
++# Shared helpers for bin/pack-a. Sourced only, never executed directly.
++
++pack_a_log() {
++  printf '[%s] %s\n' "$(date -u +%FT%TZ)" "$*"
++}
++
++pack_a_ts() {
++  date -u +%Y%m%dT%H%M%SZ
++}
++
++pack_a_die() {
++  echo "BLOCKED: $*" >&2
++  exit 20
++}
++
++# json_escape STRING - minimal JSON string escaping for hand-written JSON.
++pack_a_json_escape() {
++  local s="$1"
++  s="${s//\\/\\\\}"
++  s="${s//\"/\\\"}"
++  s="${s//$'\n'/\\n}"
++  printf '%s' "$s"
++}
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,167 @@
++#!/usr/bin/env python3
++"""Luna operational check: verifies a generated LHE against the Pack A
++scientific invariants fixed by Sol's validation (see
++PACK_A_SOL_SCIENTIFIC_VALIDATION.md at the workspace root). This is a
++read-only analysis tool; it never edits the UFO, the LHE, or any card.
++
++Checked invariants (all from the Sol report, not re-derived here):
++  - exactly two final-state (status 1) PDG 9000006 records per event
++  - zero non-final PDG 9000006 records
++  - h2 mass exactly 200 GeV in the particle record
++  - mothers of each h2 are (1, 2)
++  - four-momentum conserved per event within 1e-6 GeV
++"""
++from __future__ import annotations
++
++import argparse
++import gzip
++import json
++import math
++from pathlib import Path
++
++LLP_PDG = 9000006
++MASS_TOLERANCE_GEV = 1e-3
++MOMENTUM_TOLERANCE_GEV = 1e-6
++
++
++def opener(path: Path):
++    return gzip.open(path, "rt", encoding="utf-8", errors="replace") if path.suffix == ".gz" else path.open("rt", encoding="utf-8", errors="replace")
++
++
++def parse_events(path: Path):
++    events = []
++    current = None
++    with opener(path) as fh:
++        for line in fh:
++            s = line.strip()
++            if s == "<event>":
++                current = []
++                continue
++            if s == "</event>":
++                events.append(current or [])
++                current = None
++                continue
++            if current is None or not s or s.startswith("#"):
++                continue
++            fields = s.split()
++            if len(fields) < 11:
++                continue
++            try:
++                pid = int(fields[0])
++                status = int(fields[1])
++                mother1 = int(fields[2])
++                mother2 = int(fields[3])
++                px, py, pz, e, m = (float(x) for x in fields[6:11])
++            except ValueError:
++                continue
++            current.append({
++                "pid": pid, "status": status, "mothers": (mother1, mother2),
++                "p": (px, py, pz, e), "mass": m,
++            })
++    return events
++
++
++def check(lhe_path: Path, expected_mass_gev: float) -> dict:
++    events = parse_events(lhe_path)
++    n_events = len(events)
++    total_llp_final = 0
++    total_llp_nonfinal = 0
++    mother_mismatches = []
++    mass_mismatches = []
++    worst_residual = 0.0
++    residuals = []
++
++    for idx, ev in enumerate(events):
++        tot = [0.0, 0.0, 0.0, 0.0]
++        llp_final_this_event = []
++        for rec in ev:
++            sign = 0
++            if rec["status"] == -1:
++                sign = -1
++            elif rec["status"] == 1:
++                sign = 1
++            if sign:
++                for k in range(4):
++                    tot[k] += sign * rec["p"][k]
++            if abs(rec["pid"]) == LLP_PDG:
++                if rec["status"] == 1:
++                    total_llp_final += 1
++                    llp_final_this_event.append(rec)
++                    if rec["mothers"] != (1, 2):
++                        mother_mismatches.append({"event": idx, "mothers": rec["mothers"]})
++                    if abs(rec["mass"] - expected_mass_gev) > MASS_TOLERANCE_GEV:
++                        mass_mismatches.append({"event": idx, "mass": rec["mass"]})
++                else:
++                    total_llp_nonfinal += 1
++        residual = max(abs(x) for x in tot)
++        residuals.append(residual)
++        worst_residual = max(worst_residual, residual)
++
++    report = {
++        "events": n_events,
++        "llp_pdg": LLP_PDG,
++        "total_llp_final_records": total_llp_final,
++        "expected_llp_final_records": n_events * 2,
++        "total_llp_nonfinal_records": total_llp_nonfinal,
++        "mother_mismatches": mother_mismatches,
++        "mass_mismatches": mass_mismatches,
++        "expected_h2_mass_gev": expected_mass_gev,
++        "worst_four_momentum_residual_gev": worst_residual,
++        "momentum_tolerance_gev": MOMENTUM_TOLERANCE_GEV,
++    }
++    passed = (
++        n_events > 0
++        and total_llp_final == n_events * 2
++        and total_llp_nonfinal == 0
++        and not mother_mismatches
++        and not mass_mismatches
++        and worst_residual <= MOMENTUM_TOLERANCE_GEV
++    )
++    report["pass"] = passed
++    return report
++
++
++def compare_cross_section(sigma_pb: float, error_pb: float, ref_sigma_pb: float, ref_error_pb: float) -> dict:
++    delta = abs(sigma_pb - ref_sigma_pb)
++    combined = math.sqrt(error_pb ** 2 + ref_error_pb ** 2)
++    limit = 3 * combined
++    return {
++        "sigma_pb": sigma_pb,
++        "integration_error_pb": error_pb,
++        "reference_sigma_pb": ref_sigma_pb,
++        "reference_integration_error_pb": ref_error_pb,
++        "delta_pb": delta,
++        "combined_1sigma_pb": combined,
++        "three_sigma_limit_pb": limit,
++        "pull": delta / combined if combined else None,
++        "compatible_at_3sigma": delta <= limit,
++    }
++
++
++def main() -> int:
++    ap = argparse.ArgumentParser(description=__doc__)
++    ap.add_argument("--lhe", required=True, type=Path)
++    ap.add_argument("--expected-mass-gev", type=float, default=200.0)
++    ap.add_argument("--sigma-pb", type=float)
++    ap.add_argument("--sigma-error-pb", type=float)
++    ap.add_argument("--ref-sigma-pb", type=float)
++    ap.add_argument("--ref-sigma-error-pb", type=float)
++    ap.add_argument("--output", type=Path)
++    args = ap.parse_args()
++
++    report = check(args.lhe, args.expected_mass_gev)
++    if args.sigma_pb is not None and args.ref_sigma_pb is not None:
++        report["cross_section_comparison"] = compare_cross_section(
++            args.sigma_pb, args.sigma_error_pb or 0.0, args.ref_sigma_pb, args.ref_sigma_error_pb or 0.0
++        )
++        report["pass"] = report["pass"] and report["cross_section_comparison"]["compatible_at_3sigma"]
++
++    text = json.dumps(report, indent=2, sort_keys=True) + "\n"
++    if args.output:
++        args.output.write_text(text, encoding="utf-8")
++    print(text, end="")
++    return 0 if report["pass"] else 3
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,185 @@
++#!/usr/bin/env bash
++# preflight checks. Sourced only; defines pack_a_cmd_preflight.
++
++# Expected hashes of the eight physics-invariant files, fixed by the
++# immutable PI original (pi_ufo_baseline_v1.zip, sha256
++# 632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd) and
++# reproduced unchanged through every downstream candidate. These are a
++# documented invariant, not something this script derives at runtime.
++declare -A PACK_A_PHYSICS_FILE_SHA256=(
++  [couplings.py]=199021f332fa57314f1a9dbd487a08c8310f9d5b4ce408eaa6c5ea99a649c3f4
++  [vertices.py]=60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba
++  [particles.py]=01c61a7a352a5bebb747fff0c9ac3e228fa7575dfc381a339ecb285332b223c6
++  [parameters.py]=7f84d779ff83dd52bbfecbbfe31df147e2df79faab0bcda716d5908d63b3d45b
++  [decays.py]=ebb92183abff92cdaf55aeb80399effe2cc0256f1423ce807a390cd420564e23
++  [form_factors.py]=9fdae69a684ddd1eb5963a1695e0f5449045755826aa62a8829569848b32f478
++  [lorentz.py]=4b818a0fd7a9f1ded91a957251380f4116a30454f8e1fc72e1c7ccacdab6bf8f
++  [coupling_orders.py]=80d652d3441c1fed3242dc7a4141a12f5a7ccc2f2cc6764dd5d22bb39083d132
++)
++
++_pf_rows=()
++_pf_status=0   # operational blocker seen
++_pf_row() {
++  # _pf_row STATUS NAME DETAIL
++  _pf_rows+=("$1|$2|$3")
++  [[ "$1" == "FAIL" ]] && _pf_status=1
++  return 0
++}
++
++pack_a_cmd_preflight() {
++  _pf_rows=()
++  _pf_status=0
++  cd "$PACK_ROOT" || pack_a_die "cannot cd to pack root $PACK_ROOT"
++
++  # 1. Python resolution (done first: later checks need it)
++  local py="" py_diag
++  if py_diag="$(pack_a_resolve_python 2>&1 1>/tmp/pack_a_preflight_py.$$)"; then
++    py="$(cat /tmp/pack_a_preflight_py.$$)"
++    _pf_row PASS "python" "$py_diag"
++  else
++    _pf_row FAIL "python" "$py_diag"
++  fi
++  rm -f /tmp/pack_a_preflight_py.$$
++
++  # 2. PyYAML importable via resolved python (only if python resolved)
++  if [[ -n "$py" ]]; then
++    if "$py" -c 'import yaml' >/dev/null 2>&1; then
++      _pf_row PASS "PyYAML" "importable via $py"
++    else
++      _pf_row FAIL "PyYAML" "not importable via $py"
++    fi
++  fi
++
++  # 3. Pack integrity via checksums.sha256
++  if [[ -f checksums.sha256 ]]; then
++    if sha256sum -c checksums.sha256 >/tmp/pack_a_preflight_checksums.$$ 2>&1; then
++      _pf_row PASS "pack integrity" "sha256sum -c checksums.sha256: all OK"
++    else
++      _pf_row FAIL "pack integrity" "sha256sum -c checksums.sha256 reported mismatches (see below)"
++    fi
++    rm -f /tmp/pack_a_preflight_checksums.$$
++  else
++    _pf_row FAIL "pack integrity" "checksums.sha256 not found at pack root"
++  fi
++
++  # 4. manifest.json valid JSON
++  if [[ -f manifest.json ]]; then
++    if [[ -n "$py" ]] && "$py" -c 'import json,sys; json.load(open("manifest.json"))' 2>/tmp/pack_a_preflight_json.$$; then
++      _pf_row PASS "manifest.json" "valid JSON"
++    elif [[ -z "$py" ]]; then
++      _pf_row WARN "manifest.json" "present but not validated (no Python resolved)"
++    else
++      _pf_row FAIL "manifest.json" "invalid JSON: $(tail -1 /tmp/pack_a_preflight_json.$$)"
++    fi
++    rm -f /tmp/pack_a_preflight_json.$$
++  else
++    _pf_row FAIL "manifest.json" "not found at pack root"
++  fi
++
++  # 5. Eight physics-invariant files byte-identical to the PI original
++  local physfail=0
++  local f expect got
++  for f in "${!PACK_A_PHYSICS_FILE_SHA256[@]}"; do
++    expect="${PACK_A_PHYSICS_FILE_SHA256[$f]}"
++    local path="model/LLscalar_v3_UFO_runtime/$f"
++    if [[ ! -f "$path" ]]; then
++      _pf_row FAIL "physics file $f" "missing at $path"
++      physfail=1
++      continue
++    fi
++    got="$(sha256sum "$path" | awk '{print $1}' || true)"
++    if [[ "$got" != "$expect" ]]; then
++      _pf_row FAIL "physics file $f" "hash mismatch: expected $expect got $got"
++      physfail=1
++    fi
++  done
++  [[ $physfail -eq 0 ]] && _pf_row PASS "physics files (8/8)" "byte-identical to PI original"
++
++  # 6. Physics overrides must not be present anywhere in the invocation env
++  local override
++  local forbidden_overrides=(PACK_A_FORCE_MASS PACK_A_FORCE_COUPLING PACK_A_FORCE_PROCESS PACK_A_FORCE_DECAY)
++  local override_seen=0
++  for override in "${forbidden_overrides[@]}"; do
++    if [[ -n "${!override:-}" ]]; then
++      _pf_row FAIL "physics override guard" "$override is set in environment; not permitted"
++      override_seen=1
++    fi
++  done
++  [[ $override_seen -eq 0 ]] && _pf_row PASS "physics override guard" "no forbidden override variables set"
++
++  # 7. MadGraph resolution
++  local mg5_diag mg5_bin
++  if mg5_diag="$(pack_a_resolve_mg5 2>&1 1>/dev/null)"; then
++    mg5_bin="$(pack_a_resolve_mg5 2>/dev/null || true)"
++    _pf_row PASS "madgraph" "$mg5_diag"
++    local banner
++    banner="$(pack_a_mg5_version_banner "$mg5_bin" 2>&1 || true)"
++    if grep -q 'VERSION 3.5.3' <<<"$banner"; then
++      _pf_row PASS "madgraph version" "confirmed VERSION 3.5.3 from startup banner"
++    else
++      _pf_row WARN "madgraph version" "could not confirm VERSION 3.5.3 from startup banner (toolchain may differ from the validated 3.5.3)"
++    fi
++    if grep -qi 'unknown development version' <<<"$banner"; then
++      _pf_row WARN "madgraph build" "this MG5 3.5.3 install self-identifies as an unknown development build (known Sol warning, not a blocker)"
++    fi
++  else
++    _pf_row FAIL "madgraph" "$mg5_diag"
++  fi
++
++  # 8. Required operational scripts present
++  local script
++  local required_scripts=(scripts/build_point.py scripts/run_mg5_smoke.sh scripts/patch_mg5_run_card.py scripts/inspect_lhe.py scripts/extract_mg5_cross_section.py scripts/model_utils.py)
++  local scriptfail=0
++  for script in "${required_scripts[@]}"; do
++    [[ -f "$script" ]] || { _pf_row FAIL "required script" "$script missing"; scriptfail=1; }
++  done
++  [[ $scriptfail -eq 0 ]] && _pf_row PASS "required scripts" "all present"
++
++  # 9. Writable runs area
++  if mkdir -p "$PACK_ROOT/runs" 2>/dev/null && [[ -w "$PACK_ROOT/runs" ]]; then
++    _pf_row PASS "runs/ writable" "$PACK_ROOT/runs"
++  else
++    _pf_row FAIL "runs/ writable" "$PACK_ROOT/runs is not writable"
++  fi
++
++  # 10. Known scientific status (informative only, never a blocker)
++  _pf_row INFO "scientific status" "PASS_WITH_WARNINGS (Sol validation); classification PACK_A_LO_SMOKE_XSEC; not publishable production normalization"
++
++  # 11. MadeEvent sequence sanity (informative)
++  if grep -q "printf '0\\\\nupdate dependent\\\\n0\\\\n'" scripts/run_mg5_smoke.sh 2>/dev/null; then
++    _pf_row PASS "MadeEvent sequence" "0 / update dependent / 0 (Sol-corrected, no rejected commands)"
++  else
++    _pf_row WARN "MadeEvent sequence" "expected '0 / update dependent / 0' pattern not found verbatim in scripts/run_mg5_smoke.sh; inspect before trusting run output"
++  fi
++
++  # 12. Pythia/FastJet - informative and optional only
++  if command -v pythia8-config >/dev/null 2>&1 || [[ -n "${PYTHIA8_CONFIG:-}" ]]; then
++    _pf_row INFO "Pythia" "detected (informative only; not used by Pack A native, not run by this interface)"
++  else
++    _pf_row INFO "Pythia" "not detected (informative only; not required by Pack A native)"
++  fi
++  if command -v fastjet-config >/dev/null 2>&1; then
++    _pf_row INFO "FastJet" "detected (informative only; not used by Pack A native)"
++  else
++    _pf_row INFO "FastJet" "not detected (informative only; not required by Pack A native)"
++  fi
++
++  # Print table
++  echo
++  printf '%-26s %-6s %s\n' "CHECK" "STATE" "DETAIL"
++  printf '%-26s %-6s %s\n' "-----" "-----" "------"
++  local row state name detail
++  for row in "${_pf_rows[@]}"; do
++    IFS='|' read -r state name detail <<<"$row"
++    printf '%-26s %-6s %s\n' "$name" "$state" "$detail"
++  done
++  echo
++
++  if [[ $_pf_status -eq 0 ]]; then
++    pack_a_log "PREFLIGHT: usable (0 operational blockers; warnings above, if any, are known scientific caveats)"
++    return 0
++  else
++    pack_a_log "PREFLIGHT: BLOCKED (see FAIL rows above)"
++    return 21
++  fi
++}
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,93 @@
++#!/usr/bin/env bash
++# `reproduce`: clean extraction -> preflight -> canonical run -> LHE
++# invariant check -> comparison against Sol's reference numbers. Sourced only.
++
++# Sol reference values (PACK_A_SOL_SCIENTIFIC_VALIDATION.md /
++# PACK_A_REPRODUCIBILITY_MATRIX.json), fixed and not re-derived here.
++declare -A PACK_A_REF_SIGMA_PB=( [12345]="0.02349" [67890]="0.02356" )
++declare -A PACK_A_REF_SIGMA_ERR_PB=( [12345]="0.0001364" [67890]="0.0001374" )
++
++pack_a_cmd_reproduce() {
++  pack_a_reject_physics_flags "$@"
++  local seed="12345"
++  while [[ $# -gt 0 ]]; do
++    case "$1" in
++      --seed) seed="$2"; shift 2 ;;
++      *) pack_a_die "unrecognized option '$1' for 'reproduce'" ;;
++    esac
++  done
++  [[ -n "${PACK_A_SEED_CONFIGS[$seed]:-}" ]] || pack_a_die "seed '$seed' is not a Sol-validated point config; only 12345 and 67890 are available"
++  local config="${PACK_A_SEED_CONFIGS[$seed]}"
++
++  local ts repro_dir clean_pack
++  ts="$(pack_a_ts)"
++  repro_dir="$PACK_ROOT/runs/${ts}_reproduce_seed${seed}"
++  clean_pack="$repro_dir/clean_extraction"
++  mkdir -p "$repro_dir"
++
++  pack_a_log "REPRODUCE: materializing a clean extraction at $clean_pack"
++  mkdir -p "$clean_pack"
++  if ! ( cd "$PACK_ROOT" && tar --exclude='./runs' --exclude='./.git' -cf - . ) | ( cd "$clean_pack" && tar -xf - ); then
++    echo 20 > "$repro_dir/exit_status.txt"
++    pack_a_die "clean extraction (tar copy) failed"
++  fi
++
++  PACK_A_PYTHON="$(pack_a_resolve_python)" || exit 20
++  MG5_BIN="$(pack_a_resolve_mg5)" || exit 20
++  export PACK_A_PYTHON MG5_BIN
++
++  pack_a_log "REPRODUCE: preflight on the clean extraction"
++  local preflight_rc=0
++  (
++    PACK_ROOT="$clean_pack"
++    cd "$PACK_ROOT"
++    pack_a_cmd_preflight
++  ) > "$repro_dir/preflight.log" 2>&1 || preflight_rc=$?
++  if [[ $preflight_rc -ne 0 ]]; then
++    pack_a_log "REPRODUCE: preflight failed on clean extraction (exit $preflight_rc); see $repro_dir/preflight.log"
++    echo "$preflight_rc" > "$repro_dir/exit_status.txt"
++    return "$preflight_rc"
++  fi
++
++  local gen_dir="$clean_pack/runs/${ts}_seed${seed}_reproduce"
++  local gen_rc=0
++  pack_a_log "REPRODUCE: canonical generation (seed=$seed) in clean extraction"
++  (
++    PACK_ROOT="$clean_pack"
++    pack_a_do_generate "$gen_dir" "$seed" "$config"
++  ) || gen_rc=$?
++  if [[ $gen_rc -ne 0 ]]; then
++    pack_a_log "REPRODUCE: generation failed (exit $gen_rc); see $gen_dir/run.log"
++    echo "$gen_rc" > "$repro_dir/exit_status.txt"
++    return "$gen_rc"
++  fi
++
++  local lhe
++  lhe="$(find "$gen_dir/events" -maxdepth 1 -type f \( -name '*.lhe.gz' -o -name '*.lhe' \) 2>/dev/null | head -1 || true)"
++  [[ -n "$lhe" ]] || { echo 21 > "$repro_dir/exit_status.txt"; pack_a_log "REPRODUCE: no LHE found after generation"; return 21; }
++
++  local sigma="" err=""
++  sigma="$("$PACK_A_PYTHON" -c "import json; print(json.load(open('$gen_dir/validation/cross_section.json'))['sigma_pb'])" 2>/dev/null || true)"
++  err="$("$PACK_A_PYTHON" -c "import json; print(json.load(open('$gen_dir/validation/cross_section.json'))['integration_error_pb'])" 2>/dev/null || true)"
++
++  pack_a_log "REPRODUCE: checking LHE invariants and cross-section compatibility against Sol reference"
++  local cmp_rc=0
++  "$PACK_A_PYTHON" "$PACK_ROOT/bin/lib/lhe_invariants.py" \
++    --lhe "$lhe" \
++    --expected-mass-gev 200.0 \
++    --sigma-pb "$sigma" \
++    --sigma-error-pb "$err" \
++    --ref-sigma-pb "${PACK_A_REF_SIGMA_PB[$seed]}" \
++    --ref-sigma-error-pb "${PACK_A_REF_SIGMA_ERR_PB[$seed]}" \
++    --output "$repro_dir/comparison.json" || cmp_rc=$?
++
++  echo "$cmp_rc" > "$repro_dir/exit_status.txt"
++  echo "$gen_dir" > "$repro_dir/generation_dir.txt"
++  if [[ $cmp_rc -eq 0 ]]; then
++    pack_a_log "REPRODUCE: PASS (seed=$seed); comparison at $repro_dir/comparison.json"
++  else
++    pack_a_log "REPRODUCE: invariant/cross-section comparison FAILED (seed=$seed); see $repro_dir/comparison.json"
++  fi
++  echo "$repro_dir" > "$PACK_ROOT/runs/.last_reproduce"
++  return "$cmp_rc"
++}
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,125 @@
++#!/usr/bin/env bash
++# Python and MadGraph resolution for Pack A. Sourced only.
++#
++# Priority contract (see docs/PACK_A_TROUBLESHOOTING.md):
++#   Python:   1) active `python3` on PATH, if compatible
++#             2) PACK_A_VENV override
++#             3) $HOME/atlas_dihiggs/llp_recast/.venv
++#             4) $HOME/code/dihiggs_llp_recast/.venv
++#   MadGraph: 1) MG5_BIN explicit
++#             2) `command -v mg5_aMC`
++#             3) $MG5_HOME/bin/mg5_aMC
++#             4) $HOME/.local/mg5amcnlo/3.5.3/bin/mg5_aMC
++#
++# Neither function activates anything in the caller's shell; both only
++# print a resolved path on stdout plus a reason/diagnostic on stderr.
++
++pack_a_python_compatible() {
++  local py="$1"
++  [[ -x "$py" ]] || return 1
++  "$py" -c 'import sys; sys.exit(0 if sys.version_info[:2] >= (3, 9) else 1)' >/dev/null 2>&1 || return 1
++  "$py" -c 'import yaml' >/dev/null 2>&1 || return 1
++  return 0
++}
++
++pack_a_python_warn_312() {
++  local py="$1"
++  local ver
++  ver="$("$py" -c 'import sys; print("%d.%d" % sys.version_info[:2])' 2>/dev/null || true)"
++  if [[ "$ver" == "3.12" ]]; then
++    echo "WARN: selected Python is 3.12.x ($py); this MG5 3.5.3 installation marks 3.12 support as experimental (see PACK_A_SOL_SCIENTIFIC_VALIDATION.md). Not a blocker: prior reproductions passed under 3.12." >&2
++  fi
++}
++
++# pack_a_resolve_python - prints the selected python3 path on stdout.
++# Returns 1 and prints an actionable diagnostic on stderr if none qualify.
++pack_a_resolve_python() {
++  local candidate
++
++  candidate="$(command -v python3 2>/dev/null || true)"
++  if [[ -n "$candidate" ]] && pack_a_python_compatible "$candidate"; then
++    echo "selected: active python3 on PATH (${VIRTUAL_ENV:+VIRTUAL_ENV=$VIRTUAL_ENV, }$candidate)" >&2
++    pack_a_python_warn_312 "$candidate"
++    echo "$candidate"
++    return 0
++  fi
++
++  if [[ -n "${PACK_A_VENV:-}" ]]; then
++    candidate="${PACK_A_VENV%/}/bin/python3"
++    if pack_a_python_compatible "$candidate"; then
++      echo "selected: PACK_A_VENV override ($candidate)" >&2
++      pack_a_python_warn_312 "$candidate"
++      echo "$candidate"
++      return 0
++    fi
++    echo "WARN: PACK_A_VENV=$PACK_A_VENV set but $candidate is missing, not executable, too old (<3.9), or lacks PyYAML; falling through" >&2
++  fi
++
++  for fallback in "$HOME/atlas_dihiggs/llp_recast/.venv" "$HOME/code/dihiggs_llp_recast/.venv"; do
++    candidate="${fallback}/bin/python3"
++    if pack_a_python_compatible "$candidate"; then
++      echo "selected: documented fallback venv ($fallback)" >&2
++      pack_a_python_warn_312 "$candidate"
++      echo "$candidate"
++      return 0
++    fi
++  done
++
++  {
++    echo "no compatible Python 3 interpreter with PyYAML found."
++    echo "  tried: active python3 on PATH, PACK_A_VENV, $HOME/atlas_dihiggs/llp_recast/.venv, $HOME/code/dihiggs_llp_recast/.venv"
++    echo "  fix: export PACK_A_VENV=/path/to/venv   (must contain bin/python3 with PyYAML installed)"
++  } >&2
++  return 1
++}
++
++# pack_a_resolve_mg5 - prints the selected mg5_aMC path on stdout.
++pack_a_resolve_mg5() {
++  local candidate
++
++  if [[ -n "${MG5_BIN:-}" ]]; then
++    if [[ -x "$MG5_BIN" ]]; then
++      echo "selected: MG5_BIN override ($MG5_BIN)" >&2
++      echo "$MG5_BIN"
++      return 0
++    fi
++    echo "WARN: MG5_BIN=$MG5_BIN is set but not an executable file; falling through" >&2
++  fi
++
++  candidate="$(command -v mg5_aMC 2>/dev/null || true)"
++  if [[ -n "$candidate" && -x "$candidate" ]]; then
++    echo "selected: mg5_aMC on PATH ($candidate)" >&2
++    echo "$candidate"
++    return 0
++  fi
++
++  if [[ -n "${MG5_HOME:-}" ]]; then
++    candidate="${MG5_HOME%/}/bin/mg5_aMC"
++    if [[ -x "$candidate" ]]; then
++      echo "selected: MG5_HOME/bin/mg5_aMC ($candidate)" >&2
++      echo "$candidate"
++      return 0
++    fi
++  fi
++
++  candidate="$HOME/.local/mg5amcnlo/3.5.3/bin/mg5_aMC"
++  if [[ -x "$candidate" ]]; then
++    echo "selected: documented default install ($candidate)" >&2
++    echo "$candidate"
++    return 0
++  fi
++
++  {
++    echo "no usable MadGraph5_aMC@NLO binary found."
++    echo "  tried: MG5_BIN, mg5_aMC on PATH, \$MG5_HOME/bin/mg5_aMC, $HOME/.local/mg5amcnlo/3.5.3/bin/mg5_aMC"
++    echo "  fix: export MG5_BIN=/path/to/mg5amcnlo/3.5.3/bin/mg5_aMC"
++  } >&2
++  return 1
++}
++
++# pack_a_mg5_version_banner MG5_BIN - prints the startup banner (stdout+stderr
++# merged) so callers can grep for the version line. ~1-2s (model import cost).
++pack_a_mg5_version_banner() {
++  local mg5_bin="$1"
++  printf 'quit\n' | "$mg5_bin" 2>&1 || true
++}
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,46 @@
++#!/usr/bin/env bash
++# `results`: locate and summarize evidence for the most recent run.
++# Sourced only. Never call this output "publishable" or "final".
++
++pack_a_cmd_results() {
++  local run_dir
++  run_dir="$(pack_a_find_last_run)"
++  if [[ -z "$run_dir" || ! -d "$run_dir" ]]; then
++    echo "No Pack A runs found under $PACK_ROOT/runs. Run '$0 run' first."
++    return 0
++  fi
++
++  echo "=== PACK_A_LO_SMOKE_XSEC evidence ($run_dir) ==="
++  echo
++  local f
++  for f in \
++    "validation/cross_section.json" \
++    "validation/lhe_report.json" \
++    "manifest.json" \
++    "command.txt" \
++    "environment.json" \
++    "exit_status.txt"
++  do
++    [[ -f "$run_dir/$f" ]] && echo "  $f -> $run_dir/$f"
++  done
++  local lhe
++  lhe="$(find "$run_dir/events" -maxdepth 1 -type f \( -name '*.lhe.gz' -o -name '*.lhe' \) 2>/dev/null | head -1)"
++  [[ -n "$lhe" ]] && echo "  LHE -> $lhe"
++  echo "  run.log -> $run_dir/run.log"
++  echo "  build_point.log -> $run_dir/build_point.log"
++  echo
++  echo "Classification: PACK_A_LO_SMOKE_XSEC (baseline production regression / stable-LLP LHE only)."
++  echo "Not publishable production normalization. See docs/PACK_A_SCIENTIFIC_SCOPE.md for allowed/forbidden uses."
++
++  if [[ -n "${PACK_A_PYTHON:-}" && -f "$run_dir/manifest.json" ]]; then
++    echo
++    echo "--- manifest.json checksums ---"
++    "$PACK_A_PYTHON" -c "
++import json
++d = json.load(open('$run_dir/manifest.json'))
++for k, v in sorted(d.get('files', {}).items()):
++    print(f'  {v}  {k}')
++" || true
++  fi
++  return 0
++}
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,173 @@
++#!/usr/bin/env bash
++# `run` and the run-generation core shared by `reproduce`. Sourced only.
++
++# Point configs sanctioned by Sol's reproducibility matrix. --seed may only
++# select among these; any other value is rejected. This is not a physics
++# override: both configs describe the identical PI_FIXED point
++# (mphi=200 GeV, g g > H > h2 h2, GC_90 fixed), differing only in the MC
++# seed, exactly as validated in PACK_A_REPRODUCIBILITY_MATRIX.json.
++declare -A PACK_A_SEED_CONFIGS=(
++  [12345]="points/A_PI_NATIVE_200.yaml"
++  [67890]="points/A_PI_NATIVE_200_seed67890.yaml"
++)
++
++pack_a_reject_physics_flags() {
++  local arg
++  local forbidden=(--process --coupling --llp-pdg --mass --decay --pythia --madspin)
++  for arg in "$@"; do
++    for f in "${forbidden[@]}"; do
++      if [[ "$arg" == "$f" || "$arg" == "$f="* ]]; then
++        pack_a_die "physics override flag '$f' is not permitted (Pack A native contract is fixed; see docs/PACK_A_SCIENTIFIC_SCOPE.md)"
++      fi
++    done
++  done
++}
++
++# pack_a_do_generate RUN_DIR SEED CONFIG_PATH - the actual generation core.
++# Writes command.txt, environment.json, preflight.json (if requested by
++# caller before), run.log, exit_status.txt, manifest.json into RUN_DIR.
++# Never overwrites RUN_DIR if it already has an exit_status.txt.
++pack_a_do_generate() {
++  local run_dir="$1" seed="$2" config="$3"
++  mkdir -p "$run_dir/cards" "$run_dir/events" "$run_dir/validation"
++
++  local rc=0
++  {
++    echo "pack_a_python=$PACK_A_PYTHON"
++    echo "mg5_bin=$MG5_BIN"
++    echo "seed=$seed"
++    echo "config=$config"
++    echo "invoked_at_utc=$(pack_a_ts)"
++  } > "$run_dir/command.txt"
++
++  "$PACK_A_PYTHON" - "$MG5_BIN" "$PACK_A_PYTHON" "$run_dir/environment.json" <<'PYEOF' || pack_a_log "WARN: could not write environment.json"
++import json, platform, sys, os
++mg5_bin, py_bin, out = sys.argv[1], sys.argv[2], sys.argv[3]
++data = {
++    "python": {"executable": py_bin, "version": platform.python_version()},
++    "mg5_bin": mg5_bin,
++    "toolchain_expected": "MadGraph5_aMC@NLO 3.5.3",
++    "env_threads": {k: os.environ.get(k) for k in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "MAKEFLAGS")},
++}
++with open(out, "w") as fh:
++    json.dump(data, fh, indent=2, sort_keys=True)
++    fh.write("\n")
++PYEOF
++
++  local finalize_done=0
++  finalize() {
++    [[ $finalize_done -eq 1 ]] && return
++    finalize_done=1
++    local final_rc=$1
++    echo "$final_rc" > "$run_dir/exit_status.txt"
++    pack_a_log "run finished with exit status $final_rc -> $run_dir/exit_status.txt"
++  }
++
++  pack_a_log "STAGE START: build_point ($config, seed=$seed)"
++  if "$PACK_A_PYTHON" "$PACK_ROOT/scripts/build_point.py" --config "$PACK_ROOT/$config" --output "$run_dir/point" > "$run_dir/build_point.log" 2>&1; then
++    pack_a_log "STAGE OK: build_point"
++  else
++    rc=$?
++    pack_a_log "STAGE FAIL: build_point (exit $rc); see $run_dir/build_point.log"
++    finalize "$rc"
++    return "$rc"
++  fi
++
++  pack_a_log "STAGE START: mg5_smoke"
++  rc=0
++  (
++    export PATH="$(dirname "$PACK_A_PYTHON"):$PATH"
++    export MG5_BIN
++    bash "$PACK_ROOT/scripts/run_mg5_smoke.sh" "$run_dir/point"
++  ) > "$run_dir/run.log" 2>&1 || rc=$?
++  if [[ $rc -eq 0 ]]; then
++    pack_a_log "STAGE OK: mg5_smoke"
++  else
++    pack_a_log "STAGE FAIL: mg5_smoke (exit $rc); see $run_dir/run.log"
++    finalize "$rc"
++    return "$rc"
++  fi
++
++  # Relocate generated artifacts into the run's own tree (never back into
++  # the distributed pack layout) for a stable results/status surface.
++  if [[ -d "$run_dir/point" ]]; then
++    cp -f "$run_dir/point/param_card.dat" "$run_dir/cards/" 2>/dev/null || true
++    cp -f "$run_dir/point/run_card.dat" "$run_dir/cards/" 2>/dev/null || true
++    cp -f "$run_dir/point"/events.lhe* "$run_dir/events/" 2>/dev/null || true
++    cp -f "$run_dir/point/lhe_report.json" "$run_dir/validation/" 2>/dev/null || true
++    cp -f "$run_dir/point/cross_section.json" "$run_dir/validation/" 2>/dev/null || true
++  fi
++
++  "$PACK_A_PYTHON" - "$run_dir" <<'PYEOF' || pack_a_log "WARN: could not write manifest.json"
++import json, hashlib, os, sys
++run_dir = sys.argv[1]
++
++def sha256(path):
++    h = hashlib.sha256()
++    with open(path, "rb") as fh:
++        for chunk in iter(lambda: fh.read(65536), b""):
++            h.update(chunk)
++    return h.hexdigest()
++
++manifest = {"run_dir": os.path.basename(run_dir), "files": {}}
++for name in ("build_point.log", "run.log", "command.txt", "environment.json"):
++    p = os.path.join(run_dir, name)
++    if os.path.isfile(p):
++        manifest["files"][name] = sha256(p)
++for sub in ("cards", "events", "validation"):
++    d = os.path.join(run_dir, sub)
++    if os.path.isdir(d):
++        for f in sorted(os.listdir(d)):
++            p = os.path.join(d, f)
++            if os.path.isfile(p):
++                manifest["files"][f"{sub}/{f}"] = sha256(p)
++
++lhe_report_path = os.path.join(run_dir, "validation", "lhe_report.json")
++xsec_path = os.path.join(run_dir, "validation", "cross_section.json")
++if os.path.isfile(lhe_report_path):
++    manifest["lhe_report"] = json.load(open(lhe_report_path))
++if os.path.isfile(xsec_path):
++    manifest["cross_section"] = json.load(open(xsec_path))
++
++with open(os.path.join(run_dir, "manifest.json"), "w") as fh:
++    json.dump(manifest, fh, indent=2, sort_keys=True)
++    fh.write("\n")
++PYEOF
++
++  finalize 0
++  return 0
++}
++
++pack_a_cmd_run() {
++  pack_a_reject_physics_flags "$@"
++  local label="" output_root="$PACK_ROOT/runs" seed="12345"
++  while [[ $# -gt 0 ]]; do
++    case "$1" in
++      --label) label="$2"; shift 2 ;;
++      --output-root) output_root="$2"; shift 2 ;;
++      --seed) seed="$2"; shift 2 ;;
++      *) pack_a_die "unrecognized option '$1' for 'run' (see docs/PACK_A_OPERATOR_COMMANDS.md)" ;;
++    esac
++  done
++  [[ -n "${PACK_A_SEED_CONFIGS[$seed]:-}" ]] || pack_a_die "seed '$seed' is not a Sol-validated point config; only 12345 and 67890 are available"
++  local config="${PACK_A_SEED_CONFIGS[$seed]}"
++  [[ -f "$PACK_ROOT/$config" ]] || pack_a_die "canonical point config $config not found in this pack"
++
++  PACK_A_PYTHON="$(pack_a_resolve_python)" || exit 20
++  MG5_BIN="$(pack_a_resolve_mg5)" || exit 20
++  export PACK_A_PYTHON MG5_BIN
++
++  local ts run_name run_dir
++  ts="$(pack_a_ts)"
++  run_name="${ts}_seed${seed}${label:+_$label}"
++  run_dir="$output_root/$run_name"
++  [[ -e "$run_dir" ]] && pack_a_die "run directory $run_dir already exists (timestamps should not collide; retry)"
++  mkdir -p "$run_dir"
++
++  pack_a_log "RUN: $run_name (config=$config, seed=$seed)"
++  local rc=0
++  pack_a_do_generate "$run_dir" "$seed" "$config" || rc=$?
++  echo "$run_dir" > "$output_root/.last_run"
++  pack_a_log "run directory: $run_dir"
++  return "$rc"
++}
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,57 @@
++#!/usr/bin/env bash
++# `status`: report on the most recent run without reinterpreting physics.
++# Sourced only.
++
++pack_a_find_last_run() {
++  local runs_dir="$PACK_ROOT/runs"
++  if [[ -f "$runs_dir/.last_run" ]]; then
++    cat "$runs_dir/.last_run"
++    return 0
++  fi
++  find "$runs_dir" -maxdepth 1 -mindepth 1 -type d -name '2*_seed*' 2>/dev/null | sort | tail -1
++}
++
++pack_a_cmd_status() {
++  local run_dir
++  run_dir="$(pack_a_find_last_run)"
++  if [[ -z "$run_dir" || ! -d "$run_dir" ]]; then
++    echo "No Pack A runs found under $PACK_ROOT/runs. Run '$0 run' first."
++    return 0
++  fi
++
++  local exit_status="(unknown - run may still be in progress or crashed before finalize)"
++  [[ -f "$run_dir/exit_status.txt" ]] && exit_status="$(cat "$run_dir/exit_status.txt")"
++
++  echo "Last run:        $run_dir"
++  echo "Exit status:     $exit_status"
++  [[ -f "$run_dir/command.txt" ]] && { echo "Command info:"; sed 's/^/  /' "$run_dir/command.txt"; }
++
++  if [[ -n "${PACK_A_PYTHON:-}" && -f "$run_dir/validation/cross_section.json" ]]; then
++    "$PACK_A_PYTHON" -c "
++import json
++d = json.load(open('$run_dir/validation/cross_section.json'))
++print('sigma_pb:        ', d.get('sigma_pb'))
++print('integration_err: ', d.get('integration_error_pb'))
++" || true
++  fi
++  if [[ -n "${PACK_A_PYTHON:-}" && -f "$run_dir/validation/lhe_report.json" ]]; then
++    "$PACK_A_PYTHON" -c "
++import json
++d = json.load(open('$run_dir/validation/lhe_report.json'))
++print('events:          ', d.get('events'))
++print('llp_stable:      ', d.get('llp_stable_in_lhe'))
++print('nonfinal_llp:    ', d.get('nonfinal_llp_records'))
++" || true
++  fi
++  local lhe
++  lhe="$(find "$run_dir/events" -maxdepth 1 -type f \( -name '*.lhe.gz' -o -name '*.lhe' \) 2>/dev/null | head -1)"
++  [[ -n "$lhe" ]] && echo "LHE path:         $lhe"
++  echo "Log path:         $run_dir/run.log"
++
++  if [[ -f "$run_dir/exit_status.txt" && "$(cat "$run_dir/exit_status.txt")" == "0" ]]; then
++    echo "Validation state: PASS_WITH_WARNINGS (classification PACK_A_LO_SMOKE_XSEC; see docs/PACK_A_SCIENTIFIC_SCOPE.md)"
++  else
++    echo "Validation state: NOT PASSING (see log above)"
++  fi
++  return 0
++}
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,77 @@
++#!/usr/bin/env bash
++# Pack A native operator interface (Luna release-candidate ergonomics layer).
++#
++# Usage: pack-a <preflight|run|reproduce|status|results|clean> [options]
++#
++# This is a normal executable script - run it, do not `source` it. It never
++# modifies your interactive shell, never changes your working directory, and
++# always returns its real exit status even when a stage fails.
++set -Eeuo pipefail
++
++SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
++PACK_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
++
++# shellcheck source=lib/common.sh
++source "$SCRIPT_DIR/lib/common.sh"
++# shellcheck source=lib/resolve.sh
++source "$SCRIPT_DIR/lib/resolve.sh"
++# shellcheck source=lib/preflight.sh
++source "$SCRIPT_DIR/lib/preflight.sh"
++# shellcheck source=lib/run.sh
++source "$SCRIPT_DIR/lib/run.sh"
++# shellcheck source=lib/reproduce.sh
++source "$SCRIPT_DIR/lib/reproduce.sh"
++# shellcheck source=lib/status.sh
++source "$SCRIPT_DIR/lib/status.sh"
++# shellcheck source=lib/results.sh
++source "$SCRIPT_DIR/lib/results.sh"
++# shellcheck source=lib/clean.sh
++source "$SCRIPT_DIR/lib/clean.sh"
++
++usage() {
++  cat <<EOF
++Usage: $0 <command> [options]
++
++Commands:
++  preflight              verify pack integrity, toolchain, and physics invariants
++  run [--label L] [--output-root DIR] [--seed 12345|67890]
++                         run the canonical Pack A native generation
++  reproduce [--seed 12345|67890]
++                         clean extraction + preflight + run + invariant check
++  status                 report on the most recent run
++  results                locate and summarize evidence for the most recent run
++  clean --confirm        remove interface-generated run directories only
++
++See docs/PACK_A_QUICKSTART.md and docs/PACK_A_OPERATOR_COMMANDS.md (workspace
++root) for copy-pasteable examples.
++EOF
++}
++
++main() {
++  local cmd="${1:-}"
++  [[ $# -gt 0 ]] && shift || true
++  case "$cmd" in
++    preflight) pack_a_cmd_preflight "$@" ;;
++    run) pack_a_cmd_run "$@" ;;
++    reproduce) pack_a_cmd_reproduce "$@" ;;
++    status)
++      PACK_A_PYTHON="$(pack_a_resolve_python 2>/dev/null || true)"
++      export PACK_A_PYTHON
++      pack_a_cmd_status "$@"
++      ;;
++    results)
++      PACK_A_PYTHON="$(pack_a_resolve_python 2>/dev/null || true)"
++      export PACK_A_PYTHON
++      pack_a_cmd_results "$@"
++      ;;
++    clean) pack_a_cmd_clean "$@" ;;
++    -h|--help|help|"") usage; [[ "$cmd" == "" ]] && exit 2 || exit 0 ;;
++    *)
++      echo "BLOCKED: unknown command '$cmd'" >&2
++      usage >&2
++      exit 2
++      ;;
++  esac
++}
++
++main "$@"
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -3,6 +3,17 @@
+ 0776312fe51bce3b4dd6595f05044408feb0585e08febe29006fd5911684229e  MODEL_CARD.md
+ c0e2cca2ecd310972a32818dff00f46382057a9822b597487f7e0af00d6d0474  PROVENANCE.md
+ 68df93a0489bc0322063e22d6e2cc5996da9f3d2f8faba65258cf0bd2f08315d  README.md
++3679608f7c50d48d81efa0be8b6c9e2d4b5a022af20c19d9db788d30ed38117f  README_PACK_A.md
++86f4f71fe99566e9a7d76fa417ded671e2be01f4b6c9ad064e6cf3a1b8764cf5  bin/lib/clean.sh
++43b3a63ce1544c79f3e7f242570f37322ef12cd4a66107c4488c226d80e9fc54  bin/lib/common.sh
++81325b809a05bbaa18c9a93f7b5af29710c39358c27d2369c28113095ca2aaf5  bin/lib/lhe_invariants.py
++8cc818c1bfa4ccbf34f5ef3b6f9a5466373fcc27d22f1dea84a410286f42f910  bin/lib/preflight.sh
++c3c215710f504b54231952107fd2b1d4d1f2b49e481df2b50074b4730e50fb5c  bin/lib/reproduce.sh
++6006b8c9c041d8e45ace8ee4a61dd65e026ad0053b266685e1cf46ef1662d7bf  bin/lib/resolve.sh
++83ea1215df9eab8d217308271112cdb625f496d6bd517fc8b0d3bc08de98cacc  bin/lib/results.sh
++e5319f544652d51174d8522036771a00488c2b74d2e276389b5650db3dc98880  bin/lib/run.sh
++1ae481b208edc6c15691664b8769d9584b1bce8fbdbb4720bdae4a194c9620d0  bin/lib/status.sh
++82cabec740e2728543b0f76f0683780fef18c6ac838a9d64f2e634412817ab75  bin/pack-a
+ b28ab25311a3e1796c0018c33c14d8709ec31456ef45df9940d1b5bdf1086741  build/point_000001/decay.slha
+ b5e68dde0222854f72892cc79c0c90becca83a13502fec9bc29c69150a4f4bbf  build/point_000001/param_card.dat
+ a598573864361f674283cabb0ca478c3965ec362bca355a53c46f5cbdd164e90  build/point_000001/point.json
+@@ -14,8 +25,12 @@
+ d86cf89a9863c08ba5d1232f3f810271b0a4306d1308dbb059f7254d469a105e  cards/proc_card_zerojet.dat
+ 41d264542323dff06edbcd30fd90ecfb4eeba2417544050cdc29e9a41f9de477  cards/pythia8.template.cmnd
+ 85abb3e99fc9503e59ecb6bff21a1aa804e248ff64f230afff8f20d8b5d156c3  cards/run_card_smoke.dat
++9cbba47624ef7a26eb29b86821825e71ca79e4f830b2975387e40e4896e48f9f  docs/PACK_A_FILE_MAP.md
++4947befc41dc5605dfd972b122e8bce768f9921270ec70ec9e6a52491a529fd7  docs/PACK_A_FREEZE_CHECKLIST.md
++186e1fc2762429873b6d659612aec900eeab4949a9475b1788bb7f7f8255876d  docs/PACK_A_QUICKSTART.md
++9b59f39b1fec4adb2f0744cf86458a112a70b184e4541e35be1f72f684cb750d  docs/PACK_A_SCIENTIFIC_SCOPE.md
++d7e7a97b62b61041dfdbab030ba7d1e02507d0725a8bd26a70100996ea31b587  docs/PACK_A_TROUBLESHOOTING.md
+ db1fb31cea7019a7399c4074d0e674a00653c40fba5618c1f5a9aad5c5d8ad3f  expected/smoke_contract.json
+-e577337ab8f621ea13e484b82e7aed0c742a6b305de4ee0e41ec066defd688de  manifest.json
+ 58e07e6b6dea344858f32bccd1948a10768d38a217b88448aa4dc976c0a77b58  model/LLscalar_v3_UFO_runtime/CT_couplings.py
+ e2198b46e727a0aa09378d715bd33364095057dd910f3b8cf7d7dd6ec1bc71d7  model/LLscalar_v3_UFO_runtime/__init__.py
+ 80d652d3441c1fed3242dc7a4141a12f5a7ccc2f2cc6764dd5d22bb39083d132  model/LLscalar_v3_UFO_runtime/coupling_orders.py
+@@ -28,9 +43,12 @@
+ 7f84d779ff83dd52bbfecbbfe31df147e2df79faab0bcda716d5908d63b3d45b  model/LLscalar_v3_UFO_runtime/parameters.py
+ 01c61a7a352a5bebb747fff0c9ac3e228fa7575dfc381a339ecb285332b223c6  model/LLscalar_v3_UFO_runtime/particles.py
+ 1a4495d00654b6de8044d7a993b798cb12ca7265199f8e25ce42abdfbc98384a  model/LLscalar_v3_UFO_runtime/propagators.py
++00049f2b99b48f7619fd576c7327ef635369dfa36563a9f80387389f533da4f3  model/LLscalar_v3_UFO_runtime/py3_model.pkl
+ 60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba  model/LLscalar_v3_UFO_runtime/vertices.py
+ 081e24c63a197a6c58fd60a4253e10960738ac35050fe49364941268381ffbb9  model/LLscalar_v3_UFO_runtime/write_param_card.py
+ 91b2955b7f8c537fe50c2bd8577d1d4583327b9645be81bf44a53cadaeece49f  patches/python3_param_card_compat.patch
++6f5b2ff857e0400a345c26a69e8c3efd4749d19b2adf14bfb0451429f9d838c8  points/A_PI_NATIVE_200.yaml
++c26dd6eb70d65a3f5cae9646ae21e44c320d154ac2c463bdef6ac1ea00831731  points/A_PI_NATIVE_200_seed67890.yaml
+ e039065312c82e5f44367f09035dc4d73d8ea58891faa5ff5e15c6f25b527f05  points/point_000001.yaml
+ 7ba71c714356e35c488aedd73284407e47c8b3c8627a8eca228773d54f1fd938  requirements.txt
+ bad44da8ab39fc1327dc224ea3692fcaeaefb7848418c2dbc9e50ce932a06fbf  schemas/point.schema.json
+@@ -40,6 +58,7 @@
+ 73defccdf56547b2242cb517ea22d6e0e5ee2760f1cc12ecfd14984b50989027  scripts/inspect_lhe.py
+ 7591ee1973ce5ad265d80fe89255c224aadd911339faae7b10f6a37f75427120  scripts/make_decay_slha.py
+ b4b986692637a92539a2ee83480a4c12384d8a40ce2b9c8f7e79a3ec54518f12  scripts/make_param_card.py
++c82e014dbdaa4ad526bceff6e74f2a900d05f514ba62b31c2d83358a281e92a5  scripts/materialize_internal_masses.py
+ caf3a366988f220bd08805f27e33d8eef92aac36e1f832f6b27f85f2eeed0f9a  scripts/model_utils.py
+ d313f0444e1adf5c2f92a81d97aa92efc3ccee50063ddd8669ceb785ce7b2366  scripts/pack_constants.py
+ 80fafee866999908411847cb43ee9e8aceba89ee01a5ba91d19b81b1d191a3f7  scripts/patch_mg5_run_card.py
+@@ -47,9 +66,18 @@
+ f90529ab57434adfc4d1d1a27e74ccf951a44933294b144242150eeb397dc81d  scripts/run_pythia_smoke.sh
+ 4dfafdbc9f40dd70f66a09613f5a2b885f844d30520ed1787774ad3112455d08  scripts/run_recast_smoke.sh
+ dd62bced24d1bc951f1d90a8432767948be20affec6ae8e7b81586d2e59339e2  scripts/run_static_tests.py
++6d58e1a4eb0acdcd853246afbfca73a39d4b7123c1c30b3b105f3e6db6623f5f  scripts/run_validation_pack_a_native.sh
+ a2098fa13e478414620127d90450e7126dbf52d8ad78347a7c01814955c02fde  scripts/validate_point.py
++af85d1d7e83bc0f7a016258b6cc3e179c4d9fd6778ce553ebf7ff4b8be5b968f  tests/fixtures/mini_model/function_library.py
++4bef9ba0a44b89048f5ed02f0c97f5937e1a2ce8a949574bdaa6f67ae80f9e11  tests/fixtures/mini_model/object_library.py
++af9c63eda5e33188dcf551ed1a91696f46614d949e4327f76f2a9c7725ec0716  tests/fixtures/mini_model/parameters.py
++670f476169e9031cb52bbcf99b3022b045dcdb4db2531d7db0df1e76831b5f5b  tests/fixtures/mini_model/particles.py
++b5e68dde0222854f72892cc79c0c90becca83a13502fec9bc29c69150a4f4bbf  tests/fixtures/param_card_missing_pdg24.dat
++eaf89de16945797f354b820f3a2dd5b875f2d79142efd73a0ebad861af1d7a87  tests/fixtures/run_card_mg5_generated.dat
+ 14f4013f789860815db3aa0df9465f63d439c21e924e6793252e72173926e3f9  tests/test_invalid_points.py
++ae37a0620247d1986983249d87336699c6db0025efa2ddfce35c7c776a1d0cfb  tests/test_materialize_internal_masses.py
+ 1b69812e914ccb6ee91f5e08764895a2b810342b9e09b1218803a00f87c68090  tests/test_model_contract.py
++3ed62ff673860b3547c6288a8bfce486e25bee155ae71daf32f070b3aa482547  tests/test_patch_mg5_run_card.py
+ 8820eeede0af161ef5de48bdde24928d4da78bc8ff3e744f6cc609e5bbb81b19  validation/AB_STATIC_REGRESSION.json
+ 7216956d3a6af6fdd0a9783b80dbe8fed7ea22fe4d9204ae37b8b9eef7573081  validation/EXTERNAL_RUNTIME_STATUS.md
+ 071f5b79b7836d9e16d0c659f624dfb4738221577cebb768a5e2b3fa18b00b2c  validation/RECAST_ADAPTER.md
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,113 @@
++# Pack A File Map
++
++## Physics-invariant files — authority, byte-identical to the PI original
++
++These eight files must never differ from `pi_ufo_baseline_v1.zip`
++(sha256 `632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd`).
++`bin/pack-a preflight` verifies all eight on every run.
++
++```text
++model/LLscalar_v3_UFO_runtime/couplings.py
++model/LLscalar_v3_UFO_runtime/vertices.py
++model/LLscalar_v3_UFO_runtime/particles.py
++model/LLscalar_v3_UFO_runtime/parameters.py
++model/LLscalar_v3_UFO_runtime/decays.py
++model/LLscalar_v3_UFO_runtime/form_factors.py
++model/LLscalar_v3_UFO_runtime/lorentz.py
++model/LLscalar_v3_UFO_runtime/coupling_orders.py
++```
++
++`vendor/LLscalar_v3_UFO_original/` — the PI's own original UFO copy, kept for
++provenance comparison; not imported by any script at runtime.
++
++## Operational scripts — authority: Sol (physics-adjacent, validated)
++
++```text
++scripts/build_point.py            point/card generation
++scripts/run_mg5_smoke.sh          MadGraph invocation; Sol-corrected MadeEvent sequence
++scripts/patch_mg5_run_card.py     run_card field substitution
++scripts/materialize_internal_masses.py   independent mass cross-check / fallback patch
++scripts/inspect_lhe.py            LHE stability report (events, final/nonfinal LLP counts)
++scripts/extract_mg5_cross_section.py   cross-section parsing from MG5 logs
++scripts/model_utils.py            shared card-writing helpers
++scripts/validate_point.py, scripts/make_param_card.py, scripts/make_decay_slha.py,
++scripts/pack_constants.py, scripts/check_coupling_scaling.py, scripts/run_static_tests.py
++```
++
++Do not edit these to "fix" portability or ergonomics issues; they carry the
++validated physics/runtime contract. Luna's layer wraps them.
++
++## Operator interface — authority: Luna (this release)
++
++```text
++bin/pack-a                        public entry point
++bin/lib/common.sh                 logging/helpers
++bin/lib/resolve.sh                Python/MadGraph resolution
++bin/lib/preflight.sh              preflight checks
++bin/lib/run.sh                    run (+ shared generation core)
++bin/lib/reproduce.sh              clean-extraction reproduction
++bin/lib/status.sh, bin/lib/results.sh, bin/lib/clean.sh
++bin/lib/lhe_invariants.py         read-only LHE invariant/cross-section check
++points/A_PI_NATIVE_200_seed67890.yaml   optional Sol-validated alt-seed config (physics identical to A_PI_NATIVE_200.yaml)
++```
++
++## Cards/templates
++
++```text
++cards/README.md, cards/proc_card_zerojet.dat, cards/run_card_smoke.dat,
++cards/pythia8.template.cmnd   (template only — Pythia is never invoked by this interface)
++```
++
++## Documentation — Sol (scientific authority)
++
++```text
++PACK_A_SOL_SCIENTIFIC_VALIDATION.md      workspace root
++PACK_A_MADEVENT_INTERACTION_TRACE.md     workspace root
++PACK_A_REPRODUCIBILITY_MATRIX.json       workspace root
++PACK_A_SCIENTIFIC_STATUS.json            workspace root
++PATCH_PACK_A_SOL_VALIDATION.diff         workspace root
++validation/source_material/*            in-pack scientific evidence and traces
++```
++
++## Documentation — Luna (this release, ergonomics)
++
++```text
++README_PACK_A.md
++docs/PACK_A_QUICKSTART.md
++docs/PACK_A_SCIENTIFIC_SCOPE.md
++docs/PACK_A_TROUBLESHOOTING.md
++docs/PACK_A_FILE_MAP.md          (this file)
++docs/PACK_A_FREEZE_CHECKLIST.md
++```
++
++## Manifests
++
++```text
++manifest.json          in-pack file inventory + hashes, regenerated for this candidate
++checksums.sha256        sha256sum -c compatible checksum list, regenerated for this candidate
++```
++
++Workspace-root sidecar (not inside the ZIP; describes the ZIP from outside,
++avoiding the self-referential-hash problem):
++
++```text
++PACK_A_RELEASE_CANDIDATE_MANIFEST.json
++```
++
++## Runtime evidence (generated, excluded from the shipped ZIP)
++
++```text
++runs/<timestamp>_seed<seed>[_label]/       created by `run`
++runs/<timestamp>_reproduce_seed<seed>/     created by `reproduce`
++```
++
++Nothing under `runs/` is authoritative source; it is disposable evidence
++subject to `bin/pack-a clean --confirm`.
++
++## Historical / superseded, not part of this candidate's authority
++
++```text
++pi_ufo_baseline_v1_runtimefix.zip          superseded candidate (workspace root)
++patches/python3_param_card_compat.patch    historical MG5 Python-3 compat patch, informational
++CHANGELOG.md                               historical log, not updated by this release
++```
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,32 @@
++# Pack A Freeze Checklist
++
++This checklist is for a **future, separate freeze mission**. It is not
++executed here, and this release does not authorize a freeze. Every item
++below must be independently re-verified by that future mission before any
++freeze decision.
++
++```text
++[ ] hash of the Sol candidate (df369...) reverified against its declared value
++[ ] eight physics-invariant files byte-identical to pi_ufo_baseline_v1.zip
++[ ] release candidate ZIP hash computed and recorded externally (not inside the ZIP)
++[ ] release candidate ZIP extracts cleanly on a second, independent machine
++[ ] preflight passes on that independent extraction
++[ ] reproduce passes (seed 12345) on that independent extraction
++[ ] reproduce passes (seed 67890) on that independent extraction, if run
++[ ] cross-section compatibility at 3-sigma confirmed against Sol reference values
++[ ] LHE invariants (event count, LLP count, mass, mothers, 4-momentum) confirmed
++[ ] no physics override flags accepted by bin/pack-a run/reproduce
++[ ] no Pythia, MadSpin, Pack AA, Pack B, or recast execution anywhere in this pack
++[ ] diff against the Sol candidate contains zero physics-file content changes
++[ ] manifest.json and checksums.sha256 internally consistent (sha256sum -c passes)
++[ ] all JSON in the pack parses with a real parser
++[ ] clean --confirm tested: rejects without --confirm, removes only interface-generated runs/
++[ ] no absolute machine-specific paths in any distributed manifest
++[ ] documentation (Sol + Luna) reviewed for consistency with the frozen artifact
++[ ] explicit sign-off recorded from whoever authorizes the freeze
++```
++
++Do not mark any item above as complete from this mission's evidence alone;
++this file exists to be filled in by the freeze mission itself.
++
++FREEZE_STATUS=NOT_FROZEN
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,62 @@
++# Pack A Quickstart
++
++## Unzip and verify
++
++```bash
++unzip pi_ufo_baseline_v1_release_candidate.zip
++cd pi_ufo_baseline_v1_release_candidate
++sha256sum -c checksums.sha256
++```
++
++## From inside the pack
++
++```bash
++bin/pack-a preflight
++bin/pack-a run
++bin/pack-a status
++bin/pack-a results
++bin/pack-a reproduce
++bin/pack-a clean --confirm
++```
++
++## From outside the pack (no `cd` required)
++
++```bash
++/path/to/pi_ufo_baseline_v1_release_candidate/bin/pack-a preflight
++/path/to/pi_ufo_baseline_v1_release_candidate/bin/pack-a run
++```
++
++## With an explicit MadGraph binary
++
++```bash
++MG5_BIN="$HOME/.local/mg5amcnlo/3.5.3/bin/mg5_aMC" bin/pack-a preflight
++MG5_BIN="$HOME/.local/mg5amcnlo/3.5.3/bin/mg5_aMC" bin/pack-a run
++```
++
++## With an explicit Python environment
++
++```bash
++PACK_A_VENV="$HOME/atlas_dihiggs/llp_recast/.venv" bin/pack-a preflight
++PACK_A_VENV="$HOME/atlas_dihiggs/llp_recast/.venv" bin/pack-a run
++```
++
++## Optional seed-67890 cross-check
++
++```bash
++bin/pack-a run --seed 67890
++bin/pack-a reproduce --seed 67890
++```
++
++## Never source it
++
++```bash
++# correct: runs as its own process, exit status is real, your shell is untouched
++bin/pack-a preflight || rc=$?
++echo "shell still alive: $rc"
++
++# wrong: do not do this
++# source bin/pack-a preflight
++```
++
++See `docs/PACK_A_TROUBLESHOOTING.md` if any of the above fails, and
++`docs/PACK_A_SCIENTIFIC_SCOPE.md` before drawing conclusions from `results`.
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,59 @@
++# Pack A Scientific Scope
++
++This document restates Sol's scientific classification for the Luna
++operator layer; it does not re-derive it. Authority: workspace-root
++`PACK_A_SOL_SCIENTIFIC_VALIDATION.md`, `PACK_A_SCIENTIFIC_STATUS.json`,
++`PACK_A_REPRODUCIBILITY_MATRIX.json`.
++
++Scientific verdict: **`PASS_WITH_WARNINGS`**.
++Cross-section classification: **`PACK_A_LO_SMOKE_XSEC`**.
++
++## Allowed uses
++
++```text
++YES:
++  baseline production regression
++  generation of LHE with a stable LLP (h2, PDG 9000006)
++  input to a future, separate Pack AA (Pythia/decay) stage
++```
++
++## Conditional uses
++
++```text
++CONDITIONAL:
++  comparison of A vs B under PI_FIXED,
++  only with an identical production/toolchain contract;
++  this pack does not run Pack B and does not perform that comparison itself
++```
++
++## Forbidden uses
++
++```text
++NO:
++  final 2HDM prediction
++  physical branching-ratio prediction
++  publishable production normalization
++  final normalization of the recast
++```
++
++## Active scientific warnings (Sol)
++
++- No LHAPDF installation was available; MG5 did not compute PDF systematics.
++- Scale/PDF systematic uncertainties are absent.
++- `GC_15` depends directly on `aS` while its QCD order is declared zero;
++  automatic scale-uncertainty estimation can be wrong as a result.
++- This MadGraph5_aMC@NLO 3.5.3 installation self-identifies as an unknown
++  development build and warns against production use.
++- Python 3.12 support is marked experimental by this MG5 build (still, prior
++  reproductions completed successfully under 3.12 — see the Sol report).
++- Only the zero-extra-parton sample exists; no matched/merged sample.
++
++None of the above are operational blockers for Pack A native generation —
++`bin/pack-a preflight` surfaces them as `WARN`/`INFO` rows, never `FAIL`.
++
++## What Pack A explicitly is not
++
++- Not Pack AA (no Pythia, no MadSpin, no h2 decay).
++- Not Pack B (different coupling scheme; not built, not run here).
++- Not a recast (no cutflow, no detector-level acceptance, no exclusion limit).
++- Not frozen — see `docs/PACK_A_FREEZE_CHECKLIST.md`.
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,106 @@
++# Pack A Troubleshooting
++
++## venv ausente / no venv found
++
++`bin/pack-a` looks for an active `python3`, then `PACK_A_VENV`, then
++`$HOME/atlas_dihiggs/llp_recast/.venv`, then
++`$HOME/code/dihiggs_llp_recast/.venv`. If none has PyYAML, `preflight`
++reports `python: FAIL` with the exact list tried. Fix: create/point to a
++venv with `pip install PyYAML` and export `PACK_A_VENV=/path/to/venv`.
++
++## `PACK_A_VENV` inválido
++
++If `PACK_A_VENV` is set but `$PACK_A_VENV/bin/python3` is missing, not
++executable, older than 3.9, or lacks PyYAML, the wrapper logs a `WARN` and
++falls through to the next candidate — it does not hard-fail on an invalid
++override alone. It only fails if every candidate in the priority list fails.
++
++## `MG5_BIN` ausente
++
++`preflight`/`run` report `madgraph: FAIL` with:
++`export MG5_BIN=$HOME/.local/mg5amcnlo/3.5.3/bin/mg5_aMC`. Nothing is
++downloaded or installed automatically.
++
++## `MG5_BIN` no ejecutable
++
++If `MG5_BIN` points at a non-executable or missing file, the wrapper logs a
++`WARN` and falls through to `command -v mg5_aMC`, then `$MG5_HOME/bin/mg5_aMC`,
++then the documented default path — it does not stop at the bad override.
++
++## Versión de MG5 inesperada
++
++`preflight` starts the resolved binary once (`printf 'quit\n' | mg5_aMC`)
++and greps its banner for `VERSION 3.5.3`. If that string is absent, it warns
++(does not block) that the toolchain may differ from the validated 3.5.3.
++
++## PyYAML ausente
++
++`preflight` reports `PyYAML: FAIL` naming the interpreter it tried. Install
++into that interpreter's environment (`pip install PyYAML`) or point
++`PACK_A_VENV` elsewhere.
++
++## `MASS 24` ausente inicialmente
++
++Expected. MadEvent derives PDG-24 (W) mass from internal UFO parameters; the
++point writer never serializes it. `scripts/run_mg5_smoke.sh` answers the
++MadEvent prompts with `0`, `update dependent`, `0`, which materializes it
++during card review. See `PACK_A_MADEVENT_INTERACTION_TRACE.md`.
++
++## Por qué no `update missing`
++
++`update missing` is only valid inside the card-edit menu; sent at the
++switch-selection prompt (as the older runtime-fix did) it is rejected, and
++the actual materialization then happens implicitly via EOF's default `0`
++triggering an automatic `update dependent`. That path works but depends on
++an implicit fallback. The corrected, explicit sequence removes the rejected
++command entirely. Full trace in `PACK_A_MADEVENT_INTERACTION_TRACE.md`.
++
++## Warning de Python 3.12
++
++MG5 3.5.3 marks 3.12 support "experimental" in its banner. `bin/pack-a`
++surfaces this as a non-blocking `WARN` when the selected interpreter is
++3.12.x — prior full reproductions (Sol's and this pack's) completed
++successfully under 3.12.
++
++## LHAPDF ausente
++
++Expected and documented (see `docs/PACK_A_SCIENTIFIC_SCOPE.md`). MG5 logs
++"No version of lhapdf. Can not run systematics computation" and proceeds;
++this is why the cross section is classified `PACK_A_LO_SMOKE_XSEC` rather
++than publishable.
++
++## Shell cerrada o alterada por `source`/`set -e`
++
++`bin/pack-a` must be **executed**, never `source`d. It is a normal script
++with its own `set -Eeuo pipefail`; that only affects its own process. If you
++`source` it, its `exit` calls will close your interactive shell. Verify with:
++
++```bash
++bin/pack-a preflight || rc=$?
++echo "shell-still-alive rc=$rc"
++```
++
++## LHE ausente
++
++`run`/`reproduce` fail with a clear message if no `unweighted_events.lhe(.gz)`
++is found after MadEvent finishes; check `run.log` in the run directory for
++the MadEvent-side cause (most often exit before `generate_events` completed).
++
++## `run` con exit status distinto de cero
++
++Check, in order: `<run_dir>/build_point.log`, then `<run_dir>/run.log`, then
++`<run_dir>/exit_status.txt`. Every stage's log is preserved regardless of
++outcome; nothing is overwritten by a later run.
++
++## Mismatch de hash / manifest y checksums obsoletos
++
++`preflight`'s `pack integrity` check runs `sha256sum -c checksums.sha256`.
++A mismatch means either a file was edited after the manifest/checksums were
++regenerated, or you are looking at a stale copy. Never "fix" this by
++skipping the check — resolve which file is authoritative first.
++
++## Pythia/FastJet ausentes pero no requeridos
++
++`preflight` reports these as `INFO`, never `FAIL`/`WARN`-with-blocking-intent.
++Pack A native does not call either; their absence never affects `run`,
++`reproduce`, `status`, or `results`.
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -34,6 +34,61 @@
+       "size_bytes": 1574
+     },
+     {
++      "path": "README_PACK_A.md",
++      "sha256": "3679608f7c50d48d81efa0be8b6c9e2d4b5a022af20c19d9db788d30ed38117f",
++      "size_bytes": 2321
++    },
++    {
++      "path": "bin/lib/clean.sh",
++      "sha256": "86f4f71fe99566e9a7d76fa417ded671e2be01f4b6c9ad064e6cf3a1b8764cf5",
++      "size_bytes": 2018
++    },
++    {
++      "path": "bin/lib/common.sh",
++      "sha256": "43b3a63ce1544c79f3e7f242570f37322ef12cd4a66107c4488c226d80e9fc54",
++      "size_bytes": 450
++    },
++    {
++      "path": "bin/lib/lhe_invariants.py",
++      "sha256": "81325b809a05bbaa18c9a93f7b5af29710c39358c27d2369c28113095ca2aaf5",
++      "size_bytes": 5908
++    },
++    {
++      "path": "bin/lib/preflight.sh",
++      "sha256": "8cc818c1bfa4ccbf34f5ef3b6f9a5466373fcc27d22f1dea84a410286f42f910",
++      "size_bytes": 7719
++    },
++    {
++      "path": "bin/lib/reproduce.sh",
++      "sha256": "c3c215710f504b54231952107fd2b1d4d1f2b49e481df2b50074b4730e50fb5c",
++      "size_bytes": 3907
++    },
++    {
++      "path": "bin/lib/resolve.sh",
++      "sha256": "6006b8c9c041d8e45ace8ee4a61dd65e026ad0053b266685e1cf46ef1662d7bf",
++      "size_bytes": 4423
++    },
++    {
++      "path": "bin/lib/results.sh",
++      "sha256": "83ea1215df9eab8d217308271112cdb625f496d6bd517fc8b0d3bc08de98cacc",
++      "size_bytes": 1490
++    },
++    {
++      "path": "bin/lib/run.sh",
++      "sha256": "e5319f544652d51174d8522036771a00488c2b74d2e276389b5650db3dc98880",
++      "size_bytes": 6576
++    },
++    {
++      "path": "bin/lib/status.sh",
++      "sha256": "1ae481b208edc6c15691664b8769d9584b1bce8fbdbb4720bdae4a194c9620d0",
++      "size_bytes": 2118
++    },
++    {
++      "path": "bin/pack-a",
++      "sha256": "82cabec740e2728543b0f76f0683780fef18c6ac838a9d64f2e634412817ab75",
++      "size_bytes": 2498
++    },
++    {
+       "path": "build/point_000001/decay.slha",
+       "sha256": "b28ab25311a3e1796c0018c33c14d8709ec31456ef45df9940d1b5bdf1086741",
+       "size_bytes": 634
+@@ -89,6 +144,31 @@
+       "size_bytes": 160
+     },
+     {
++      "path": "docs/PACK_A_FILE_MAP.md",
++      "sha256": "9cbba47624ef7a26eb29b86821825e71ca79e4f830b2975387e40e4896e48f9f",
++      "size_bytes": 4301
++    },
++    {
++      "path": "docs/PACK_A_FREEZE_CHECKLIST.md",
++      "sha256": "4947befc41dc5605dfd972b122e8bce768f9921270ec70ec9e6a52491a529fd7",
++      "size_bytes": 1777
++    },
++    {
++      "path": "docs/PACK_A_QUICKSTART.md",
++      "sha256": "186e1fc2762429873b6d659612aec900eeab4949a9475b1788bb7f7f8255876d",
++      "size_bytes": 1381
++    },
++    {
++      "path": "docs/PACK_A_SCIENTIFIC_SCOPE.md",
++      "sha256": "9b59f39b1fec4adb2f0744cf86458a112a70b184e4541e35be1f72f684cb750d",
++      "size_bytes": 2046
++    },
++    {
++      "path": "docs/PACK_A_TROUBLESHOOTING.md",
++      "sha256": "d7e7a97b62b61041dfdbab030ba7d1e02507d0725a8bd26a70100996ea31b587",
++      "size_bytes": 4351
++    },
++    {
+       "path": "expected/smoke_contract.json",
+       "sha256": "db1fb31cea7019a7399c4074d0e674a00653c40fba5618c1f5a9aad5c5d8ad3f",
+       "size_bytes": 365
+@@ -154,6 +234,11 @@
+       "size_bytes": 1351
+     },
+     {
++      "path": "model/LLscalar_v3_UFO_runtime/py3_model.pkl",
++      "sha256": "00049f2b99b48f7619fd576c7327ef635369dfa36563a9f80387389f533da4f3",
++      "size_bytes": 57643
++    },
++    {
+       "path": "model/LLscalar_v3_UFO_runtime/vertices.py",
+       "sha256": "60bb131379499fd85ac21da8e15f960cffcf2d33afc54217481730e82648f6ba",
+       "size_bytes": 36546
+@@ -169,6 +254,16 @@
+       "size_bytes": 10463
+     },
+     {
++      "path": "points/A_PI_NATIVE_200.yaml",
++      "sha256": "6f5b2ff857e0400a345c26a69e8c3efd4749d19b2adf14bfb0451429f9d838c8",
++      "size_bytes": 224
++    },
++    {
++      "path": "points/A_PI_NATIVE_200_seed67890.yaml",
++      "sha256": "c26dd6eb70d65a3f5cae9646ae21e44c320d154ac2c463bdef6ac1ea00831731",
++      "size_bytes": 234
++    },
++    {
+       "path": "points/point_000001.yaml",
+       "sha256": "e039065312c82e5f44367f09035dc4d73d8ea58891faa5ff5e15c6f25b527f05",
+       "size_bytes": 219
+@@ -214,6 +309,11 @@
+       "size_bytes": 594
+     },
+     {
++      "path": "scripts/materialize_internal_masses.py",
++      "sha256": "c82e014dbdaa4ad526bceff6e74f2a900d05f514ba62b31c2d83358a281e92a5",
++      "size_bytes": 10339
++    },
++    {
+       "path": "scripts/model_utils.py",
+       "sha256": "caf3a366988f220bd08805f27e33d8eef92aac36e1f832f6b27f85f2eeed0f9a",
+       "size_bytes": 13969
+@@ -249,21 +349,66 @@
+       "size_bytes": 2885
+     },
+     {
++      "path": "scripts/run_validation_pack_a_native.sh",
++      "sha256": "6d58e1a4eb0acdcd853246afbfca73a39d4b7123c1c30b3b105f3e6db6623f5f",
++      "size_bytes": 1370
++    },
++    {
+       "path": "scripts/validate_point.py",
+       "sha256": "a2098fa13e478414620127d90450e7126dbf52d8ad78347a7c01814955c02fde",
+       "size_bytes": 581
+     },
+     {
++      "path": "tests/fixtures/mini_model/function_library.py",
++      "sha256": "af85d1d7e83bc0f7a016258b6cc3e179c4d9fd6778ce553ebf7ff4b8be5b968f",
++      "size_bytes": 3502
++    },
++    {
++      "path": "tests/fixtures/mini_model/object_library.py",
++      "sha256": "4bef9ba0a44b89048f5ed02f0c97f5937e1a2ce8a949574bdaa6f67ae80f9e11",
++      "size_bytes": 10877
++    },
++    {
++      "path": "tests/fixtures/mini_model/parameters.py",
++      "sha256": "af9c63eda5e33188dcf551ed1a91696f46614d949e4327f76f2a9c7725ec0716",
++      "size_bytes": 1469
++    },
++    {
++      "path": "tests/fixtures/mini_model/particles.py",
++      "sha256": "670f476169e9031cb52bbcf99b3022b045dcdb4db2531d7db0df1e76831b5f5b",
++      "size_bytes": 505
++    },
++    {
++      "path": "tests/fixtures/param_card_missing_pdg24.dat",
++      "sha256": "b5e68dde0222854f72892cc79c0c90becca83a13502fec9bc29c69150a4f4bbf",
++      "size_bytes": 1643
++    },
++    {
++      "path": "tests/fixtures/run_card_mg5_generated.dat",
++      "sha256": "eaf89de16945797f354b820f3a2dd5b875f2d79142efd73a0ebad861af1d7a87",
++      "size_bytes": 8995
++    },
++    {
+       "path": "tests/test_invalid_points.py",
+       "sha256": "14f4013f789860815db3aa0df9465f63d439c21e924e6793252e72173926e3f9",
+       "size_bytes": 1107
+     },
+     {
++      "path": "tests/test_materialize_internal_masses.py",
++      "sha256": "ae37a0620247d1986983249d87336699c6db0025efa2ddfce35c7c776a1d0cfb",
++      "size_bytes": 2433
++    },
++    {
+       "path": "tests/test_model_contract.py",
+       "sha256": "1b69812e914ccb6ee91f5e08764895a2b810342b9e09b1218803a00f87c68090",
+       "size_bytes": 2432
+     },
+     {
++      "path": "tests/test_patch_mg5_run_card.py",
++      "sha256": "3ed62ff673860b3547c6288a8bfce486e25bee155ae71daf32f070b3aa482547",
++      "size_bytes": 2372
++    },
++    {
+       "path": "validation/AB_STATIC_REGRESSION.json",
+       "sha256": "8820eeede0af161ef5de48bdde24928d4da78bc8ff3e744f6cc609e5bbb81b19",
+       "size_bytes": 638
+@@ -529,6 +674,8 @@
+       "size_bytes": 6854
+     }
+   ],
++  "luna_release_candidate": true,
++  "manifest_regenerated_utc": "2026-07-18T17:42:24Z",
+   "manifest_scope": "all files except manifest.json and checksums.sha256",
+   "original_ufo_zip_sha256": "9d5e7d75e177e8b0ae7e4719c955e0ec9cc8dc9f95a8617d1561f5811cffa97d",
+   "pack_name": "pi_ufo_baseline_v1",
+Binary files a/pi_ufo_baseline_v1_sol_candidate and b/pi_ufo_baseline_v1_release_candidate differ
+diff -ruN '--exclude=runs' '--exclude=__pycache__' '--exclude=*.pyc' --label a/pi_ufo_baseline_v1_sol_candidate --label b/pi_ufo_baseline_v1_release_candidate a/pi_ufo_baseline_v1_sol_candidate b/pi_ufo_baseline_v1_release_candidate
+--- a/pi_ufo_baseline_v1_sol_candidate
++++ b/pi_ufo_baseline_v1_release_candidate
+@@ -0,0 +1,17 @@
++model_pack: pi_ufo_baseline_v1
++point_id: A_PI_NATIVE_200_seed67890
++
++mphi_GeV: 200.0
++coupling_mode: PI_FIXED
++
++ctau_mm: 100.0
++
++branching_ratios:
++  bb: 0.00
++  gg: 0.00
++  gammagamma: 1.00
++  Zgamma: 0.00
++  WW: 0.00
++  ZZ: 0.00
++
++seed: 67890

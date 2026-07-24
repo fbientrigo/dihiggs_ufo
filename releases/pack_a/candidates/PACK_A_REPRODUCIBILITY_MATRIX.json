@@ -1,0 +1,155 @@
+{
+  "generated_at_utc": "2026-07-18T06:34:00Z",
+  "toolchain": {
+    "madgraph": "3.5.3",
+    "python": "3.12",
+    "threads": {
+      "OMP_NUM_THREADS": 2,
+      "OPENBLAS_NUM_THREADS": 2,
+      "MKL_NUM_THREADS": 2,
+      "MAKEFLAGS": "-j2"
+    }
+  },
+  "zip_hashes": {
+    "immutable_original": "632bf77818c84118fa707ad058cb655b90d018a394290cf565ab9d50f2db08cd",
+    "previous_runtimefix": "2a9cde7af91ea66a6275a86ab073b3677efc8a46d7e8913d8475b948a468b755",
+    "candidate_runtimefix": "df36904843dc05710f4e0869bbf7c64ec87f501a6f52840b01df29461b94a06d"
+  },
+  "madevent_method_comparison": [
+    {
+      "id": "previous_invalid_shift",
+      "stdin": ["update missing", "0"],
+      "exit_status": 0,
+      "mass_24_materialized": true,
+      "mw_GeV": 79.82435974619784,
+      "sigma_pb": 0.02349,
+      "integration_error_pb": 0.0001364,
+      "events": 100,
+      "lhe_contract_pass": true,
+      "unexpected_prompts": ["Not valid command: update missing"],
+      "timeout_sensitivity": "EOF selects the default 0 at the card prompt",
+      "selected": false,
+      "lhe_sha256": "8ce47d61d5abbd8f3d47412f0e20dca619bd57fd5059d2ab5b51f4642f8e3d70"
+    },
+    {
+      "id": "explicit_update_dependent",
+      "stdin": ["0", "update dependent", "0"],
+      "exit_status": 0,
+      "mass_24_materialized": true,
+      "mw_GeV": 79.82435974619784,
+      "sigma_pb": 0.02349,
+      "integration_error_pb": 0.0001364,
+      "events": 100,
+      "lhe_contract_pass": true,
+      "unexpected_prompts": [],
+      "timeout_sensitivity": "none observed; all answers are supplied before either prompt timeout",
+      "selected": true,
+      "lhe_sha256": "ae841313aa3135f8bda7ff60ca3a43685913f2e649f46fbcea3c64676c26ae69"
+    },
+    {
+      "id": "madevent_command_file",
+      "commands": ["generate_events sol_cmdfile", "0", "update dependent", "0"],
+      "exit_status": 0,
+      "mass_24_materialized": true,
+      "mw_GeV": 79.82435974619784,
+      "sigma_pb": 0.02349,
+      "integration_error_pb": 0.0001364,
+      "events": 100,
+      "lhe_contract_pass": true,
+      "unexpected_prompts": [],
+      "timeout_sensitivity": "none observed; command-file answers are consumed by the same two prompt states",
+      "selected": false,
+      "reason_not_selected": "adds a temporary command file with no scientific or runtime advantage",
+      "lhe_sha256": "d2128ce7b37a1a09bea2e3d99dc46f46c1d12fa4f3330537daa6f9126640ad91"
+    },
+    {
+      "id": "force_after_local_mass_patch",
+      "commands": ["materialize_internal_masses.py --patch", "generate_events -f sol_force"],
+      "exit_status": 0,
+      "mass_24_materialized": true,
+      "mw_GeV": 79.82435974619784,
+      "sigma_pb": 0.02349,
+      "integration_error_pb": 0.0001364,
+      "events": 100,
+      "lhe_contract_pass": true,
+      "unexpected_prompts": [],
+      "selected": false,
+      "reason_not_selected": "bypasses MadeEvent's full update-dependent consistency pass",
+      "lhe_sha256": "50b15a6ed4cde0e93fd9a455e438b7069ff62d1b502ae2ed1036ebf658be72da"
+    }
+  ],
+  "repeatability": [
+    {
+      "id": "candidate_seed12345_clean_a",
+      "seed": 12345,
+      "clean_shell": true,
+      "MG5_BIN_initially_unset": true,
+      "exit_status": 0,
+      "sigma_pb": 0.02349,
+      "integration_error_pb": 0.0001364,
+      "events": 100,
+      "lhe_sha256": "0daf15bf160e09936ffed919875a506912bc7ade02a1f49aeb016ee5e7d28bb2",
+      "event_block_sha256": "a523f2a1be4c8c3b5d6bd0dd120e5a0dc9523f495356eb3ef36bc0bde1e22c0a",
+      "max_four_momentum_residual_GeV": 8.200004231184721e-08,
+      "lhe_contract_pass": true
+    },
+    {
+      "id": "candidate_seed12345_clean_b",
+      "seed": 12345,
+      "clean_shell": true,
+      "MG5_BIN_initially_unset": true,
+      "exit_status": 0,
+      "sigma_pb": 0.02349,
+      "integration_error_pb": 0.0001364,
+      "events": 100,
+      "lhe_sha256": "56771d56d1d9bf4edc5a39a002a74ff75daa96461ad5ba3af062a78caafaf7ce",
+      "event_block_sha256": "a523f2a1be4c8c3b5d6bd0dd120e5a0dc9523f495356eb3ef36bc0bde1e22c0a",
+      "max_four_momentum_residual_GeV": 8.200004231184721e-08,
+      "lhe_contract_pass": true
+    },
+    {
+      "id": "candidate_seed67890_clean",
+      "seed": 67890,
+      "clean_shell": true,
+      "MG5_BIN_initially_unset": true,
+      "exit_status": 0,
+      "sigma_pb": 0.02356,
+      "integration_error_pb": 0.0001374,
+      "events": 100,
+      "lhe_sha256": "bd7f2127981782de8cc6fc6f38db92f0e4bef96e72af56b63d23a22ac43a2561",
+      "event_block_sha256": "6eb3db1deab2c42614b680ffb2e4845bc6d4c24d480c360f99c21ef4a2b2a798",
+      "max_four_momentum_residual_GeV": 1.1200017979717813e-07,
+      "lhe_contract_pass": true
+    }
+  ],
+  "same_seed_assessment": {
+    "event_blocks_identical": true,
+    "compressed_lhe_identical": false,
+    "expected_nonidentical_fields": [
+      "gzip container metadata",
+      "absolute extraction paths and run metadata in the LHE header",
+      "wall-clock timestamps"
+    ]
+  },
+  "different_seed_cross_section_compatibility": {
+    "criterion": "abs(sigma_12345 - sigma_67890) <= 3*sqrt(error_12345^2 + error_67890^2)",
+    "delta_pb": 0.00007000000000000062,
+    "combined_1sigma_pb": 0.00019360712796795475,
+    "three_sigma_limit_pb": 0.0005808213839038642,
+    "pull": 0.3615569361247216,
+    "compatible": true
+  },
+  "additional_generated_lhe_hashes": {
+    "explicit_update_missing_then_dependent": "912bac4716770a1974891ffa9e041ce7350fe4dca6d1e142a42114521ec8a06a",
+    "automatic_dependent_via_0_0": "c070414b725de10269e7b42788d294be13c00805f333b611d42c3ba1845b277b",
+    "pre_repack_candidate_seed12345_a": "674b566f3d0eea75207786435abcdd8014d07e3f0d5bb84a62d6b7eddf767175",
+    "pre_repack_candidate_seed12345_b": "aa18a0197c7ac265ab52664dc3af02f92baeab9e450da010c6ed9e7186335a68",
+    "pre_repack_candidate_seed67890": "3e03c1e8e37dcd86ddf6ef30219323961b0cd800ec79cf3c02661196aa2f388c",
+    "pre_integrity_candidate_seed12345_a": "52cdc2b798fef680215d9625acf17055c1308ee253705f63288e529445a29e4b",
+    "pre_integrity_candidate_seed12345_b": "be53ec4c4bc6b6e20b8e3f295001e18c9f365fc53911fe7e312e81cfcaa7d07b",
+    "pre_integrity_candidate_seed67890": "aa58569fb768fe86bb94404b9ec7beef879d1d713ea391f87696701239537189",
+    "pre_portability_candidate_seed12345_a": "0bcea360cd00a08a6f57d669a30cbc22ff1fd16a3f0e0ac058d0b1df8cb956c2",
+    "pre_portability_candidate_seed12345_b": "ec0ba8e31a6f441dd2d68bc2ac6ed953258c7248b3a89e1bc7817012253e6f1a",
+    "pre_portability_candidate_seed67890": "768f25beb7d3621dcdb60e5454b7e1fa50f72a554066503ad370f2434efb919a"
+  }
+}
