@@ -74,6 +74,13 @@ def render_report(summary: dict) -> str:
                      f"max|ΔpT|={_fmt(mode['system_closure']['delta_pt_max_abs'])} GeV.")
 
     parts.append("\n\n## 8.4 Recoil and transverse balance\n")
+    parts.append(
+        "\n`JET_DIAGNOSTIC_NOT_AVAILABLE`: FastJet is not installed in this environment, so no anti-kT "
+        "jet clustering or jet-level diagnostics (Njets, leading-jet pT, HT, Δφ(4γ, jet)) are computed here "
+        "(mission section 8.7). `PARTICLE_LEVEL_RECOIL_USED`: the recoil system below is built directly from "
+        "final-state particles (ancestry-based, not jet-clustered) -- every final-state particle that is not a "
+        "genealogical descendant of either h2.\n"
+    )
     for name, mode in [("D0", d0), ("D1", d1)]:
         r = mode["recoil"]
         parts.append(f"\n**{name}**: mean recoil pT={_fmt(r['pt_recoil_mean'])} GeV, "

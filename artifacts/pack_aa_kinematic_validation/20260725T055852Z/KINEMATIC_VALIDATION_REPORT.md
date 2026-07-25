@@ -1,6 +1,6 @@
 # Pack AA Kinematic Validation Report
 
-Run ID: `20260725T054654Z`
+Run ID: `20260725T055852Z`
 
 Unique production events used: **100** (from `pack_aa/inputs/pack_a_A_PI_NATIVE_200_source.lhe.gz`; replicas are NOT counted as independent events)
 
@@ -85,6 +85,9 @@ The mission-literal D0 flag list alone leaves an O(0.1-1 GeV) LHE↔Pythia resid
 
 
 ## 8.4 Recoil and transverse balance
+
+
+`JET_DIAGNOSTIC_NOT_AVAILABLE`: FastJet is not installed in this environment, so no anti-kT jet clustering or jet-level diagnostics (Njets, leading-jet pT, HT, Δφ(4γ, jet)) are computed here (mission section 8.7). `PARTICLE_LEVEL_RECOIL_USED`: the recoil system below is built directly from final-state particles (ancestry-based, not jet-clustered) -- every final-state particle that is not a genealogical descendant of either h2.
 
 
 **D0**: mean recoil pT=0 GeV, mean pT_balance_relative=3.32656e-17, max pT_balance_relative=1.38649e-16 (tolerance 1.0e-06).

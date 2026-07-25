@@ -60,6 +60,14 @@ instead of following genealogy is demonstrably wrong once ISR/FSR/hadronization
 photons are present (D1 has ~200 extra photons/event on average) -- see
 `genealogy.leading_pt_four_photon_selection` and its dedicated test.
 
+## Jets (out of scope in this environment)
+
+`JET_DIAGNOSTIC_NOT_AVAILABLE`: FastJet is not installed here, so no anti-kT
+jet clustering or jet-level diagnostics (mission section 8.7) are computed.
+`PARTICLE_LEVEL_RECOIL_USED`: recoil (8.4) and extra-photon (8.5) accounting
+use the raw final-state particle listing with ancestry tags instead, as the
+mission explicitly allows when FastJet is unavailable.
+
 ## Auxiliary driver
 
 `src/kinematic_validation_driver.cc` is a **new, separate** C++/Pythia8
