@@ -1,0 +1,184 @@
+{
+  "run_id": "20260725T054654Z",
+  "unique_production_events": 100,
+  "lhe_path": "pack_aa/inputs/pack_a_A_PI_NATIVE_200_source.lhe.gz",
+  "lhe_sha256": "c83fbf9d29b3f58bbe98579e6c7b9846d60f45ed4f0262528cb61875b3646838",
+  "pack_a_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+  "modes": {
+    "D0": {
+      "pythia_settings": [
+        "PartonLevel:ISR = off",
+        "PartonLevel:FSR = off",
+        "PartonLevel:MPI = off",
+        "BeamRemnants:primordialKT = off",
+        "HadronLevel:Hadronize = off",
+        "HadronLevel:Decay = on",
+        "Check:event = on"
+      ],
+      "n_matched": 100,
+      "n_total": 100,
+      "status_counts": {
+        "MATCHED": 100,
+        "AMBIGUOUS_PARENT": 0,
+        "MISSING_PARENT": 0,
+        "WRONG_DAUGHTER_COUNT": 0,
+        "NON_GAMMA_DAUGHTER": 0,
+        "EVENT_ID_MISMATCH": 0,
+        "MOMENTUM_CLOSURE_FAILURE": 0
+      },
+      "decay_closure": {
+        "n": 200,
+        "n_failed": 0,
+        "failed_fraction": 0.0,
+        "verdict": "PASS_DECAY_KINEMATIC_CLOSURE",
+        "table_md": "| component | mean | std | max |abs| |\n|---|---|---|---|\n| delta_E_GeV | -9.9476e-16 | 3.49688e-14 | 2.27374e-13 |\n| delta_px_GeV | -8.52651e-16 | 1.01248e-14 | 5.68434e-14 |\n| delta_py_GeV | 6.79456e-16 | 1.00835e-14 | 5.68434e-14 |\n| delta_pz_GeV | 1.04805e-15 | 4.29583e-14 | 2.27374e-13 |"
+      },
+      "production_preservation": {
+        "n": 200,
+        "n_failed": 0,
+        "within_tolerance": true,
+        "table_md": "| component | mean | std | max |abs| |\n|---|---|---|---|\n| delta_E_GeV | -2.4337e-10 | 6.31588e-09 | 4.55298e-08 |\n| delta_px_GeV | 0 | 0 | 0 |\n| delta_py_GeV | 0 | 0 | 0 |\n| delta_pz_GeV | -6.95533e-14 | 8.35071e-13 | 8.18545e-12 |"
+      },
+      "system_closure": {
+        "delta_m_mean": 8.526512829121202e-15,
+        "delta_m_max_abs": 1.1937117960769683e-12,
+        "delta_pt_mean": -1.4105163663717593e-14,
+        "delta_pt_max_abs": 6.434238129413513e-14
+      },
+      "recoil": {
+        "pt_recoil_mean": 0.0,
+        "pt_balance_relative_mean": 3.3265612585909354e-17,
+        "pt_balance_relative_max": 1.386492337153296e-16
+      },
+      "extra_photons": {
+        "n_extra_mean": 0,
+        "n_extra_max": 0,
+        "n_direct_mean": 4
+      },
+      "angular": {
+        "deltaR_mean": 2.6819742825627277,
+        "costheta_mean": 0.33032746944675423
+      }
+    },
+    "D0_nominal_diagnostic": {
+      "pythia_settings": [
+        "PartonLevel:ISR = off",
+        "PartonLevel:FSR = off",
+        "PartonLevel:MPI = off",
+        "HadronLevel:Hadronize = off",
+        "HadronLevel:Decay = on",
+        "Check:event = on"
+      ],
+      "n_matched": 100,
+      "n_total": 100,
+      "status_counts": {
+        "MATCHED": 100,
+        "AMBIGUOUS_PARENT": 0,
+        "MISSING_PARENT": 0,
+        "WRONG_DAUGHTER_COUNT": 0,
+        "NON_GAMMA_DAUGHTER": 0,
+        "EVENT_ID_MISMATCH": 0,
+        "MOMENTUM_CLOSURE_FAILURE": 0
+      },
+      "decay_closure": {
+        "n": 200,
+        "n_failed": 0,
+        "failed_fraction": 0.0,
+        "verdict": "PASS_DECAY_KINEMATIC_CLOSURE",
+        "table_md": "| component | mean | std | max |abs| |\n|---|---|---|---|\n| delta_E_GeV | 4.40536e-15 | 4.39479e-14 | 2.27374e-13 |\n| delta_px_GeV | -1.75415e-16 | 1.04973e-14 | 5.68434e-14 |\n| delta_py_GeV | 2.07612e-16 | 1.38287e-14 | 1.13687e-13 |\n| delta_pz_GeV | -4.4964e-17 | 5.09636e-14 | 2.27374e-13 |"
+      },
+      "production_preservation": {
+        "n": 200,
+        "n_failed": 200,
+        "within_tolerance": false,
+        "table_md": "| component | mean | std | max |abs| |\n|---|---|---|---|\n| delta_E_GeV | 0.00547297 | 0.938868 | 3.89264 |\n| delta_px_GeV | 0.0277953 | 1.02591 | 2.96582 |\n| delta_py_GeV | -0.125985 | 0.921652 | 2.47275 |\n| delta_pz_GeV | -0.000407322 | 0.91556 | 3.87185 |"
+      },
+      "system_closure": {
+        "delta_m_mean": 2.6147972675971688e-14,
+        "delta_m_max_abs": 1.5916157281026244e-12,
+        "delta_pt_mean": 6.672440377997191e-16,
+        "delta_pt_max_abs": 5.062616992290714e-14
+      },
+      "recoil": {
+        "pt_recoil_mean": 2.316756751392018,
+        "pt_balance_relative_mean": 4.741401183775673e-17,
+        "pt_balance_relative_max": 2.571469826063129e-16
+      },
+      "extra_photons": {
+        "n_extra_mean": 0,
+        "n_extra_max": 0,
+        "n_direct_mean": 4
+      },
+      "angular": {
+        "deltaR_mean": 2.6697289398273334,
+        "costheta_mean": 0.2628545106437967
+      }
+    },
+    "D1": {
+      "pythia_settings": "(none - canonical Pack AA default)",
+      "n_matched": 100,
+      "n_total": 100,
+      "status_counts": {
+        "MATCHED": 100,
+        "AMBIGUOUS_PARENT": 0,
+        "MISSING_PARENT": 0,
+        "WRONG_DAUGHTER_COUNT": 0,
+        "NON_GAMMA_DAUGHTER": 0,
+        "EVENT_ID_MISMATCH": 0,
+        "MOMENTUM_CLOSURE_FAILURE": 0
+      },
+      "decay_closure": {
+        "n": 200,
+        "n_failed": 0,
+        "failed_fraction": 0.0,
+        "verdict": "PASS_DECAY_KINEMATIC_CLOSURE",
+        "table_md": "| component | mean | std | max |abs| |\n|---|---|---|---|\n| delta_E_GeV | -2.13163e-15 | 4.15713e-14 | 2.27374e-13 |\n| delta_px_GeV | -3.99125e-16 | 1.60804e-14 | 1.13687e-13 |\n| delta_py_GeV | -1.11411e-15 | 1.43126e-14 | 1.13687e-13 |\n| delta_pz_GeV | 2.71505e-15 | 4.36213e-14 | 2.27374e-13 |"
+      },
+      "production_preservation": {
+        "n": 200,
+        "n_failed": 200,
+        "within_tolerance": false,
+        "table_md": "| component | mean | std | max |abs| |\n|---|---|---|---|\n| delta_E_GeV | 19.7145 | 103.84 | 671.862 |\n| delta_px_GeV | -2.53709 | 72.9304 | 371.264 |\n| delta_py_GeV | -1.31793 | 62.7186 | 349.961 |\n| delta_pz_GeV | 14.2859 | 122.176 | 745.632 |"
+      },
+      "system_closure": {
+        "delta_m_mean": -1.5347723092418165e-14,
+        "delta_m_max_abs": 1.0231815394945443e-12,
+        "delta_pt_mean": 3.919087276926802e-15,
+        "delta_pt_max_abs": 1.1368683772161603e-13
+      },
+      "recoil": {
+        "pt_recoil_mean": 124.51448437385304,
+        "pt_balance_relative_mean": 5.677388737211025e-11,
+        "pt_balance_relative_max": 4.431191363626645e-09
+      },
+      "extra_photons": {
+        "n_extra_mean": 213.81,
+        "n_extra_max": 388,
+        "n_direct_mean": 4
+      },
+      "angular": {
+        "deltaR_mean": 2.540303272877672,
+        "costheta_mean": 0.36232843658144387
+      }
+    }
+  },
+  "tolerances": {
+    "d0_decay_closure": {
+      "absolute_momentum_tolerance_GeV": 1e-06,
+      "relative_momentum_tolerance": 1e-06,
+      "allowed_failed_event_fraction": 0.0
+    },
+    "d0_production_preservation": {
+      "absolute_momentum_tolerance_GeV": 1e-06
+    },
+    "d1_decay_closure": {
+      "absolute_momentum_tolerance_GeV": 1e-06
+    },
+    "d1_recoil_balance": {
+      "pt_balance_relative_tolerance": 1e-06
+    }
+  },
+  "final_verdict": "PASS_WITH_EXPECTED_SHOWER_RECOIL",
+  "neil_answer": "Pack AA/Pythia's h2 -> gamma gamma decay conserves four-momentum exactly: in both D0 (decay-only) and D1 (canonical Pack AA physics), the parent-vs-daughters residual is O(1e-13) GeV across all 100 unique production events, far inside the 1e-06 GeV tolerance. When shower/hadronization are isolated out (D0) and beam-remnant primordial-kT is also disabled, the Pythia h2 four-momentum reproduces the LHE h2 four-momentum to floating-point precision (see the 8.2 component table in this report; D0 stays within the 1e-06 GeV tolerance). In the canonical D1 configuration, individual h2 momenta DO shift relative to the LHE (mean/std/max reported in 8.2), but this shift is fully accounted for by shower/ISR/FSR/MPI/hadronization recoil: the transverse-momentum balance of the 4-gamma system against everything else in the final state closes to a relative residual of at most 4.43e-09, consistent with zero. Extra final-state photons from beam-remnant hadronization / ISR / FSR (mean 213.8 per event in D1) are real and must be excluded by genealogy, not by a leading-pT selection, when doing any downstream kinematic accounting. Conclusion: Pack AA/Pythia does NOT introduce an uncontrolled kinematic deformation; the LHE-to-Pythia difference in the canonical pipeline is exactly the physically expected shower/hadronization recoil.",
+  "outlier_note": "Largest single-parent LHE->Pythia residual in D1: production_event_id=41 (see 10_outlier_event_display.png). This event's hard-process scale is higher than the sample median, consistent with harder ISR/FSR activity driving a larger recoil shift; the global pT-balance closure (8.4) still holds for this event."
+}
