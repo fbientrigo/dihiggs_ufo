@@ -1,0 +1,99 @@
+schema: pack_aa_kinematic_validation.config.v1
+labels: [PIPELINE_DIAGNOSTIC_ONLY, NOT_MODEL_DERIVED, NOT_RECAST, NOT_ATLAS_ACCEPTANCE]
+
+pack_a:
+  frozen_artifact: releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip
+  frozen_artifact_sha256: 58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6
+
+# Source (100-event) LHE, NOT the 10x-replicated derived LHE used for Pack AA's
+# 1000-decay-trial campaign. The derived LHE is a byte-preserving 10x
+# concatenation of exactly these 100 events (see pack_aa/python/prepare_input.py),
+# so reading production_event_id 1..100 from the source file is equivalent to
+# reading replica_id=0 from the derived file, without conflating replicas with
+# independent production events.
+lhe:
+  path: pack_aa/inputs/pack_a_A_PI_NATIVE_200_source.lhe.gz
+  sha256: c83fbf9d29b3f58bbe98579e6c7b9846d60f45ed4f0262528cb61875b3646838
+  unique_production_events: 100
+
+# Matches the canonical Pack AA gamma_gamma / ctau=1000mm configuration
+# (releases/pack_aa/event_samples/20260722T092243Z_5/samples/4ad3896b59cb0d92),
+# chosen as the single representative lifetime point per mission scope
+# (no lifetime matrix study here).
+llp:
+  pdg: 9000006
+  mass_GeV: 200.0
+  ctau_mm: 1000.0
+  is_resonance: false
+  channel_daughters: [22, 22]
+  branching_ratio: 1.0
+
+pythia:
+  install_root: /home/fabi/.local/pythia8308
+  version: "8.308"
+  seed: 900006004
+
+driver:
+  source: studies/pack_aa_kinematic_validation/src/kinematic_validation_driver.cc
+  # Compiled into runs/.../bin (gitignored build artifact), rebuilt if the
+  # source is newer, same convention as pack_aa/python/pack_aa.py:ensure_driver.
+
+# D0 = decay-only isolation. ISR/FSR/MPI off, hadronization off, decays on,
+# event checking on (mission section 6). BeamRemnants:primordialKT=off is
+# ADDITIONAL to the mission's literal flag list: it is beam-remnant kinematic
+# smearing applied independently of ISR/FSR/MPI, and leaving it at its Pythia
+# default is what prevented numerical LHE<->Pythia closure in early testing
+# (see EFFECTIVE_PYTHIA_SETTINGS_D0.txt and the report's primordial-kT
+# decomposition section). Both variants are run; D0 (this one, with
+# primordialKT off) is the one tolerances are graded against.
+d0_settings:
+  - "PartonLevel:ISR = off"
+  - "PartonLevel:FSR = off"
+  - "PartonLevel:MPI = off"
+  - "BeamRemnants:primordialKT = off"
+  - "HadronLevel:Hadronize = off"
+  - "HadronLevel:Decay = on"
+  - "Check:event = on"
+
+# Diagnostic-only decomposition: mission's literal D0 flag list, primordialKT
+# left at its Pythia default. Used solely to localize the LHE->Pythia
+# residual to primordial kT rather than to the decay or a bug. Not used for
+# the PASS/FAIL verdict.
+d0_nominal_settings:
+  - "PartonLevel:ISR = off"
+  - "PartonLevel:FSR = off"
+  - "PartonLevel:MPI = off"
+  - "HadronLevel:Hadronize = off"
+  - "HadronLevel:Decay = on"
+  - "Check:event = on"
+
+# D1 = canonical Pack AA. No adapter / no extra settings: this reproduces
+# exactly the pythia.settings: [] canonical configuration recorded in
+# releases/pack_aa/event_samples/20260722T092243Z_5/samples/4ad3896b59cb0d92/config.yaml
+# (same LHE, same mass/ctau/seed/channel). Pack AA's own driver and bundle are
+# not touched; this study runs its own auxiliary driver with the same
+# physics configuration.
+d1_settings: []
+
+matching:
+  # Secondary/matching-level tolerance for accepting a genealogical
+  # parent-daughter pairing as physically consistent before running the
+  # closure statistics on it (mission section 7 MOMENTUM_CLOSURE_FAILURE).
+  momentum_closure_tolerance_GeV: 1.0e-4
+
+tolerances:
+  d0_decay_closure:
+    absolute_momentum_tolerance_GeV: 1.0e-6
+    relative_momentum_tolerance: 1.0e-6
+    allowed_failed_event_fraction: 0.0
+  d0_production_preservation:
+    absolute_momentum_tolerance_GeV: 1.0e-6
+  d1_decay_closure:
+    absolute_momentum_tolerance_GeV: 1.0e-6
+  d1_recoil_balance:
+    pt_balance_relative_tolerance: 1.0e-6
+
+output:
+  artifacts_subdir: artifacts/pack_aa_kinematic_validation
+  runs_subdir: runs/pack_aa_kinematic_validation
+  scratch_subdir: scratch/pack_aa_kinematic_validation
