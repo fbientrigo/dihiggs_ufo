@@ -1,0 +1,37 @@
+{
+  "matching_possible": true,
+  "matching_key": "production_event_id + H2 ordinal (0,1)",
+  "samples": [
+    {
+      "sample": "D0",
+      "matching_possible": true,
+      "matching_key": "production_event_id + H2 ordinal (0,1)",
+      "duplicate_keys": [],
+      "missing_events": [],
+      "reordered_events": false,
+      "filtered_events": false,
+      "confidence": "HIGH",
+      "limitations": [
+        "The Pythia driver preserves LHE ordering and writes production_event_id.",
+        "No event-by-event comparison is made to the 10x repeated Pack AA campaign as independent statistics."
+      ]
+    },
+    {
+      "sample": "D1",
+      "matching_possible": true,
+      "matching_key": "production_event_id + H2 ordinal (0,1)",
+      "duplicate_keys": [],
+      "missing_events": [],
+      "reordered_events": false,
+      "filtered_events": false,
+      "confidence": "HIGH",
+      "limitations": [
+        "The Pythia driver preserves LHE ordering and writes production_event_id.",
+        "No event-by-event comparison is made to the 10x repeated Pack AA campaign as independent statistics."
+      ]
+    }
+  ],
+  "limitations": [
+    "D1 is a matched auxiliary Pythia run over the same 100 source LHE events; the canonical 1000-event Pack AA output is a 10x byte repetition and is distribution-only."
+  ]
+}

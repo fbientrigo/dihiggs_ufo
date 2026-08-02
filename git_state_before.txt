@@ -1,0 +1,5 @@
+Repository: /home/fabi/atlas_dihiggs/ufos
+Selected worktree: /home/fabi/atlas_dihiggs/worktrees/pack_aa_kinematics_20260725T052051Z
+Branch: feat/pack-aa-kinematic-validation-20260725T052051Z
+Base HEAD: 4f4009246d7798936d9656558879cb0f84d17940
+Initial selected-worktree status: clean; branch tracked origin/feat/pack-aa-kinematic-validation-20260725T052051Z

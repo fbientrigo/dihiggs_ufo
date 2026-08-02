@@ -1,0 +1,6 @@
+2026-08-01: python3 -m py_compile studies/generator_closure.py — PASS
+2026-08-01: PYTHONPATH=studies/pack_aa_kinematic_validation/src pytest -q studies/pack_aa_kinematic_validation/tests/ — PASS (27 passed)
+2026-08-01: PYTHONPATH=studies/pack_aa_kinematic_validation/src pytest -q studies/test_generator_closure.py studies/pack_aa_kinematic_validation/tests/ — PASS (29 passed)
+2026-08-01: GENERATOR_CLOSURE_RUN_ID=20260801T000013Z bash reproduce.sh full — PASS; 100 events; required artifacts and input/output checksums validated
+2026-08-01: GENERATOR_CLOSURE_RUN_ID=20260801T000014Z bash reproduce.sh plot-only .../20260801T000013Z/distributions.csv — PASS
+2026-08-01: git diff --check — PASS

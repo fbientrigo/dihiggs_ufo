@@ -1,0 +1,22 @@
+{
+  "canonical_run": "results/generator_closure/20260801T000013Z",
+  "plot_only_run": "results/generator_closure/20260801T000014Z",
+  "required_artifacts": {
+    "manifest.json": "present",
+    "sample_inventory.json": "present",
+    "sample_inventory.md": "present",
+    "inputs.sha256": "present",
+    "observables.yaml": "present",
+    "event_matching_audit.json": "present",
+    "distributions.csv": "present",
+    "metrics.csv": "present",
+    "metrics.json": "present",
+    "plots/": "10 principal plots plus residual plot",
+    "report.md": "present",
+    "reproduce.sh": "present",
+    "commands_run.txt": "present",
+    "environment.txt": "present",
+    "CHECKSUMS.sha256": "present"
+  },
+  "task_level_artifacts": ["CONSOLIDATION_REPORT.md", "artifact_inventory.json", "tests_run.txt", "git_state_before.txt", "git_state_after.txt", "commit_plan.md", "cleanup_candidates.md"]
+}

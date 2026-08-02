@@ -1,0 +1,6 @@
+python=3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:27:36) [GCC 11.2.0]
+git_head=4f4009246d7798936d9656558879cb0f84d17940
+Pythia=8.308
+numpy=1.26.4
+scipy=1.13.1
+matplotlib=3.10.0

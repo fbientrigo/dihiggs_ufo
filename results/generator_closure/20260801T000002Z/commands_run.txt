@@ -1,0 +1,4 @@
+git status --short --branch
+python3 studies/generator_closure.py --output /home/fabi/atlas_dihiggs/worktrees/pack_aa_kinematics_20260725T052051Z/results/generator_closure/20260801T000002Z
+python3 -m pytest studies/pack_aa_kinematic_validation/tests/
+git diff --check
