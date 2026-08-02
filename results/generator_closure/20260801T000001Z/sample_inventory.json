@@ -1,0 +1,127 @@
+{
+  "schema": "generator_closure.sample_inventory.v1",
+  "records": [
+    {
+      "sample_id": "mg_source_lhe",
+      "path": "pack_aa/inputs/pack_a_A_PI_NATIVE_200_source.lhe.gz",
+      "sample_level": "LHE stable hard process",
+      "physics_channel": "H2H2",
+      "Pack_ownership": "Pack A",
+      "production_process": "g g > H > h2 h2",
+      "decay_owner": "MadGraph",
+      "H2_stable_or_decayed": "stable H2",
+      "available_particles": [
+        21,
+        9000006
+      ],
+      "event_count": 100,
+      "seed": null,
+      "generator_versions": {
+        "MadGraph5_aMC@NLO": "3.5.3"
+      },
+      "cards": [
+        "pack_aa/configs/ctau_1000_gamma_gamma.yaml",
+        "releases/pack_a/frozen/PACK_A_FINAL_CLOSURE_STATUS.json"
+      ],
+      "checksums": {
+        "sha256": "c83fbf9d29b3f58bbe98579e6c7b9846d60f45ed4f0262528cb61875b3646838"
+      },
+      "matching_relationship": "",
+      "comparability_status": "DIRECTLY_COMPARABLE",
+      "provenance_confidence": "HIGH"
+    },
+    {
+      "sample_id": "mg_derived_lhe",
+      "path": "pack_aa/inputs/pack_a_A_PI_NATIVE_200_1000events.lhe.gz",
+      "sample_level": "LHE stable hard process",
+      "physics_channel": "H2H2",
+      "Pack_ownership": "Pack A/AA handoff",
+      "production_process": "g g > H > h2 h2",
+      "decay_owner": "MadGraph",
+      "H2_stable_or_decayed": "stable H2",
+      "available_particles": [
+        21,
+        9000006
+      ],
+      "event_count": 1000,
+      "seed": null,
+      "generator_versions": {
+        "MadGraph5_aMC@NLO": "3.5.3"
+      },
+      "cards": [
+        "pack_aa/configs/ctau_1000_gamma_gamma.yaml",
+        "releases/pack_a/frozen/PACK_A_FINAL_CLOSURE_STATUS.json"
+      ],
+      "checksums": {
+        "sha256": "38b471d8f5c7aec4b983dce9229bd1564a264e87be687c0cbbf0d9d6f0e768cb"
+      },
+      "matching_relationship": "",
+      "comparability_status": "DISTRIBUTIONAL_ONLY",
+      "provenance_confidence": "HIGH"
+    },
+    {
+      "sample_id": "pythia_d0",
+      "path": "runs/pack_aa_kinematic_validation/20260725T055852Z/D0.truth.jsonl",
+      "sample_level": "Pythia truth",
+      "physics_channel": "4gamma",
+      "Pack_ownership": "Pack AA validation",
+      "production_process": "g g > H > h2 h2",
+      "decay_owner": "Pythia",
+      "H2_stable_or_decayed": "H2 decayed",
+      "available_particles": [
+        22
+      ],
+      "event_count": 100,
+      "seed": [
+        900006004
+      ],
+      "generator_versions": {
+        "Pythia": "8.308"
+      },
+      "cards": [
+        "studies/pack_aa_kinematic_validation/config/default.yaml",
+        "artifacts/pack_aa_kinematic_validation/20260725T055852Z/EFFECTIVE_PYTHIA_SETTINGS_D1.txt"
+      ],
+      "checksums": {
+        "sha256": "64d4cd8f6133cc3a68c252168c4c4d73c881935b6bdb69369ebb6e2b5811279a"
+      },
+      "matching_relationship": "",
+      "comparability_status": "RECONSTRUCTABLE_COMPARISON",
+      "provenance_confidence": "HIGH"
+    },
+    {
+      "sample_id": "pythia_d1",
+      "path": "runs/pack_aa_kinematic_validation/20260725T055852Z/D1.truth.jsonl",
+      "sample_level": "Pythia truth",
+      "physics_channel": "4gamma",
+      "Pack_ownership": "Pack AA validation",
+      "production_process": "g g > H > h2 h2",
+      "decay_owner": "Pythia",
+      "H2_stable_or_decayed": "H2 decayed",
+      "available_particles": [
+        22
+      ],
+      "event_count": 100,
+      "seed": [
+        900006004
+      ],
+      "generator_versions": {
+        "Pythia": "8.308"
+      },
+      "cards": [
+        "studies/pack_aa_kinematic_validation/config/default.yaml",
+        "artifacts/pack_aa_kinematic_validation/20260725T055852Z/EFFECTIVE_PYTHIA_SETTINGS_D1.txt"
+      ],
+      "checksums": {
+        "sha256": "54d94d7dc1251751d28fbf3b3309c38645f9641369a36c6f7d1acf652dbd5e88"
+      },
+      "matching_relationship": "",
+      "comparability_status": "RECONSTRUCTABLE_COMPARISON",
+      "provenance_confidence": "HIGH"
+    }
+  ],
+  "unsupported": {
+    "b": "No MG b partons and no Pythia b daughter p4 in compared sample",
+    "jets": "No reconstructed jet file/FastJet available"
+  }
+}

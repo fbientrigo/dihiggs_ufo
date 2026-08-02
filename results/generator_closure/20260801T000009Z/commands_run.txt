@@ -1,0 +1,7 @@
+git status --short --branch
+python3 -m py_compile studies/generator_closure.py
+PYTHONPATH=studies/pack_aa_kinematic_validation/src pytest -q studies/test_generator_closure.py studies/pack_aa_kinematic_validation/tests/
+GENERATOR_CLOSURE_RUN_ID=20260801T000009Z bash reproduce.sh full
+GENERATOR_CLOSURE_RUN_ID=<plot-only-id> bash reproduce.sh plot-only /home/fabi/atlas_dihiggs/worktrees/pack_aa_kinematics_20260725T052051Z/results/generator_closure/20260801T000009Z/distributions.csv
+(cd /home/fabi/atlas_dihiggs/worktrees/pack_aa_kinematics_20260725T052051Z/results/generator_closure/20260801T000009Z && sha256sum -c CHECKSUMS.sha256)
+git diff --check

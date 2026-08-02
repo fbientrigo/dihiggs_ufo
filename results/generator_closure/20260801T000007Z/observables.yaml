@@ -1,0 +1,17 @@
+schema: generator_closure.observables.v1
+normalization: unit_area_per_sample
+underflow_overflow: recorded_in_distributions_csv
+zero_denominator_ratio: NaN
+alpha: 0.05
+jet_algorithm: unavailable
+observables:
+  - h2_pt
+  - h2_eta
+  - h2_phi
+  - h2_mass
+  - h2h2_pt
+  - h2h2_mass
+  - deltaPhi_h2h2
+  - deltaR_h2h2
+  - h2h2_mass_vs_4gamma
+  - h2h2_pt_vs_4gamma
