@@ -1,0 +1,5 @@
+Repository: /home/fabi/atlas_dihiggs/ufos
+Branch: feat/pack-aa-kinematic-validation-20260725T052051Z
+Base: 4f4009246d7798936d9656558879cb0f84d17940
+Expected task changes: reproduce.sh, studies/generator_closure.py, studies/generator_closure_manifest.json, studies/test_generator_closure.py, canonical results/generator_closure/20260801T000013Z, and task-level reports.
+Ignored/uncommitted prior run directories 20260801T000001Z, 20260801T000002Z, and plot-only verification 20260801T000004Z are retained per no-deletion policy and are excluded from the canonical commit.

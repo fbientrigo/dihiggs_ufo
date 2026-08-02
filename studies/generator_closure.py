@@ -253,7 +253,7 @@ def write_csv(path, rows, fields=None):
         return
     fields = fields or sorted({k for r in rows for k in r})
     with path.open("w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(rows)
+        w = csv.DictWriter(f, fieldnames=fields, lineterminator="\n"); w.writeheader(); w.writerows(rows)
 
 
 def inventory(root, paths):
