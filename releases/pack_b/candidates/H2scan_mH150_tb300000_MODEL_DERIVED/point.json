@@ -1,0 +1,26 @@
+{
+  "GHphiphi_GeV": -63.59142520075966,
+  "Mh2_GeV": 150.0,
+  "coupling_mode": "MODEL_DERIVED",
+  "ctau_mm": 4.326221529733112,
+  "ctauh2_m": 0.004326221529733112,
+  "forbidden_active_values": [
+    "PI_FIXED",
+    "Mbar2_GeV2",
+    "default Mh2 = 200",
+    "default ctauh2 = 0.1"
+  ],
+  "madgraph_decay_ownership": "H2 stable in LHE",
+  "model_pack": "pack_b_h2_model_derived_v1",
+  "pdg_h2": 9000006,
+  "pdg_mediator": 25,
+  "physical_event_normalization": "sigma_H2H2 * br_bb^2",
+  "point_id": "H2scan_mH150_tb300000",
+  "pythia_decay_ownership": "lifetime = 4.32622152973311191 mm; forced H2 -> bb for sample efficiency",
+  "schema": "dihiggs.pack_b.model_derived.v1",
+  "source_pack_a_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
+  "ufo_sha256": "5b624b86075ae49de128fcf8438303e92b92c578aacacb5a3fd30a891bd5ce76",
+  "width_GeV": 4.5611852893759055e-14,
+  "width_target_GeV": 4.56118529862185e-14,
+  "width_tolerance_GeV": 1e-21
+}
