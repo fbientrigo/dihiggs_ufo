@@ -36,10 +36,13 @@ def test_model_derived_overlay_is_deterministic_and_physical() -> None:
         assert point["Mh2_GeV"] == 150.0
         assert point["ctauh2_m"] == 4.32622152973311191e-03
         assert point["GHphiphi_GeV"] == -63.5914252007596588
+        assert point["br_bb"] == 0.756737485808578692
+        assert point["br_bb_squared"] == 0.5726516224278888
         assert "PI_FIXED" in point["forbidden_active_values"]
         assert "Mbar2_GeV2" in point["forbidden_active_values"]
 
         with zipfile.ZipFile(first) as archive:
+            names = archive.namelist()
             parameters = archive.read(next(name for name in archive.namelist() if name.endswith("model/LLscalar_v3_UFO_runtime/parameters.py"))).decode()
             couplings = archive.read(next(name for name in archive.namelist() if name.endswith("model/LLscalar_v3_UFO_runtime/couplings.py"))).decode()
         assert "value = 1.50000000000000000e+02" in parameters
@@ -47,3 +50,5 @@ def test_model_derived_overlay_is_deterministic_and_physical() -> None:
         assert "GHphiphi" in parameters
         assert "complex(0,1)*GHphiphi" in couplings
         assert "8*complex(0,1)*Mh2**2/vev" not in couplings
+        assert not any(name.endswith("py3_model.pkl") for name in names)
+        assert not any("/points/" in name or "/bin/" in name or "/scripts/" in name for name in names)

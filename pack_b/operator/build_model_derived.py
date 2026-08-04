@@ -19,6 +19,8 @@ CTAU_M_TEXT = "4.32622152973311191e-03"
 GH_PHI_PHI = -63.5914252007596588
 WIDTH_GEV = 4.56118529862185007e-14
 WIDTH_TOLERANCE_GEV = 1e-21
+BR_BB = 0.756737485808578692
+BR_BB_SQUARED = BR_BB * BR_BB
 
 
 def sha256(path: Path) -> str:
@@ -58,7 +60,12 @@ def patch_couplings(text: str) -> str:
 
 def patched_members(source: Path) -> dict[str, bytes]:
     with zipfile.ZipFile(source) as archive:
-        members = {info.filename: archive.read(info.filename) for info in archive.infolist()}
+        marker = "/model/LLscalar_v3_UFO_runtime/"
+        members = {
+            info.filename: archive.read(info.filename)
+            for info in archive.infolist()
+            if marker in f"/{info.filename}" and not info.filename.endswith("py3_model.pkl")
+        }
     parameter = next(name for name in members if name.endswith("model/LLscalar_v3_UFO_runtime/parameters.py"))
     coupling = next(name for name in members if name.endswith("model/LLscalar_v3_UFO_runtime/couplings.py"))
     members[parameter] = patch_parameters(members[parameter].decode()).encode()
@@ -92,6 +99,9 @@ def write_contract(output_dir: Path, source: Path, archive: Path) -> None:
         "width_GeV": width,
         "width_target_GeV": WIDTH_GEV,
         "width_tolerance_GeV": WIDTH_TOLERANCE_GEV,
+        "br_bb": BR_BB,
+        "br_bb_squared": BR_BB_SQUARED,
+        "br_bb_provenance": "frozen benchmark FIRST_H2_RECAST_CANDIDATE.json at benchmark_commit",
         "pdg_mediator": 25,
         "pdg_h2": 9000006,
         "madgraph_decay_ownership": "H2 stable in LHE",
