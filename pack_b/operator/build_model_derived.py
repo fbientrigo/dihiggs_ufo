@@ -13,6 +13,8 @@ from pathlib import Path
 
 POINT_ID = "H2scan_mH150_tb300000"
 MASS_GEV = 150.0
+MEDIATOR_MASS_GEV = 125.13
+MEDIATOR_MASS_TEXT = "1.25130000000000000e+02"
 CTAU_MM = 4.32622152973311191
 CTAU_M = CTAU_MM / 1000.0
 CTAU_M_TEXT = "4.32622152973311191e-03"
@@ -21,6 +23,13 @@ WIDTH_GEV = 4.56118529862185007e-14
 WIDTH_TOLERANCE_GEV = 1e-21
 BR_BB = 0.756737485808578692
 BR_BB_SQUARED = BR_BB * BR_BB
+BR_BB_PROVENANCE = {
+    "repository": "fbientrigo/dihiggs",
+    "benchmark_commit": "92ad4d80f537bffd8663e42f1c6881e82849feab",
+    "path": "benchmarks/FIRST_H2_RECAST_CANDIDATE.json",
+    "sha256": "c8a65f1bb0c75b48b3fd0571d5e3c1ee5dcb3388222ae50d087f102a92c0af98",
+    "field": "selected_candidate.br_bb",
+}
 
 
 def sha256(path: Path) -> str:
@@ -40,6 +49,7 @@ def replace_once(text: str, pattern: str, replacement: str) -> str:
 
 def patch_parameters(text: str) -> str:
     text = replace_once(text, r"(ctauh2 = Parameter\(.*?\n(?:.*\n){2}\s+value = )0\.1,", rf"\g<1>{CTAU_M_TEXT},")
+    text = replace_once(text, r"(MH = Parameter\(.*?\n(?:.*\n){2}\s+value = )125,", rf"\g<1>{MEDIATOR_MASS_TEXT},")
     text = replace_once(text, r"(Mh2 = Parameter\(.*?\n(?:.*\n){2}\s+value = )200,", rf"\g<1>{MASS_GEV:.17e},")
     marker = "\nMZ = Parameter(name = 'MZ',"
     addition = (
@@ -101,7 +111,9 @@ def write_contract(output_dir: Path, source: Path, archive: Path) -> None:
         "width_tolerance_GeV": WIDTH_TOLERANCE_GEV,
         "br_bb": BR_BB,
         "br_bb_squared": BR_BB_SQUARED,
-        "br_bb_provenance": "frozen benchmark FIRST_H2_RECAST_CANDIDATE.json at benchmark_commit",
+        "br_bb_provenance": BR_BB_PROVENANCE,
+        "madgraph_rerun_required": False,
+        "madgraph_rerun_reason": "existing production card already used MH=125.13 and all other physical inputs are unchanged",
         "pdg_mediator": 25,
         "pdg_h2": 9000006,
         "madgraph_decay_ownership": "H2 stable in LHE",
@@ -114,7 +126,7 @@ def write_contract(output_dir: Path, source: Path, archive: Path) -> None:
     (output_dir / "point.json").write_text(json.dumps(point, indent=2, sort_keys=True) + "\n")
     (output_dir / "param_card.dat").write_text(
         "Block MASS\n"
-        "  25 1.25130000000000000e+02 # SM-like scalar\n"
+        f"  25 {MEDIATOR_MASS_TEXT} # SM-like scalar\n"
         "  9000006 1.50000000000000000e+02 # H2\n"
         "Block FRBlock\n"
         f"  2 {CTAU_M_TEXT} # ctauh2 [m]\n"

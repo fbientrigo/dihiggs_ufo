@@ -2,7 +2,13 @@
   "GHphiphi_GeV": -63.59142520075966,
   "Mh2_GeV": 150.0,
   "br_bb": 0.7567374858085787,
-  "br_bb_provenance": "frozen benchmark FIRST_H2_RECAST_CANDIDATE.json at benchmark_commit",
+  "br_bb_provenance": {
+    "benchmark_commit": "92ad4d80f537bffd8663e42f1c6881e82849feab",
+    "field": "selected_candidate.br_bb",
+    "path": "benchmarks/FIRST_H2_RECAST_CANDIDATE.json",
+    "repository": "fbientrigo/dihiggs",
+    "sha256": "c8a65f1bb0c75b48b3fd0571d5e3c1ee5dcb3388222ae50d087f102a92c0af98"
+  },
   "br_bb_squared": 0.5726516224278888,
   "coupling_mode": "MODEL_DERIVED",
   "ctau_mm": 4.326221529733112,
@@ -14,6 +20,8 @@
     "default ctauh2 = 0.1"
   ],
   "madgraph_decay_ownership": "H2 stable in LHE",
+  "madgraph_rerun_reason": "existing production card already used MH=125.13 and all other physical inputs are unchanged",
+  "madgraph_rerun_required": false,
   "model_pack": "pack_b_h2_model_derived_v1",
   "pdg_h2": 9000006,
   "pdg_mediator": 25,
@@ -22,7 +30,7 @@
   "pythia_decay_ownership": "lifetime = 4.32622152973311191 mm; forced H2 -> bb for sample efficiency",
   "schema": "dihiggs.pack_b.model_derived.v1",
   "source_pack_a_sha256": "58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6",
-  "ufo_sha256": "04445700b026ade846f2fb9ac316881be329ffd3713af051a8cb2481ba9870de",
+  "ufo_sha256": "9c685714f8840190cb08c34e4b804481564599619c1a3fa9a212256624951d33",
   "width_GeV": 4.5611852893759055e-14,
   "width_target_GeV": 4.56118529862185e-14,
   "width_tolerance_GeV": 1e-21
