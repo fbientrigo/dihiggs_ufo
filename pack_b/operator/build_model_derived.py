@@ -72,7 +72,7 @@ def write_deterministic_zip(members: dict[str, bytes], output: Path) -> None:
         for name in sorted(members):
             info = zipfile.ZipInfo(name, date_time=(2020, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
-            info.external_attr = 0o644 << 16
+            info.external_attr = (0o755 if name.endswith("/") else 0o644) << 16
             archive.writestr(info, members[name])
 
 
