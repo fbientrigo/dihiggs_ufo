@@ -1,6 +1,6 @@
 # Generic Pack B point manifest — `FACTORIZED_G_ONLY`
 
-Input format consumed by `pack_b/operator/generic_model_derived.py`
+Input format consumed by `pack_b/operator/build_model_derived.py`
 (`validate_point_manifest()` / `load_point_manifest()`). A JSON file, one
 object per point.
 
@@ -24,19 +24,22 @@ absent from this UFO model entirely (see
 | Field | Type | Meaning |
 |---|---|---|
 | `point_id` | string | Unique id; becomes the output subdirectory name (`output_root/<point_id>/`). |
-| `production_variant` | string | Must be exactly `"FACTORIZED_G_ONLY"` — the only variant this builder implements. Any other value is rejected. |
-| `mH2_GeV` | decimal string | The `H2` mass. **Must be a decimal string, not a JSON/Python float** (e.g. `"400.0"`, not `400.0`) — see "Why decimal strings" below. |
+| `model_variant` | string | Must be exactly `"FACTORIZED_G_ONLY"` — the only variant this builder implements. Any other value is rejected. |
+| `m_h_GeV` | decimal string | Light-Higgs mass used for the UFO mediator parameter `MH`. Required; no default. |
+| `m_H2_GeV` | decimal string | The `H2` mass. **Must be a decimal string, not a JSON/Python float** (e.g. `"400.0"`, not `400.0`) — see "Why decimal strings" below. |
 | `g_hH2H2_GeV` | decimal string | The `H`-`h2`-`h2` coupling, patched verbatim (no sign flip) into the UFO's `GHphiphi` parameter — see "Coupling convention" below. Also a decimal string, not a float. |
+| `total_width_GeV` | decimal string | Physical H2 total width. Required and positive. |
+| `ctau_physical_mm` | decimal string | Required width-derived lifetime, validated as `hbar_c / total_width_GeV`. |
+| `ctau_response_mm` | decimal string | Required response lifetime; never silently copied from the physical lifetime. |
+| `lifetime_mode` | string | `PHYSICAL_PREDICTION` requires response = physical; `DETECTOR_RESPONSE_EXPERIMENT` explicitly permits a differing response lifetime. |
 
 ## Optional fields
 
 | Field | Type | Default | Meaning |
 |---|---|---|---|
-| `mediator_mass_GeV` | decimal string | `"125.13"` | The SM-Higgs-like mediator's mass (UFO parameter `MH`). Override only for an explicit mediator-mass validation study. |
-| `ctau_mm` | decimal string | `"1e12"` (inert placeholder) | Patched into the UFO's `ctauh2` parameter purely for bookkeeping/continuity — it does **not** affect the `gg -> H* -> h2 h2` production amplitude (`h2` is a final-state particle here, not an internal propagator). Physical lifetime/decay is owned downstream (Pack AA / Pythia stage) per the mission's ownership split; do not treat a value patched here as authoritative for the response study. |
 | `ghphiphi_convention` | string | `"direct"` | Only `"direct"` is implemented (`GHphiphi := g_hH2H2_GeV` verbatim). See "Coupling convention" below for the one other convention documented elsewhere in this repo that is **not** implemented here. |
-| `br_bb` | decimal string | `null` | Pass-through bookkeeping only (recorded in `point.json`); not consumed by the UFO patch itself. |
-| `br_bb_provenance` | object | `null` | Pass-through bookkeeping only. |
+| `BR_bb` | decimal string | `null` | Pass-through bookkeeping only (recorded in `point.json`); not consumed by the UFO patch itself. |
+| `BR_bb_provenance` | object | `null` | Pass-through bookkeeping only. |
 | `provenance` | object | `{}` | Free-form upstream provenance (e.g. which physical-point database row this came from); recorded verbatim in output `point.json`'s `provenance` field. |
 
 ## Example
@@ -44,10 +47,14 @@ absent from this UFO model entirely (see
 ```json
 {
   "point_id": "H2scan_mH400_pilot",
-  "production_variant": "FACTORIZED_G_ONLY",
-  "mH2_GeV": "400.0",
+  "model_variant": "FACTORIZED_G_ONLY",
+  "m_h_GeV": "125.13",
+  "m_H2_GeV": "400.0",
   "g_hH2H2_GeV": "12.5",
-  "mediator_mass_GeV": "125.13",
+  "total_width_GeV": "4.56118529862185007e-14",
+  "ctau_physical_mm": "4.32622152973311191",
+  "ctau_response_mm": "50.0",
+  "lifetime_mode": "DETECTOR_RESPONSE_EXPERIMENT",
   "provenance": {"source_repo": "dihiggs", "source_commit": "2264ffe..."}
 }
 ```
@@ -63,7 +70,7 @@ formatting them with `decimal.Decimal` (this module's
 `format_ufo_scientific()`) instead of `float` reproduces any exact
 finite-decimal input digit-for-digit. This is what makes the mandatory
 historical-150-GeV-anchor regression test byte-identical (see
-`pack_b/tests/test_generic_builder.py::test_historical_anchor_regression_byte_identical`)
+`pack_b/tests/test_model_derived.py::test_historical_anchor_regression_byte_identical`)
 without any point-specific special-casing in the builder itself.
 
 ## Coupling convention — read before reusing
@@ -110,16 +117,15 @@ manifest's `g_hH2H2_GeV`) itself before calling this builder.
 ## CLI
 
 ```bash
-python pack_b/operator/generic_model_derived.py \
+python pack_b/operator/build_model_derived.py \
   --pack-a releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip \
   --manifest path/to/point.json \
   --output-root build/generic_points
 ```
 
-## Relationship to `build_model_derived.py`
+## Canonical builder and historical regression
 
-`build_model_derived.py` (the original hardcoded single-benchmark builder)
-is untouched and still works standalone — it is not a wrapper around this
-generic module. The two are independently tested; the historical-anchor
-regression test proves they produce byte-identical UFO overlay output when
-fed the same underlying physical values.
+`build_model_derived.py` is the sole active Pack B model-derived executable.
+The former hard-coded benchmark executable has been removed. Historical
+reproducibility is preserved by the immutable 150 GeV output hash in
+`pack_b/tests/test_model_derived.py`, not by a second runtime code path.

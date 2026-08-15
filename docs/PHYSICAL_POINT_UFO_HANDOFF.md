@@ -2,7 +2,10 @@
 
 ## Scope
 
-The existing `pack_b/operator/build_model_derived.py` is a **frozen benchmark builder** for `H2scan_mH150_tb300000`. It is useful as validated provenance for that benchmark, but it must not be treated as a generic generator for arbitrary 2HDM scan points.
+`pack_b/operator/build_model_derived.py` is the **canonical point-driven
+builder** for the validated `FACTORIZED_G_ONLY` production variant. It is
+generic across points, while the 150 GeV benchmark remains an immutable
+regression anchor.
 
 For the next physical scan, the scientific handoff is:
 
@@ -15,7 +18,11 @@ canonical dihiggs.point.v2 row
 
 ## Why the benchmark builder is not the scan interface
 
-The current Pack B builder intentionally hard-codes the validated benchmark values, including the scalar mass, lifetime and `GHphiphi`. A different physical 2HDM point can change more than one coupling or width. Therefore a new point must not be represented by changing only `GHphiphi` in the benchmark overlay unless that restricted variation is the explicit subject of a validation study.
+The builder consumes named point fields including `m_h_GeV`, `m_H2_GeV`,
+`g_hH2H2_GeV`, `total_width_GeV`, `ctau_physical_mm`,
+`ctau_response_mm`, and `lifetime_mode`. A different physical point must not
+be represented by changing only `GHphiphi` unless that restricted variation
+is the explicit subject of a validation study.
 
 The historical field
 
@@ -36,6 +43,8 @@ For each accepted physical `point_id`:
 5. record the cross section and integration uncertainty together with UFO/card provenance.
 
 Do not infer the new production cross section from a general `g/g0` rescaling.
+Record `sigma_source=DIRECT_MADGRAPH_POINT` only after the point-specific
+MadGraph run succeeds, together with its run/card/UFO provenance.
 
 ## Coupling convention already validated
 
@@ -71,4 +80,8 @@ This separation is a physics boundary, not a requirement to introduce additional
 
 ## Near-term implementation guidance
 
-Do not rewrite Pack A/AA/B or build a generic model-generation framework before it is needed. The next useful change, when local execution begins, is a small point-card writer that consumes canonical rows and emits the exact parameter inputs required by the already validated UFO. Validate it on the frozen 150 GeV benchmark first, then use the same path for additional physical points.
+The canonical builder is intentionally a small point-card writer: it consumes
+the canonical row and emits the exact parameter inputs required by the
+validated UFO. The benchmark regression is checked by the immutable output
+hash in `pack_b/tests/test_model_derived.py`; no second benchmark executable
+is maintained.
