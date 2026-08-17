@@ -49,6 +49,41 @@ UFO: GHphiphi = Im(c) = -g_hH2H2_GeV
 
 This sign/magnitude mapping should be preserved. It does not imply that `GHphiphi` is the only point-dependent production input.
 
+## SM-like Higgs mass convention
+
+`m_h` has exactly one owner in the dihiggs ecosystem:
+`conventions/physics_conventions.yaml`, key `sm_like_higgs.m_h_GeV`, currently
+`"125.20"` (PDG 2026 listing). That file is values-only and byte-identical
+across `dihiggs`, `dihiggs_boundary` and `dihiggs_hep_cross`, and each repo
+md5-pins it in CI.
+
+Rules for this repo:
+
+1. **A UFO builder never defaults `m_h`.** It takes `m_h_GeV` from the canonical
+   point manifest and fails loudly if the field is absent. `dihiggs_ufo` does
+   not carry a copy of the conventions file, by design -- the value travels on
+   the point, so a mass convention can never be silently re-applied here.
+2. **The upstream UFO default `MH = Parameter(... value = 125)` is forbidden as
+   an active value.** Both builders exist precisely to overwrite it; a released
+   candidate whose `MH` is still `125` is a build failure, not a valid point.
+3. **Pass `m_h_GeV` as a decimal string, not a float.** `f"{125.20:.17e}"`
+   yields `1.25200000000000003e+02`, which is not byte-equal to the
+   `1.25200000000000000e+02` form the hand-verified cards use -- the same
+   float64 trap already documented for 125.13 in `MODEL_DERIVED_MANIFEST.md`
+   ("Why decimal strings, not floats"). Format via `decimal.Decimal`.
+4. **Frozen artifacts keep their historical convention and say so.**
+   `pack_b/operator/build_model_derived.py` and everything under
+   `releases/pack_b/candidates/` encode the 150 GeV benchmark at
+   `m_h = 125.13 GeV` (`MH_CONVENTION = "historical_125.13"`). One earlier
+   `PI_FIXED` candidate encodes `125.0`. These are retained for exact
+   regression against released hashes and must never be reinterpreted as newly
+   calculated `125.20` points, nor mixed with them in a plot or table.
+
+The mass convention is orthogonal to the coupling convention below: changing
+`m_h` changes `g_hH2H2`, the widths and `ctau` for the *same* nominal point, so
+a point recalculated at a new convention is a different point with a different
+`point_id` -- not a relabelling.
+
 ## Ownership
 
 ```text

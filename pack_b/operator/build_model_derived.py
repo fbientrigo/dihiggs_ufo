@@ -1,5 +1,23 @@
 #!/usr/bin/env python3
-"""Build one deterministic Pack B MODEL_DERIVED UFO overlay from Pack A."""
+"""Build one deterministic Pack B MODEL_DERIVED UFO overlay from Pack A.
+
+FROZEN BENCHMARK BUILDER -- not a generic generator.
+
+Every physical value below is hard-coded to the validated 150 GeV benchmark
+H2scan_mH150_tb300000, including the SM-like scalar mass. That mass is the
+HISTORICAL convention mh = 125.13 GeV (MH_CONVENTION), deliberately NOT the
+canonical mh = 125.20 GeV now declared in the dihiggs ecosystem's
+conventions/physics_conventions.yaml (sm_like_higgs.m_h_GeV).
+
+Do not migrate MEDIATOR_MASS_GEV / MEDIATOR_MASS_TEXT to the canonical value.
+Doing so would reinterpret a frozen, released artifact as a newly calculated
+point: the released param_card, its point.json and the byte-identical release
+hashes all encode 125.13, and pack_b/tests/test_model_derived.py locks them.
+
+For NEW physical points use the generic builder, which takes m_h_GeV from the
+canonical point manifest with no default at all. See
+docs/PHYSICAL_POINT_UFO_HANDOFF.md, section "SM-like Higgs mass convention".
+"""
 
 from __future__ import annotations
 
@@ -13,6 +31,10 @@ from pathlib import Path
 
 POINT_ID = "H2scan_mH150_tb300000"
 MASS_GEV = 150.0
+# HISTORICAL mass convention of this frozen benchmark. The canonical convention
+# for new production is 125.20 (conventions/physics_conventions.yaml). See the
+# module docstring before changing anything below.
+MH_CONVENTION = "historical_125.13"
 MEDIATOR_MASS_GEV = 125.13
 MEDIATOR_MASS_TEXT = "1.25130000000000000e+02"
 CTAU_MM = 4.32622152973311191
