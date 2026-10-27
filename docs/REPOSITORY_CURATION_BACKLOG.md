@@ -21,5 +21,5 @@ This backlog outlines planned repository maintenance, structural cleanup, and au
 - [ ] **Clean Code Review Artifacts**: Remove `.code-review-graph/graph.db` from local workspace once review indexing is complete.
 
 ### Priority P5 — CI & Release Automation
-- [ ] **Automate Metadata Validation**: Connect `scripts/validate_repository_metadata.py` to GitHub Actions CI workflow on all PRs.
+- [x] **Automate Metadata Validation**: Connected `scripts/validate_repository_metadata.py` to `.github/workflows/repository-metadata.yml` for pull requests.
 - [ ] **Automate Registry Checksum Verification**: Implement automated SHA-256 integrity checks against `ARTIFACT_REGISTRY.json` on tagged release events.
