@@ -1,6 +1,6 @@
 # Physical-point UFO / MadGraph handoff
 
-> **Convention authority:** `dihiggs` owns the v3 contract. This repository cache is byte-verified through `conventions/physics_conventions.lock.yaml`; new point handoffs carry the v3 schema, source commit, and source SHA-256. The frozen Pack B builder remains historical and does not implement the new signed point interface.
+> **Convention authority:** `dihiggs` owns the v3 contract. This repository keeps no copy; `scripts/check_workspace.py` verifies the sha256 of `dihiggs/conventions/physics_conventions.yaml`; new point handoffs carry the v3 schema, source commit, and source SHA-256. The frozen Pack B builder remains historical and does not implement the new signed point interface.
 
 
 ## Scope
@@ -55,7 +55,7 @@ The compatibility field `g_hH2H2_GeV` is magnitude-only. A new handoff must also
 
 ## SM-like Higgs mass convention
 
-The `dihiggs` repository owns the v3 convention at `conventions/physics_conventions.yaml`; the local byte-identical cache and its source commit/SHA-256 are recorded in `conventions/physics_conventions.lock.yaml`. The active new-production value is the decimal string `"125.20"` GeV under `mh_125p20_active_2026`. It is an adopted project convention, not a PDG central value.
+The `dihiggs` repository owns the v3 convention at `conventions/physics_conventions.yaml`; this repository keeps no copy (the workspace checker verifies its SHA-256). The active new-production value is the decimal string `"125.20"` GeV under `mh_125p20_active_2026`. It is an adopted project convention, not a PDG central value.
 
 A new point handoff must carry `physics_conventions_schema`, `physics_conventions_commit`, and `physics_conventions_sha256`, and must serialize the decimal mass text exactly. Builders fail closed when provenance or the mass is absent. Frozen Pack B artifacts keep their original historical convention and are not promoted to the new point interface.
 
