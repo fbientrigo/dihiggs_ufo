@@ -22,6 +22,11 @@ The canonical artifacts and their cryptographic SHA-256 digests are:
 
 - **Pack A Frozen Release**: [`releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip`](releases/pack_a/frozen/pi_ufo_baseline_v1_frozen_hotfix1.zip)
   - SHA-256: `58f1e976bc8fd6dcc89f353d68dc85ff70c935164e5d168322b1f8633e2537f6`
+- **Production UFO for hep_cross σ (r14 runtime)**: [`releases/r14_runtime/LLscalar_v3_UFO_runtime/`](releases/r14_runtime/LLscalar_v3_UFO_runtime/)
+  - The default of `DIHIGGS_PHYSICAL_POINT_UFO_DIR` (`dihiggs_hep_cross/scripts/env.sh`, `generate_physical_point_proc_dir.sh`); exposes `GHphiphi` as external `FRBlock` 3.
+  - Byte-identical to the former untracked `hep_cross/results/r14_direct_g_production/ufo/model/LLscalar_v3_UFO_runtime` (lake `20261014T025456Z-c67ca8`, 14/14 `.py` sha256-checked; the `py3_model.pkl` cache is left out, MadGraph rebuilds it).
+  - Differs from `LLscalar_v3_UFO_original` in `couplings.py`, `parameters.py`, `write_param_card.py`.
+  - Closure (DATA_FLOW N5): benchmark m_H2 = 150 GeV, g = 63.59 GeV, seeds 101/107, 10k events → σ = 0.23025 ± 0.00163 fb, identical with this release and with the old r14 copy (frozen reference 0.230291 fb).
 - **Pack AA Release Candidate**: [`releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip`](releases/pack_aa/candidates/pi_pack_aa_release_candidate_v1.zip)
   - SHA-256: `fb5ddffcbb82ab763be1c6c457f46b2d5159d9f32b96ad2230b85180e2b82291`
 - **Pack AA Validated Event Bundle**: [`releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_MANIFEST.json`](releases/pack_aa/event_samples/20260722T092243Z_5/PACK_AA_EVENT_BUNDLE_MANIFEST.json)

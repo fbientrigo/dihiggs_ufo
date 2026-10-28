@@ -33,4 +33,5 @@ archive/
 /LLscalar_v3_UFO.zip
 /LLscalar_v3_UFO_external_GHphiphi/
 LLscalar_v3_UFO_original/*.pkl
+releases/r14_runtime/*/*.pkl
 *~
