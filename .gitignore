@@ -27,3 +27,10 @@ releases/pack_a/scientific_validation/
 releases/pack_a/candidates/*.zip
 releases/pack_a/historical/*.zip
 archive/
+
+# LLscalar_v3 input model: track LLscalar_v3_UFO_original sources only
+# (_external_GHphiphi is byte-identical to _original, the zip is its 2021 packaging; both stay on disk, copies in the lake)
+/LLscalar_v3_UFO.zip
+/LLscalar_v3_UFO_external_GHphiphi/
+LLscalar_v3_UFO_original/*.pkl
+*~
